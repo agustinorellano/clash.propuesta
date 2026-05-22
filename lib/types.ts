@@ -49,7 +49,7 @@ export const defaultConfig: ProposalConfig = {
       description: 'Para comenzar a digitalizar la comunicación de beneficios sin inversión inicial.',
       features: [
         'Panel de gestión básico — inicio para carga de promociones',
-        'Dashboard: publicaciones activas, activos por vencer, inactivos, sucursales y QR',
+        'Dashboard con: Publicaciones, Activos por vencer, Inactivos, Sucursales y QR de sucursales',
         'Distribución por link y QR genérico (sin diseño personalizado)',
         'Soporte por email',
       ],
@@ -74,15 +74,15 @@ export const defaultConfig: ProposalConfig = {
     },
     {
       id: 'scale',
-      name: 'Scale',
+      name: 'Enterprise',
       price: 'Personalizado',
       priceNote: 'Según volumen y operación',
       description: 'Para grandes marcas con operaciones complejas y múltiples canales.',
       features: [
         'Todo lo incluido en Gestión Asistida',
-        'Widget para web, pantallas y tótems digitales (con marca de agua en plan estándar)',
-        'Account Manager dedicado — trabajo conjunto en estrategia de comunicación',
-        'Reportes trimestrales personalizados — análisis, recomendaciones y sugerencias (desde el 3er mes)',
+        'Integración de widget estándar para página web, pantallas y tótems digitales (con marca de agua)',
+        'Account Manager dedicado — trabajo en conjunto sobre estrategia de comunicación',
+        'Reportes trimestrales personalizados con análisis, recomendaciones y sugerencias — desde el 3er mes',
         'Kit comercial — diseño de QR personalizado para tu marca',
         'Próximamente: envío automatizado de Gmail a managers por sucursal',
       ],
@@ -96,7 +96,7 @@ export const defaultConfig: ProposalConfig = {
       priceNote: 'Propuesta completamente personalizada',
       description: 'Diseñado desde cero para tu operación, sin límites.',
       features: [
-        'Todo lo que ofrece el plan Scale',
+        'Todo lo que ofrece el plan Enterprise',
         'Materiales físicos incluidos — coordinamos proveedores y entregamos en cada sucursal',
         'Vistas personalizadas de widget (sin marca de agua)',
         'Página web personalizada de promociones para tu marca',
