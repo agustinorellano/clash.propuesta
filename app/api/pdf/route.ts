@@ -12,7 +12,10 @@ const A4_W = 595.28
 // Viewport width — matches Tailwind's xl breakpoint
 const VIEWPORT_W = 1440
 
-const ADMIN_ORIGIN = 'http://localhost:3002'
+// En Vercel usa VERCEL_URL; en local cae a localhost:3002
+const ADMIN_ORIGIN = process.env.VERCEL_URL
+  ? `https://${process.env.VERCEL_URL}`
+  : 'http://localhost:3002'
 
 export async function POST(req: NextRequest) {
   const session = await getSession()
