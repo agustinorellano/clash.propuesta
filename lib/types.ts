@@ -58,7 +58,7 @@ export const defaultConfig: ProposalConfig = {
     },
     {
       id: 'managed',
-      name: 'Gestión Asistida',
+      name: 'Promos gestionadas',
       price: 'Consultar',
       priceNote: 'Personalizado según operación',
       description: 'Para marcas que quieren operar sin fricción con el respaldo de nuestro equipo.',
@@ -74,12 +74,12 @@ export const defaultConfig: ProposalConfig = {
     },
     {
       id: 'scale',
-      name: 'Promos Gestionadas',
+      name: 'Scale',
       price: 'Personalizado',
       priceNote: 'Según volumen y operación',
       description: 'Para grandes marcas con operaciones complejas y múltiples canales.',
       features: [
-        'Todo lo incluido en Gestión Asistida',
+        'Todo lo incluido en Promos gestionadas',
         'Integración con sistemas propios — widget para web, pantallas y tótems digitales',
         'Account Manager dedicado — trabajo operativo conjunto, seguimiento estratégico y coordinación de comunicación',
         'Reportes personalizados trimestrales — análisis, recomendaciones y sugerencias operativas',
@@ -96,7 +96,7 @@ export const defaultConfig: ProposalConfig = {
       priceNote: 'Propuesta completamente personalizada',
       description: 'Diseñado desde cero para marcas con necesidades únicas y operaciones de alta escala.',
       features: [
-        'Todo lo incluido en Promos Gestionadas',
+        'Todo lo incluido en Scale',
         'Materiales físicos incluidos — coordinación de proveedores, producción y entrega en sucursales',
         'Vistas personalizadas de widget (sin marca de agua)',
         'Página web personalizada de promociones para tu marca',
