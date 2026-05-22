@@ -1,38 +1,28 @@
 export default function ConceptSection() {
-  const stats = [
-    { value: '73%', label: 'de los clientes no conoce los beneficios del lugar donde compra' },
-    { value: '3x', label: 'más retención cuando los beneficios se comunican digitalmente' },
-    { value: '60%', label: 'de aumento en visitas recurrentes con programas activos' },
-  ]
-
   return (
-    <div className="bg-white p-12">
-      <div className="max-w-2xl mx-auto">
-        {/* Header */}
-        <div className="mb-10">
-          <span className="text-xs font-bold text-red-600 tracking-widest uppercase">El problema</span>
-          <h2 className="text-3xl font-bold text-gray-900 mt-2">
-            Los beneficios existen.
-            <br />
-            <span className="text-gray-400">El problema es que nadie los ve.</span>
-          </h2>
+    <div className="bg-[#fef8f6] p-12 min-h-[420px] flex flex-col justify-center">
+      <div className="max-w-2xl">
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100 rounded-full px-3 py-1 mb-6">
+          <svg className="w-3.5 h-3.5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+          <span className="text-xs font-bold text-red-600 tracking-widest uppercase">Concepto</span>
         </div>
 
-        <p className="text-gray-600 text-base leading-relaxed mb-10">
-          Las marcas invierten en beneficios para sus clientes, pero la comunicación sigue siendo
-          analógica, fragmentada y difícil de medir. Los clientes no saben qué tienen disponible,
-          y las empresas no saben si sus beneficios están funcionando.
+        {/* Heading */}
+        <h2 className="text-5xl font-black text-gray-900 leading-[1.08] mb-6">
+          Una solución pensada para marcas que necesitan{' '}
+          <span className="text-red-600">ordenar y escalar</span>{' '}
+          su comunicación de beneficios.
+        </h2>
+
+        {/* Body */}
+        <p className="text-gray-500 text-base leading-relaxed">
+          No se trata solo de publicar promociones.
+          <br />
+          Se trata de tener control sobre lo que se comunica en todos los puntos de contacto.
         </p>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-6">
-          {stats.map((stat, i) => (
-            <div key={i} className="text-center p-6 bg-gray-50 rounded-xl border border-gray-100">
-              <div className="text-3xl font-black text-red-600 mb-2">{stat.value}</div>
-              <div className="text-xs text-gray-500 leading-relaxed">{stat.label}</div>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   )

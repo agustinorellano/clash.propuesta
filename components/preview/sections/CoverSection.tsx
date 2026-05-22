@@ -21,43 +21,32 @@ export default function CoverSection({ brand }: CoverSectionProps) {
 
       <div className="relative z-10 text-center">
 
-        {effectiveLogo ? (
-          /* Brand logo as primary hero — CLASH as secondary badge */
-          <>
-            {/* CLASH badge — small, top */}
-            <div className="mb-8 flex items-center justify-center gap-2">
-              <span className="text-2xl font-black tracking-tighter text-gray-400">
-                CL<span className="text-red-600">A</span>SH
-              </span>
-              <span className="text-gray-600 text-xs font-medium tracking-widest uppercase mt-1">× Propuesta</span>
-            </div>
+        {/* Clash logo — always the image */}
+        <div className="mb-8 flex justify-center">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/clash-logo.svg"
+            alt="Clash"
+            className="h-16 w-auto object-contain"
+          />
+        </div>
 
-            {/* Brand logo — large and centered */}
-            <div className="flex items-center justify-center mb-8">
-              <div className="bg-white/8 border border-white/10 rounded-2xl px-10 py-7 backdrop-blur-sm">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={effectiveLogo}
-                  alt={brand.name}
-                  className="max-h-28 max-w-xs object-contain block mx-auto"
-                />
-              </div>
+        {/* Brand logo — if uploaded, shown below Clash as secondary */}
+        {effectiveLogo && (
+          <div className="mb-8 flex justify-center">
+            <div className="bg-white/8 border border-white/10 rounded-2xl px-8 py-5 backdrop-blur-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={effectiveLogo}
+                alt={brand.name}
+                className="max-h-16 max-w-[220px] object-contain block mx-auto"
+              />
             </div>
-
-            {/* Separator */}
-            <div className="w-12 h-0.5 bg-red-600 mx-auto mb-6" />
-          </>
-        ) : (
-          /* No brand logo — CLASH as primary */
-          <>
-            <div className="mb-6">
-              <span className="text-6xl font-black tracking-tighter">
-                CL<span className="text-red-600">A</span>SH
-              </span>
-            </div>
-            <div className="w-16 h-0.5 bg-red-600 mx-auto mb-8" />
-          </>
+          </div>
         )}
+
+        {/* Separator */}
+        <div className="w-12 h-0.5 bg-red-600 mx-auto mb-6" />
 
         {/* Label */}
         <p className="text-gray-400 text-sm font-medium tracking-widest uppercase mb-4">
