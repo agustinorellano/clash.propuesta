@@ -1,16 +1,25 @@
-// In-memory config store for PDF render — short-lived tokens
-const cache = new Map<string, { config: any; expiresAt: number }>()
+import { writeFileSync, readFileSync, unlinkSync, existsSync } from 'fs'
+import { join } from 'path'
+import { tmpdir } from 'os'
+
+function filePath(token: string) {
+  return join(tmpdir(), `clash-render-${token}.json`)
+}
 
 export function storeRenderConfig(token: string, config: any): void {
-  cache.set(token, { config, expiresAt: Date.now() + 2 * 60 * 1000 })
+  writeFileSync(filePath(token), JSON.stringify(config), 'utf-8')
+  // Auto-cleanup after 3 minutes
+  setTimeout(() => {
+    try { unlinkSync(filePath(token)) } catch {}
+  }, 3 * 60 * 1000)
 }
 
 export function getRenderConfig(token: string): any | null {
-  const entry = cache.get(token)
-  if (!entry) return null
-  if (Date.now() > entry.expiresAt) {
-    cache.delete(token)
+  const path = filePath(token)
+  if (!existsSync(path)) return null
+  try {
+    return JSON.parse(readFileSync(path, 'utf-8'))
+  } catch {
     return null
   }
-  return entry.config
 }
