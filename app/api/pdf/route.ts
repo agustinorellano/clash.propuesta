@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getSession } from '@/lib/auth'
 import puppeteer from 'puppeteer'
+import { PDFDocument } from 'pdf-lib'
 
 export const runtime = 'nodejs'
 
-// Map from proposal section IDs to landing page HTML element IDs
 const SECTION_MAP: Record<string, string | null> = {
   cover: null,
   concept: 'concepto',
@@ -23,6 +23,11 @@ const ALL_LANDING_IDS = [
 ]
 
 const LANDING_FILE_URL = 'file:///C:/Users/agust/Documents/Codex/clash-conecta/index.html'
+
+// A4 width in PDF points (72pt = 1 inch, A4 = 210mm = 8.27in)
+const A4_W = 595.28
+// Viewport width the landing page is designed for
+const VIEWPORT_W = 1440
 
 export async function POST(req: NextRequest) {
   const session = await getSession()
@@ -45,16 +50,16 @@ export async function POST(req: NextRequest) {
 
   try {
     const page = await browser.newPage()
-    await page.setViewport({ width: 1304, height: 900 })
-
+    // 2× device scale → crisp text & retina-quality images in PDF
+    await page.setViewport({ width: VIEWPORT_W, height: 900, deviceScaleFactor: 2 })
     await page.goto(LANDING_FILE_URL, { waitUntil: 'networkidle0', timeout: 30000 })
 
-    // ── 1. FREEZE ANIMATIONS — jump everything to its final/best state ──
+    // ── 1. FREEZE ANIMATIONS ──
     await page.addStyleTag({
       content: `
         nav, footer { display: none !important; }
 
-        /* Force all scroll-reveal animations to completed state */
+        /* Scroll-reveal: jump to final state */
         .rv { opacity: 1 !important; transform: none !important; transition: none !important; }
 
         /* Kill all motion */
@@ -67,7 +72,7 @@ export async function POST(req: NextRequest) {
           transition-delay: 0s !important;
         }
 
-        /* Circuito — show completed/loaded state */
+        /* Circuito */
         .ac2-check { opacity: 1 !important; background: rgba(220,38,38,.12) !important; color: #dc2626 !important; }
         .ac2-dot { background: #dc2626 !important; }
         .ac2-progress-fill { width: 100% !important; }
@@ -83,43 +88,38 @@ export async function POST(req: NextRequest) {
         .ai2-rf5 { width: 34% !important; }
         .ao2-op-tile { opacity: 1 !important; transform: none !important; }
 
-        /* Solución — show all accordion items open */
+        /* Solución */
         .sol-acc-item { background: #fff !important; box-shadow: 0 4px 24px rgba(0,0,0,.09) !important; }
         .sol-acc-body { max-height: none !important; overflow: visible !important; }
         .sol-acc-body-in { padding-bottom: 16px !important; }
-        /* Show panel 1 as the active visual */
         .sol-panel { opacity: 0 !important; position: absolute !important; }
         .sol-panel.sol-p1 { opacity: 1 !important; position: relative !important; display: flex !important; }
 
-        /* Distribución — all accordions open */
+        /* Distribución */
         .d-acc { border-color: rgba(234,179,8,.4) !important; }
         .d-acc-body { max-height: none !important; overflow: visible !important; }
         .d-acc-body-in { padding-top: 0 !important; padding-bottom: 18px !important; }
 
-        /* Planes — expand all details */
+        /* Planes */
         .pln-details { grid-template-rows: 1fr !important; transition: none !important; }
         .pln-details-inner { overflow: visible !important; }
         .pln-grid.has-active .pln-card:not(.active) { opacity: 1 !important; filter: none !important; transform: none !important; }
 
-        /* Section layout for PDF */
+        /* Sections: auto height, no overflow clip */
         section {
           min-height: auto !important;
           height: auto !important;
-          display: block !important;
-          page-break-after: always !important;
           overflow: visible !important;
           position: relative !important;
-          align-items: flex-start !important;
         }
         body { overflow: visible !important; background: #fff; }
         html { scroll-behavior: auto !important; }
 
-        /* Analytics bars — show as static */
         .bar-fill, .dp-bar-fill { animation: none !important; }
       `,
     })
 
-    // ── 2. HIDE/SHOW sections per config ──
+    // ── 2. HIDE/SHOW sections ──
     const enabledLandingIds = enabledSections
       .map((s: any) => SECTION_MAP[s.id])
       .filter(Boolean) as string[]
@@ -142,13 +142,16 @@ export async function POST(req: NextRequest) {
       enabledLandingIds,
     )
 
-    // ── 3. INJECT COVER PAGE ──
+    // ── 3. INJECT COVER ──
     const coverEnabled = enabledSections.some((s: any) => s.id === 'cover')
     if (coverEnabled) {
       await page.evaluate((brand: any) => {
         const today = new Date().toLocaleDateString('es-AR', {
           day: 'numeric', month: 'long', year: 'numeric',
         })
+        const hasBrandLogo = !!(brand.logoBase64 || brand.logoUrl)
+        const brandLogoSrc = brand.logoBase64 || brand.logoUrl
+
         const cover = document.createElement('section')
         cover.id = 'pdf-cover'
         Object.assign(cover.style, {
@@ -161,32 +164,26 @@ export async function POST(req: NextRequest) {
           textAlign: 'center',
           position: 'relative',
           overflow: 'hidden',
-          pageBreakAfter: 'always',
         })
-        const hasBrandLogo = !!(brand.logoBase64 || brand.logoUrl)
-        const brandLogoSrc = brand.logoBase64 || brand.logoUrl
-
         cover.innerHTML = `
           <div style="position:absolute;top:0;right:0;width:600px;height:600px;background:rgba(220,38,38,0.06);border-radius:50%;transform:translate(40%,-40%);filter:blur(100px);pointer-events:none"></div>
           <div style="position:absolute;bottom:0;left:0;width:500px;height:500px;background:rgba(220,38,38,0.04);border-radius:50%;transform:translate(-40%,40%);filter:blur(100px);pointer-events:none"></div>
           <div style="position:relative;z-index:2;padding:80px 60px;text-align:center">
+            <div style="margin-bottom:28px;display:flex;justify-content:center">
+              <img src="assets/clash-logo.svg" alt="Clash"
+                style="height:72px;width:auto;object-fit:contain;display:block"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+              <span style="display:none;font-size:52px;font-weight:900;letter-spacing:-2px;color:#fff;font-family:Inter,sans-serif">clash.</span>
+            </div>
             ${hasBrandLogo
-              ? `<!-- Brand logo as primary hero -->
-                 <div style="margin-bottom:32px;display:flex;align-items:center;justify-content:center;gap:10px">
-                   <span style="font-size:26px;font-weight:900;letter-spacing:-1px;color:#6b7280;font-family:Inter,sans-serif">CL<span style="color:#dc2626">A</span>SH</span>
-                   <span style="font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#4b5563;font-family:Inter,sans-serif;margin-top:4px">× Propuesta</span>
-                 </div>
-                 <div style="display:flex;align-items:center;justify-content:center;margin-bottom:32px">
-                   <div style="padding:28px 40px;background:rgba(255,255,255,0.08);border-radius:20px;border:1px solid rgba(255,255,255,0.1)">
-                     <img src="${brandLogoSrc}" alt="${brand.name}" style="max-height:120px;max-width:300px;object-fit:contain;display:block;margin:0 auto">
+              ? `<div style="display:flex;justify-content:center;margin-bottom:32px">
+                   <div style="padding:24px 36px;background:rgba(255,255,255,0.08);border-radius:20px;border:1px solid rgba(255,255,255,0.1)">
+                     <img src="${brandLogoSrc}" alt="${brand.name}" style="max-height:100px;max-width:280px;object-fit:contain;display:block;margin:0 auto">
                    </div>
                  </div>`
-              : `<!-- CLASH as primary when no brand logo -->
-                 <img src="assets/clash-logo.png" alt="Clash"
-                   style="height:90px;width:auto;object-fit:contain;display:block;margin:0 auto 28px;filter:drop-shadow(0 4px 20px rgba(0,0,0,0.5))"
-                   onerror="this.onerror=null;this.src='assets/clash-logo.svg';this.style.filter='brightness(0) invert(1);">`
+              : ''
             }
-            <div style="width:${hasBrandLogo ? '48' : '60'}px;height:3px;background:#dc2626;margin:0 auto ${hasBrandLogo ? '24' : '36'}px"></div>
+            <div style="width:48px;height:3px;background:#dc2626;margin:0 auto 28px"></div>
             <div style="font-size:11px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:#6b7280;margin-bottom:24px;font-family:Inter,sans-serif">PROPUESTA COMERCIAL</div>
             ${brand.name
               ? `<div style="font-size:52px;font-weight:800;color:#fff;letter-spacing:-2px;margin-bottom:14px;font-family:Inter,sans-serif">${brand.name}</div>`
@@ -202,13 +199,12 @@ export async function POST(req: NextRequest) {
       }, config.brand)
     }
 
-    // ── 4. REPLACE PLANS SECTION WITH ADMIN CONFIG DATA ──
+    // ── 4. REPLACE PLANS ──
     const plansEnabled = enabledSections.some((s: any) => s.id === 'plans')
     if (plansEnabled && config.plans?.length) {
       await page.evaluate((plans: any[]) => {
         const grid = document.querySelector('#planes .pln-grid')
         if (!grid) return
-
         const visiblePlans = plans.filter((p) => p.visible)
         grid.innerHTML = visiblePlans.map((plan) => {
           const featRows = plan.features.map((f: string) => `
@@ -217,19 +213,15 @@ export async function POST(req: NextRequest) {
               <span>${f}</span>
             </li>
           `).join('')
-
           const badge = plan.highlighted
             ? `<div style="position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#dc2626;color:#fff;font-size:10px;font-weight:700;padding:3px 12px;border-radius:20px;letter-spacing:.5px;white-space:nowrap">Recomendado</div>`
             : ''
-
           const borderStyle = plan.highlighted
-            ? 'border:2px solid #dc2626;box-shadow:0 0 0 0px rgba(220,38,38,.14),0 8px 40px rgba(220,38,38,.12)'
+            ? 'border:2px solid #dc2626;box-shadow:0 8px 40px rgba(220,38,38,.12)'
             : 'border:1.5px solid #e5e7eb'
-
           const priceColor = plan.highlighted ? 'color:#dc2626' : 'color:#111827'
-
           return `
-            <div style="position:relative;background:#fff;border-radius:20px;padding:24px 20px 20px;${borderStyle};display:flex;flex-direction:column;gap:0;break-inside:avoid">
+            <div style="position:relative;background:#fff;border-radius:20px;padding:24px 20px 20px;${borderStyle};display:flex;flex-direction:column;break-inside:avoid">
               ${badge}
               <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#9ca3af;margin-bottom:8px">${plan.id === 'managed' ? 'Popular' : plan.id === 'free' ? 'Entrada' : plan.id === 'scale' ? 'Avanzado' : 'Premium'}</div>
               <div style="font-size:20px;font-weight:900;color:#111827;letter-spacing:-.5px;margin-bottom:8px">${plan.name}</div>
@@ -239,23 +231,53 @@ export async function POST(req: NextRequest) {
                 <div style="font-size:11px;color:#9ca3af;margin-top:2px">${plan.priceNote}</div>
               </div>
               <div style="height:1px;background:#f3f4f6;margin-bottom:12px"></div>
-              <ul style="list-style:none;display:flex;flex-direction:column;gap:0;flex:1">
-                ${featRows}
-              </ul>
+              <ul style="list-style:none;display:flex;flex-direction:column;flex:1">${featRows}</ul>
             </div>
           `
         }).join('')
       }, config.plans)
     }
 
-    // ── 5. GENERATE PDF ──
-    const pdf = await page.pdf({
-      format: 'A4',
-      printBackground: true,
-      margin: { top: '0', right: '0', bottom: '0', left: '0' },
-      scale: 0.88,
-      timeout: 60000,
-    })
+    // ── 5. EXPAND VIEWPORT TO FULL CONTENT HEIGHT ──
+    const totalHeight = await page.evaluate(() => document.body.scrollHeight)
+    await page.setViewport({ width: VIEWPORT_W, height: totalHeight, deviceScaleFactor: 2 })
+    // Let layout settle after resize
+    await new Promise(r => setTimeout(r, 400))
+
+    // ── 6. SCREENSHOT EACH SECTION → PDF PAGE (exact size, no cuts) ──
+    //
+    // Instead of page.pdf() which forces A4 and cuts sections mid-content,
+    // we screenshot each section at its natural height and embed as a PDF page
+    // of matching size. The HTML/CSS/fonts are all rendered by the real Chromium
+    // engine — identical to the web. No reinterpretation, no redesign.
+
+    const pdfDoc = await PDFDocument.create()
+
+    // Build ordered list of selectors
+    const selectors: string[] = []
+    for (const s of enabledSections) {
+      if (s.id === 'cover') selectors.push('#pdf-cover')
+      else if (SECTION_MAP[s.id]) selectors.push(`#${SECTION_MAP[s.id]}`)
+    }
+
+    for (const selector of selectors) {
+      const el = await page.$(selector)
+      if (!el) continue
+      const box = await el.boundingBox()
+      if (!box || box.height < 10) continue
+
+      // Screenshot the element — Puppeteer clips to its exact bounds
+      const png = await el.screenshot({ type: 'png' }) as Buffer
+      const img = await pdfDoc.embedPng(png)
+      const { width: imgW, height: imgH } = img.size()
+
+      // Page height proportional to A4 width — preserves exact aspect ratio
+      const pageH = A4_W * (imgH / imgW)
+      const pdfPage = pdfDoc.addPage([A4_W, pageH])
+      pdfPage.drawImage(img, { x: 0, y: 0, width: A4_W, height: pageH })
+    }
+
+    const pdfBytes = await pdfDoc.save()
 
     const brandSlug = (config?.brand?.name ?? 'cliente')
       .toLowerCase()
@@ -263,7 +285,7 @@ export async function POST(req: NextRequest) {
       .replace(/[^a-z0-9-]/g, '')
     const filename = `propuesta-clash-${brandSlug}.pdf`
 
-    return new NextResponse(Buffer.from(pdf), {
+    return new NextResponse(Buffer.from(pdfBytes), {
       headers: {
         'Content-Type': 'application/pdf',
         'Content-Disposition': `attachment; filename="${filename}"`,
