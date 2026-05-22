@@ -1,0 +1,7 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 60'>
+  <rect width='120' height='60' fill='white'/>
+  <text x='8' y='48' font-family='Arial Black,sans-serif' font-size='52' font-weight='900' fill='#FF5200'>N</text>
+  <text x='62' y='48' font-family='Arial Black,sans-serif' font-size='52' font-weight='900' fill='#FF5200'>X</text>
+  <clipPath id='xr'><rect x='90' y='0' width='30' height='60'/></clipPath>
+  <text x='62' y='48' font-family='Arial Black,sans-serif' font-size='52' font-weight='900' fill='#6B2D8B' clip-path='url(#xr)'>X</text>
+</svg>
