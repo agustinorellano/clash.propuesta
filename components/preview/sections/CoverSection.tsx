@@ -19,37 +19,35 @@ export default function CoverSection({ brand }: CoverSectionProps) {
       <div className="absolute top-0 right-0 w-96 h-96 bg-red-600 rounded-full blur-3xl opacity-5 transform translate-x-1/2 -translate-y-1/2" />
       <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-600 rounded-full blur-3xl opacity-5 transform -translate-x-1/2 translate-y-1/2" />
 
-      <div className="relative z-10 text-center">
+      <div className="relative z-10 text-center flex flex-col items-center">
 
-        {/* Clash logo — always the image */}
-        <div className="mb-8 flex justify-center">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/clash-logo.svg"
-            alt="Clash"
-            className="h-16 w-auto object-contain"
-          />
-        </div>
+        {/* Clash logo — grande, protagonista */}
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/clash-logo.svg"
+          alt="Clash"
+          className="w-64 mb-10"
+        />
 
-        {/* Brand logo — if uploaded, shown below Clash as secondary */}
+        {/* Brand logo — si fue cargado */}
         {effectiveLogo && (
-          <div className="mb-8 flex justify-center">
-            <div className="bg-white/8 border border-white/10 rounded-2xl px-8 py-5 backdrop-blur-sm">
+          <div className="mb-8">
+            <div className="bg-white/8 border border-white/10 rounded-2xl px-8 py-5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={effectiveLogo}
                 alt={brand.name}
-                className="max-h-16 max-w-[220px] object-contain block mx-auto"
+                className="max-h-14 max-w-[200px] object-contain block mx-auto"
               />
             </div>
           </div>
         )}
 
         {/* Separator */}
-        <div className="w-12 h-0.5 bg-red-600 mx-auto mb-6" />
+        <div className="w-12 h-0.5 bg-red-600 mb-6" />
 
         {/* Label */}
-        <p className="text-gray-400 text-sm font-medium tracking-widest uppercase mb-4">
+        <p className="text-gray-400 text-xs font-semibold tracking-[0.3em] uppercase mb-5">
           Propuesta Comercial
         </p>
 

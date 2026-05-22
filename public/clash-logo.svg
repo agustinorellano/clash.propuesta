@@ -1,11 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" fill="none">
-  <rect width="900" height="300" fill="#E5192E"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 240" fill="none">
   <text
-    x="450" y="228"
+    x="450" y="192"
     font-family="-apple-system, 'Helvetica Neue', Arial, sans-serif"
-    font-size="178"
+    font-size="200"
     font-weight="900"
-    letter-spacing="-6"
+    letter-spacing="-8"
     fill="white"
     text-anchor="middle">clash.</text>
 </svg>
