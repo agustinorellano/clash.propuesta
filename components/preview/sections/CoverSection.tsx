@@ -14,59 +14,83 @@ export default function CoverSection({ brand }: CoverSectionProps) {
   const effectiveLogo = brand.logoBase64 || brand.logoUrl
 
   return (
-    <div className="bg-[#0f0f11] text-white min-h-[500px] flex flex-col items-center justify-center p-16 relative overflow-hidden">
-      {/* Background accents */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-red-600 rounded-full blur-3xl opacity-5 transform translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-red-600 rounded-full blur-3xl opacity-5 transform -translate-x-1/2 translate-y-1/2" />
+    <div
+      className="bg-[#0f0f11] text-white flex flex-col items-center justify-center relative"
+      style={{ padding: '72px 48px', minHeight: 480 }}
+    >
+      {/* Subtle background accent */}
+      <div
+        style={{
+          position: 'absolute', top: 0, right: 0,
+          width: 360, height: 360,
+          background: 'radial-gradient(circle, rgba(220,38,38,0.07) 0%, transparent 70%)',
+          transform: 'translate(30%, -30%)',
+          pointerEvents: 'none',
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute', bottom: 0, left: 0,
+          width: 280, height: 280,
+          background: 'radial-gradient(circle, rgba(220,38,38,0.05) 0%, transparent 70%)',
+          transform: 'translate(-30%, 30%)',
+          pointerEvents: 'none',
+        }}
+      />
 
-      <div className="relative z-10 text-center flex flex-col items-center">
+      <div style={{ position: 'relative', zIndex: 1, textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 
-        {/* Clash logo — grande, protagonista */}
+        {/* Clash logo */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/clash-logo.svg"
           alt="Clash"
-          className="w-64 mb-10"
+          style={{ width: 220, marginBottom: 36 }}
         />
 
-        {/* Brand logo — si fue cargado */}
+        {/* Brand logo */}
         {effectiveLogo && (
-          <div className="mb-8">
-            <div className="bg-white/8 border border-white/10 rounded-2xl px-8 py-5">
+          <div style={{ marginBottom: 32 }}>
+            <div style={{
+              background: 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(255,255,255,0.1)',
+              borderRadius: 16,
+              padding: '16px 32px',
+            }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={effectiveLogo}
                 alt={brand.name}
-                className="max-h-14 max-w-[200px] object-contain block mx-auto"
+                style={{ maxHeight: 48, maxWidth: 180, objectFit: 'contain', display: 'block', margin: '0 auto' }}
               />
             </div>
           </div>
         )}
 
         {/* Separator */}
-        <div className="w-12 h-0.5 bg-red-600 mb-6" />
+        <div style={{ width: 40, height: 2, background: '#dc2626', marginBottom: 20 }} />
 
         {/* Label */}
-        <p className="text-gray-400 text-xs font-semibold tracking-[0.3em] uppercase mb-5">
+        <p style={{ color: '#6b7280', fontSize: 11, fontWeight: 700, letterSpacing: '0.28em', textTransform: 'uppercase', marginBottom: 16 }}>
           Propuesta Comercial
         </p>
 
         {/* Brand name */}
         {brand.name ? (
-          <h1 className="text-4xl font-bold text-white mb-3">{brand.name}</h1>
+          <h1 style={{ fontSize: 36, fontWeight: 800, color: '#fff', marginBottom: 8, lineHeight: 1.1 }}>{brand.name}</h1>
         ) : (
-          <h1 className="text-4xl font-bold text-gray-600 mb-3 italic">[Nombre de empresa]</h1>
+          <h1 style={{ fontSize: 36, fontWeight: 800, color: '#374151', marginBottom: 8, lineHeight: 1.1, fontStyle: 'italic' }}>[Nombre de empresa]</h1>
         )}
 
         {brand.operationType && (
-          <p className="text-gray-400 text-base mb-2">{brand.operationType}</p>
+          <p style={{ color: '#9ca3af', fontSize: 15, marginBottom: 6 }}>{brand.operationType}</p>
         )}
         {brand.branches > 1 && (
-          <p className="text-gray-500 text-sm">{brand.branches} sucursales</p>
+          <p style={{ color: '#6b7280', fontSize: 13 }}>{brand.branches} sucursales</p>
         )}
 
         {/* Date */}
-        <div className="mt-12 text-gray-600 text-xs">{today}</div>
+        <div style={{ marginTop: 48, color: '#4b5563', fontSize: 11 }}>{today}</div>
       </div>
     </div>
   )

@@ -1,10 +1,10 @@
 export default function AnalyticsSection() {
   const partners = [
-    { name: 'Banco ICBC',   pct: 32, color: 'bg-[#0052A5]', text: 'IC' },
-    { name: 'Mercado Pago', pct: 24, color: 'bg-[#009ee3]', text: 'MP' },
-    { name: 'MODO',         pct: 18, color: 'bg-[#6C27BE]', text: 'M'  },
-    { name: 'Naranja X',    pct: 15, color: 'bg-[#FF6200]', text: 'NX' },
-    { name: 'Personal Pay', pct: 11, color: 'bg-[#5C2D91]', text: 'PP' },
+    { name: 'Banco ICBC',   pct: 32, color: '#0052A5', text: 'IC' },
+    { name: 'Mercado Pago', pct: 24, color: '#009ee3', text: 'MP' },
+    { name: 'MODO',         pct: 18, color: '#6C27BE', text: 'M'  },
+    { name: 'Naranja X',    pct: 15, color: '#FF6200', text: 'NX' },
+    { name: 'Personal Pay', pct: 11, color: '#5C2D91', text: 'PP' },
   ]
 
   const ageRows = [
@@ -17,131 +17,130 @@ export default function AnalyticsSection() {
   ]
 
   const genderRows = [
-    { label: 'Masc.', pct: 55, color: 'bg-red-500'    },
-    { label: 'Fem.',  pct: 35, color: 'bg-amber-400'  },
-    { label: 'Otros', pct: 10, color: 'bg-gray-600'   },
+    { label: 'Masc.', pct: 55, color: '#ef4444'  },
+    { label: 'Fem.',  pct: 35, color: '#f59e0b'  },
+    { label: 'Otros', pct: 10, color: '#4b5563'  },
   ]
 
   return (
-    <div className="bg-[#0a0a0c] p-12">
+    <div style={{ background: '#0a0a0c', padding: '56px 48px' }}>
+
       {/* Header */}
-      <div className="mb-8">
-        <div className="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/20 rounded-full px-3 py-1 mb-5">
-          <svg className="w-3.5 h-3.5 text-red-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/>
+      <div style={{ marginBottom: 32 }}>
+        <div style={{
+          display: 'inline-flex', alignItems: 'center', gap: 7,
+          background: 'rgba(239,68,68,0.1)', border: '1px solid rgba(239,68,68,0.2)',
+          borderRadius: 999, padding: '5px 14px', marginBottom: 18,
+        }}>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5">
+            <line x1="18" y1="20" x2="18" y2="10"/>
+            <line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
           </svg>
-          <span className="text-xs font-bold text-red-500 tracking-widest uppercase">Analytics</span>
+          <span style={{ fontSize: 10, fontWeight: 700, color: '#ef4444', letterSpacing: '0.22em', textTransform: 'uppercase' }}>Analytics</span>
         </div>
-        <h2 className="text-5xl font-black text-white mb-2">Tu Dashboard</h2>
-        <p className="text-gray-500 text-base mb-3">Tené un seguimiento de tu negocio</p>
-        <p className="text-sm font-semibold">
-          <span className="text-red-500">Promociones → Interacción → Datos → Optimización</span>
-          <span className="text-gray-600"> · Un sistema vivo</span>
+        <h2 style={{ fontSize: 40, fontWeight: 900, color: '#fff', marginBottom: 8 }}>Tu Dashboard</h2>
+        <p style={{ color: '#6b7280', fontSize: 14, marginBottom: 6 }}>Tené un seguimiento de tu negocio</p>
+        <p style={{ fontSize: 13, fontWeight: 600 }}>
+          <span style={{ color: '#ef4444' }}>Promociones → Interacción → Datos → Optimización</span>
+          <span style={{ color: '#374151' }}> · Un sistema vivo</span>
         </p>
       </div>
 
       {/* 3-column dashboard */}
-      <div className="grid grid-cols-3 gap-4">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
 
         {/* Col 1 — Estado de operación */}
-        <div className="bg-[#111114] rounded-2xl p-5 flex flex-col gap-3 border border-white/[0.06]">
-          <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">Estado de operación</p>
-          <div className="grid grid-cols-2 gap-2">
+        <div style={{ background: '#111114', borderRadius: 16, padding: 20, display: 'flex', flexDirection: 'column', gap: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
+          <p style={{ fontSize: 8, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.15em' }}>Estado de operación</p>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
             {[
               { val: '12',  label: 'Beneficios publicados activos', red: false },
               { val: '5',   label: 'Activos por vencer en 30 días', red: true  },
               { val: '10',  label: 'Inactivos / no publicados',      red: false },
-              { val: '75',  label: 'Sucursales activas administradas', red: true },
-              { val: '30',  label: 'QR habilitados en sucursales',   red: false },
-              { val: '400', label: 'Usuarios con alertas activas',   red: true  },
+              { val: '75',  label: 'Sucursales activas',             red: true  },
+              { val: '30',  label: 'QR habilitados',                 red: false },
+              { val: '400', label: 'Usuarios con alertas',           red: true  },
             ].map((item, i) => (
-              <div key={i} className="bg-white/[0.04] rounded-xl p-3 border border-white/[0.06]">
-                <p className={`text-2xl font-black leading-none mb-1 ${item.red ? 'text-red-500' : 'text-white'}`}>
-                  {item.val}
-                </p>
-                <p className="text-[9px] text-gray-600 leading-tight">{item.label}</p>
+              <div key={i} style={{ background: 'rgba(255,255,255,0.04)', borderRadius: 10, padding: '10px 12px', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <p style={{ fontSize: 22, fontWeight: 900, lineHeight: 1, marginBottom: 4, color: item.red ? '#ef4444' : '#fff' }}>{item.val}</p>
+                <p style={{ fontSize: 8, color: '#4b5563', lineHeight: 1.3 }}>{item.label}</p>
               </div>
             ))}
           </div>
-          {/* Bottom bar */}
-          <div className="bg-white/[0.06] border border-white/[0.08] rounded-xl px-4 py-3 flex justify-between mt-auto">
-            <div className="text-center">
-              <p className="text-sm font-black text-white">1.4K</p>
-              <p className="text-[9px] text-gray-600">Me gusta</p>
+          <div style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 10, padding: '10px 14px', display: 'flex', justifyContent: 'space-between', marginTop: 'auto' }}>
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: '#fff', marginBottom: 2 }}>1.4K</p>
+              <p style={{ fontSize: 8, color: '#4b5563' }}>Me gusta</p>
             </div>
-            <div className="w-px bg-white/10" />
-            <div className="text-center">
-              <p className="text-sm font-black text-white">2.5K</p>
-              <p className="text-[9px] text-gray-600">Cal. positivas</p>
+            <div style={{ width: 1, background: 'rgba(255,255,255,0.1)' }} />
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: '#fff', marginBottom: 2 }}>2.5K</p>
+              <p style={{ fontSize: 8, color: '#4b5563' }}>Cal. positivas</p>
             </div>
-            <div className="w-px bg-white/10" />
-            <div className="text-center">
-              <p className="text-sm font-black text-white">120</p>
-              <p className="text-[9px] text-gray-600">Cal. negativas</p>
+            <div style={{ width: 1, background: 'rgba(255,255,255,0.1)' }} />
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ fontSize: 13, fontWeight: 900, color: '#fff', marginBottom: 2 }}>120</p>
+              <p style={{ fontSize: 8, color: '#4b5563' }}>Cal. negativas</p>
             </div>
           </div>
         </div>
 
         {/* Col 2 — Perfil del cliente */}
-        <div className="bg-[#111114] rounded-2xl p-5 border border-white/[0.06]">
-          <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-4">Perfil del cliente</p>
+        <div style={{ background: '#111114', borderRadius: 16, padding: 20, border: '1px solid rgba(255,255,255,0.06)' }}>
+          <p style={{ fontSize: 8, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: 18 }}>Perfil del cliente</p>
 
-          <p className="text-[9px] font-bold text-gray-600 uppercase tracking-wider mb-2">Edad</p>
-          <div className="flex flex-col gap-2 mb-5">
+          <p style={{ fontSize: 8, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Edad</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 9, marginBottom: 22 }}>
             {ageRows.map((r) => (
-              <div key={r.label} className="flex items-center gap-2">
-                <span className="text-[10px] text-gray-500 w-8 flex-shrink-0">{r.label}</span>
-                <div className="flex-1 h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
-                  <div
-                    className={`h-full rounded-full ${r.highlight ? 'bg-red-500' : 'bg-gray-600'}`}
-                    style={{ width: `${r.pct * 2.5}%` }}
-                  />
+              <div key={r.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 10, color: '#6b7280', width: 30, flexShrink: 0 }}>{r.label}</span>
+                <div style={{ flex: 1, height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ width: `${r.pct * 2.5}%`, height: '100%', background: r.highlight ? '#ef4444' : '#4b5563', borderRadius: 4 }} />
                 </div>
-                <span className={`text-[10px] w-6 text-right font-medium ${r.highlight ? 'text-red-500' : 'text-gray-500'}`}>
-                  {r.pct}%
-                </span>
+                <span style={{ fontSize: 10, width: 26, textAlign: 'right', fontWeight: r.highlight ? 700 : 400, color: r.highlight ? '#ef4444' : '#6b7280' }}>{r.pct}%</span>
               </div>
             ))}
           </div>
 
-          <p className="text-[9px] font-bold text-gray-600 uppercase tracking-wider mb-2">Género</p>
-          <div className="flex flex-col gap-2">
+          <p style={{ fontSize: 8, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.12em', marginBottom: 10 }}>Género</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 9 }}>
             {genderRows.map((r) => (
-              <div key={r.label} className="flex items-center gap-2">
-                <span className="text-[10px] text-gray-500 w-8 flex-shrink-0">{r.label}</span>
-                <div className="flex-1 h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
-                  <div className={`h-full rounded-full ${r.color}`} style={{ width: `${r.pct * 1.7}%` }} />
+              <div key={r.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ fontSize: 10, color: '#6b7280', width: 30, flexShrink: 0 }}>{r.label}</span>
+                <div style={{ flex: 1, height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ width: `${r.pct * 1.7}%`, height: '100%', background: r.color, borderRadius: 4 }} />
                 </div>
-                <span className="text-[10px] text-gray-500 w-6 text-right">{r.pct}%</span>
+                <span style={{ fontSize: 10, color: '#6b7280', width: 26, textAlign: 'right' }}>{r.pct}%</span>
               </div>
             ))}
           </div>
         </div>
 
         {/* Col 3 — Top Partners */}
-        <div className="bg-[#111114] rounded-2xl p-5 flex flex-col gap-3 border border-white/[0.06]">
-          <p className="text-[9px] font-bold text-gray-600 uppercase tracking-widest mb-1">
-            Rendimiento — Top Partners por interacción
+        <div style={{ background: '#111114', borderRadius: 16, padding: 20, display: 'flex', flexDirection: 'column', gap: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
+          <p style={{ fontSize: 8, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
+            Top Partners por interacción
           </p>
-          <div className="flex flex-col gap-3.5">
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             {partners.map((p) => (
-              <div key={p.name} className="flex items-center gap-2.5">
-                <div className={`w-7 h-7 rounded-lg ${p.color} flex items-center justify-center flex-shrink-0`}>
-                  <span className="text-[8px] font-black text-white">{p.text}</span>
+              <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ width: 28, height: 28, borderRadius: 8, background: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <span style={{ fontSize: 7, fontWeight: 900, color: '#fff' }}>{p.text}</span>
                 </div>
-                <span className="text-xs text-gray-400 flex-1">{p.name}</span>
-                <div className="w-20 h-1.5 bg-white/[0.06] rounded-full overflow-hidden">
-                  <div className="h-full bg-red-500 rounded-full" style={{ width: `${p.pct * 3}%` }} />
+                <span style={{ fontSize: 11, color: '#9ca3af', flex: 1 }}>{p.name}</span>
+                <div style={{ width: 72, height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden' }}>
+                  <div style={{ width: `${p.pct * 3}%`, height: '100%', background: '#ef4444', borderRadius: 4 }} />
                 </div>
-                <span className="text-xs font-bold text-red-500 w-8 text-right">{p.pct}%</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: '#ef4444', width: 28, textAlign: 'right' }}>{p.pct}%</span>
               </div>
             ))}
           </div>
 
           {/* Quote */}
-          <div className="mt-auto bg-red-500/10 border border-red-500/20 rounded-xl p-4">
-            <p className="text-xs text-gray-300 leading-relaxed">
-              <span className="text-red-400 font-bold">Los datos no son el final.</span>{' '}
+          <div style={{ marginTop: 'auto', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 12, padding: '14px 16px' }}>
+            <p style={{ fontSize: 12, color: '#d1d5db', lineHeight: 1.6 }}>
+              <span style={{ color: '#f87171', fontWeight: 700 }}>Los datos no son el final.</span>{' '}
               Son el punto de partida para mejorar.
             </p>
           </div>

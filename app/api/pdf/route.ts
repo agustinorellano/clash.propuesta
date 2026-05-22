@@ -7,7 +7,7 @@ import { storeRenderConfig } from '@/lib/render-cache'
 export const runtime = 'nodejs'
 
 const A4_W = 595.28
-const VIEWPORT_W = 900
+const VIEWPORT_W = 794
 const ADMIN_ORIGIN = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
   : 'http://localhost:3002'

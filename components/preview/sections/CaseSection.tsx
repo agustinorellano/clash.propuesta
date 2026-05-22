@@ -1,67 +1,76 @@
-import { TrendingUp, Users, MapPin, Star } from 'lucide-react'
-
 export default function CaseSection() {
   const metrics = [
-    { icon: TrendingUp, value: '+340%', label: 'Aumento en visualizaciones de beneficios' },
-    { icon: Users, value: '2.800', label: 'Clientes únicos registrados en 3 meses' },
-    { icon: MapPin, value: '12', label: 'Sucursales integradas a la plataforma' },
-    { icon: Star, value: '4.8/5', label: 'Satisfacción del cliente final' },
+    { icon: '📈', value: '+340%', label: 'Aumento en visualizaciones de beneficios' },
+    { icon: '👥', value: '2.800', label: 'Clientes únicos registrados en 3 meses' },
+    { icon: '📍', value: '12',    label: 'Sucursales integradas a la plataforma' },
+    { icon: '⭐', value: '4.8/5', label: 'Satisfacción del cliente final' },
   ]
 
   return (
-    <div className="bg-gray-50 p-12">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-8">
-          <span className="text-xs font-bold text-red-600 tracking-widest uppercase">
-            Caso de éxito
-          </span>
-          <h2 className="text-3xl font-bold text-gray-900 mt-2">Barber King</h2>
-          <p className="text-gray-500 text-sm mt-1">
-            Cadena de barberías premium — Argentina
-          </p>
-        </div>
+    <div style={{ background: '#f9fafb', padding: '64px 56px' }}>
+      {/* Header */}
+      <div style={{ marginBottom: 28 }}>
+        <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.22em', textTransform: 'uppercase' }}>
+          Caso de éxito
+        </span>
+        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#111827', marginTop: 8, lineHeight: 1.15 }}>
+          Barber King
+        </h2>
+        <p style={{ color: '#6b7280', fontSize: 14, marginTop: 4 }}>
+          Cadena de barberías premium — Argentina
+        </p>
+      </div>
 
-        {/* Quote */}
-        <div className="bg-white border border-gray-200 rounded-2xl p-6 mb-8 relative">
-          <div className="text-5xl text-red-600 font-serif leading-none mb-2 select-none">"</div>
-          <p className="text-gray-700 text-base leading-relaxed mb-4">
-            Antes nuestros clientes no sabían que tenían beneficios en cada visita. Con Clash,
-            en menos de un mes triplicamos las visualizaciones y los clientes comenzaron a
-            preguntar por los beneficios proactivamente. Es una herramienta que realmente
-            cambia la relación con el cliente.
-          </p>
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-600">
-              MG
-            </div>
-            <div>
-              <div className="text-sm font-semibold text-gray-900">Marcos García</div>
-              <div className="text-xs text-gray-500">CEO, Barber King</div>
-            </div>
+      {/* Quote */}
+      <div style={{
+        background: '#fff', border: '1px solid #e5e7eb',
+        borderRadius: 16, padding: '28px 28px',
+        marginBottom: 24, position: 'relative',
+      }}>
+        <div style={{ fontSize: 48, color: '#dc2626', fontFamily: 'Georgia, serif', lineHeight: 1, marginBottom: 10, userSelect: 'none' }}>
+          "
+        </div>
+        <p style={{ color: '#374151', fontSize: 15, lineHeight: 1.7, marginBottom: 18 }}>
+          Antes nuestros clientes no sabían que tenían beneficios en cada visita. Con Clash,
+          en menos de un mes triplicamos las visualizaciones y los clientes comenzaron a
+          preguntar por los beneficios proactivamente. Es una herramienta que realmente
+          cambia la relación con el cliente.
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            width: 34, height: 34, background: '#e5e7eb', borderRadius: '50%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            fontSize: 11, fontWeight: 700, color: '#374151',
+          }}>
+            MG
+          </div>
+          <div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: '#111827' }}>Marcos García</div>
+            <div style={{ fontSize: 11, color: '#6b7280' }}>CEO, Barber King</div>
           </div>
         </div>
+      </div>
 
-        {/* Metrics */}
-        <div className="grid grid-cols-2 gap-4">
-          {metrics.map((m, i) => (
-            <div key={i} className="bg-white border border-gray-200 rounded-xl p-5">
-              <div className="flex items-center gap-2 mb-2">
-                <m.icon className="w-4 h-4 text-red-500" />
-                <span className="text-2xl font-black text-gray-900">{m.value}</span>
-              </div>
-              <p className="text-xs text-gray-500">{m.label}</p>
+      {/* Metrics 2x2 */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 18 }}>
+        {metrics.map((m, i) => (
+          <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: '18px 20px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+              <span style={{ fontSize: 18 }}>{m.icon}</span>
+              <span style={{ fontSize: 24, fontWeight: 900, color: '#111827' }}>{m.value}</span>
             </div>
-          ))}
-        </div>
+            <p style={{ fontSize: 12, color: '#6b7280' }}>{m.label}</p>
+          </div>
+        ))}
+      </div>
 
-        {/* Context */}
-        <div className="mt-6 p-4 bg-red-50 border border-red-100 rounded-xl">
-          <p className="text-xs text-gray-600 leading-relaxed">
-            <span className="font-semibold text-red-600">Implementación:</span> Barber King
-            comenzó con el plan Gestión Asistida. En 60 días migró las 12 sucursales, capacitó
-            al equipo y lanzó su primer programa de beneficios segmentado por tipo de cliente.
-          </p>
-        </div>
+      {/* Context note */}
+      <div style={{ padding: '14px 18px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12 }}>
+        <p style={{ fontSize: 12, color: '#374151', lineHeight: 1.6 }}>
+          <span style={{ fontWeight: 600, color: '#dc2626' }}>Implementación:</span>{' '}
+          Barber King comenzó con el plan Gestión Asistida. En 60 días migró las 12 sucursales,
+          capacitó al equipo y lanzó su primer programa de beneficios segmentado por tipo de cliente.
+        </p>
       </div>
     </div>
   )

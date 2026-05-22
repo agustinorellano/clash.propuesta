@@ -1,5 +1,3 @@
-import { CheckCircle2 } from 'lucide-react'
-
 export default function SolutionSection() {
   const solutions = [
     {
@@ -30,30 +28,33 @@ export default function SolutionSection() {
   ]
 
   return (
-    <div className="bg-[#0f0f11] p-12">
-      <div className="max-w-2xl mx-auto">
-        <div className="mb-10">
-          <span className="text-xs font-bold text-red-600 tracking-widest uppercase">La solución</span>
-          <h2 className="text-3xl font-bold text-white mt-2">
-            Clash — infraestructura de
-            <br />
-            beneficios digitales
-          </h2>
-        </div>
+    <div style={{ background: '#0f0f11', padding: '64px 56px' }}>
+      {/* Header */}
+      <div style={{ marginBottom: 40 }}>
+        <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.22em', textTransform: 'uppercase' }}>
+          La solución
+        </span>
+        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#fff', marginTop: 8, lineHeight: 1.15 }}>
+          Clash — infraestructura de beneficios digitales
+        </h2>
+      </div>
 
-        <div className="space-y-5">
-          {solutions.map((sol, i) => (
-            <div key={i} className="flex gap-4">
-              <div className="flex-shrink-0 mt-0.5">
-                <CheckCircle2 className="w-5 h-5 text-red-500" />
-              </div>
-              <div>
-                <h3 className="text-white font-semibold text-sm mb-1">{sol.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{sol.description}</p>
-              </div>
+      {/* Solutions list — 2 columns for PDF efficiency */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px 40px' }}>
+        {solutions.map((sol, i) => (
+          <div key={i} style={{ display: 'flex', gap: 14, alignItems: 'flex-start' }}>
+            <div style={{ flexShrink: 0, marginTop: 2 }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
+              </svg>
             </div>
-          ))}
-        </div>
+            <div>
+              <h3 style={{ color: '#fff', fontWeight: 700, fontSize: 14, marginBottom: 4 }}>{sol.title}</h3>
+              <p style={{ color: '#9ca3af', fontSize: 13, lineHeight: 1.6 }}>{sol.description}</p>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   )
