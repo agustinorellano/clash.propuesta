@@ -51,7 +51,7 @@ export const FEATURED_PLAN: Record<ScaleTier, string> = {
   s1: 'gestion',
   s2: 'gestion',
   s3: 'gestion',
-  s4: 'gestion',
+  s4: 'custom', // +100 sucursales → destacar Propuesta a medida
 }
 
 // ── Configuración estática de planes ────────────────────────────────────────
@@ -177,7 +177,7 @@ export function getComputedPlans(
       description: plan.description,
       features: plan.features,
       highlighted: plan.id === featuredId,
-      visible: true,
+      visible: plan.id !== 'free', // plan gratuito oculto por default (poco relevante para enterprise)
     }
   })
 }

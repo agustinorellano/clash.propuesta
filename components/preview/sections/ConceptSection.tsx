@@ -24,50 +24,69 @@ export default function ConceptSection() {
       padding: '72px 60px',
       display: 'flex',
       flexDirection: 'column',
+      overflow: 'hidden',
     }}>
-      {/* Badge */}
-      <div style={{ marginBottom: 40 }}>
+      {/* Label */}
+      <div style={{ marginBottom: 36 }}>
         <span style={{
-          display: 'inline-block',
-          background: '#fef2f2', border: '1px solid #fecaca',
-          borderRadius: 999, padding: '6px 16px',
-          fontSize: 11, fontWeight: 700, color: '#dc2626', letterSpacing: '0.15em', textTransform: 'uppercase',
+          fontSize: 10, fontWeight: 700, color: '#dc2626',
+          letterSpacing: '0.25em', textTransform: 'uppercase',
         }}>
           Concepto
         </span>
       </div>
 
       {/* Main heading */}
-      <div style={{ maxWidth: 640, marginBottom: 48 }}>
-        <h1 style={{ fontSize: 48, fontWeight: 900, color: '#111827', lineHeight: 1.08, marginBottom: 24, letterSpacing: '-1px' }}>
+      <div style={{ maxWidth: 620, marginBottom: 56 }}>
+        <h1 style={{
+          fontSize: 46, fontWeight: 900, color: '#0d0d0f',
+          lineHeight: 1.08, marginBottom: 24, letterSpacing: '-1px',
+        }}>
           Una solución pensada para marcas que necesitan{' '}
           <span style={{ color: '#dc2626' }}>ordenar y escalar</span>{' '}
           su comunicación de beneficios.
         </h1>
-        <p style={{ color: '#6b7280', fontSize: 16, lineHeight: 1.75 }}>
+        <p style={{ color: '#6b7280', fontSize: 15, lineHeight: 1.75 }}>
           No se trata solo de publicar promociones.
-          Se trata de tener control total sobre lo que se comunica en todos los puntos de contacto — en tiempo real.
+          Se trata de tener control total sobre lo que se comunica —
+          en todos los puntos de contacto, en tiempo real.
         </p>
       </div>
 
-      {/* Divider line */}
-      <div style={{ height: 1, background: '#fde8e4', marginBottom: 48 }} />
+      {/* Divider */}
+      <div style={{ height: 1, background: '#e8dbd8', marginBottom: 52 }} />
 
       {/* 3 pillars */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 24, flex: 1 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, flex: 1 }}>
         {pillars.map((p) => (
-          <div key={p.number} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-            <span style={{ fontSize: 11, fontWeight: 900, color: '#dc2626', letterSpacing: '0.1em' }}>{p.number}</span>
-            <div style={{ width: 32, height: 2, background: '#fecaca', borderRadius: 1 }} />
-            <h3 style={{ fontSize: 18, fontWeight: 800, color: '#111827', lineHeight: 1.25 }}>{p.title}</h3>
-            <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.7 }}>{p.body}</p>
+          <div key={p.number} style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+            <span style={{
+              fontSize: 11, fontWeight: 800, color: '#dc2626',
+              letterSpacing: '0.08em', marginBottom: 16,
+            }}>
+              {p.number}
+            </span>
+            <div style={{ width: 24, height: 2, background: '#dc2626', borderRadius: 1, marginBottom: 20 }} />
+            <h3 style={{
+              fontSize: 16, fontWeight: 800, color: '#0d0d0f',
+              lineHeight: 1.25, marginBottom: 14,
+            }}>
+              {p.title}
+            </h3>
+            <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.75 }}>{p.body}</p>
           </div>
         ))}
       </div>
 
-      {/* Quote block at bottom */}
-      <div style={{ marginTop: 48, padding: '28px 32px', background: '#fff', border: '1px solid #fde8e4', borderLeft: '4px solid #dc2626', borderRadius: 12 }}>
-        <p style={{ fontSize: 16, fontWeight: 700, color: '#111827', lineHeight: 1.55 }}>
+      {/* Quote block */}
+      <div style={{
+        marginTop: 52,
+        padding: '24px 28px',
+        background: '#fff',
+        borderLeft: '3px solid #dc2626',
+        borderRadius: '0 8px 8px 0',
+      }}>
+        <p style={{ fontSize: 15, fontWeight: 600, color: '#0d0d0f', lineHeight: 1.6 }}>
           "El beneficio que nadie comunica, es un beneficio perdido."
         </p>
         <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 8 }}>— Premisa de diseño de Clash</p>

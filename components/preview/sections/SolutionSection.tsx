@@ -22,62 +22,55 @@ export default function SolutionSection() {
     },
   ]
 
-  const stats = [
-    { value: '300+', label: 'Marcas activas' },
-    { value: '10K+', label: 'Sucursales' },
-    { value: '2M+',  label: 'Interacciones / mes' },
-    { value: '<2s',  label: 'Tiempo de acceso' },
-  ]
-
   return (
     <div style={{
-      background: '#0f0f11',
+      background: '#0d0d0f',
       height: 1123,
       padding: '72px 60px',
       display: 'flex',
       flexDirection: 'column',
-      position: 'relative',
       overflow: 'hidden',
     }}>
-      {/* Background glow */}
-      <div style={{ position: 'absolute', top: -100, right: -100, width: 400, height: 400, borderRadius: '50%', background: 'radial-gradient(circle, rgba(220,38,38,0.07) 0%, transparent 65%)', pointerEvents: 'none' }} />
-
       {/* Header */}
-      <div style={{ marginBottom: 56, position: 'relative', zIndex: 1 }}>
-        <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.28em', textTransform: 'uppercase' }}>
+      <div style={{ marginBottom: 60 }}>
+        <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.25em', textTransform: 'uppercase' }}>
           La solución
         </span>
-        <h2 style={{ fontSize: 44, fontWeight: 900, color: '#fff', marginTop: 16, lineHeight: 1.1, letterSpacing: '-1px', maxWidth: 560 }}>
-          Clash — infraestructura de beneficios digitales
+        <h2 style={{ fontSize: 44, fontWeight: 900, color: '#f1f1f1', marginTop: 16, lineHeight: 1.08, letterSpacing: '-1px' }}>
+          Clash permite
         </h2>
-        <p style={{ color: '#6b7280', fontSize: 15, marginTop: 16, maxWidth: 480, lineHeight: 1.65 }}>
-          Una plataforma construida para marcas que tienen sucursales, redes de franquicias o múltiples puntos de venta.
+        <p style={{ color: '#5a6374', fontSize: 14, marginTop: 16, maxWidth: 460, lineHeight: 1.75 }}>
+          Una plataforma construida para marcas con sucursales,
+          redes de franquicias o múltiples puntos de venta.
         </p>
       </div>
 
-      {/* Solutions list */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px 56px', flex: 1, position: 'relative', zIndex: 1 }}>
+      {/* Solutions — numbered editorial list */}
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }} />
         {solutions.map((sol, i) => (
-          <div key={i} style={{ display: 'flex', gap: 16, alignItems: 'flex-start', padding: '20px 0', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
-            <div style={{ flexShrink: 0, width: 32, height: 32, borderRadius: 8, background: 'rgba(220,38,38,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: 2 }}>
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2.5">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
+          <div key={i} style={{
+            display: 'flex',
+            gap: 32,
+            alignItems: 'flex-start',
+            padding: '22px 0',
+            borderBottom: '1px solid rgba(255,255,255,0.07)',
+          }}>
+            <span style={{
+              fontSize: 11, fontWeight: 700, color: '#2a2f38',
+              width: 24, flexShrink: 0, paddingTop: 2,
+              fontVariantNumeric: 'tabular-nums',
+            }}>
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <div style={{ flex: 1 }}>
+              <h3 style={{ color: '#f1f1f1', fontWeight: 700, fontSize: 15, marginBottom: 6 }}>
+                {sol.title}
+              </h3>
+              <p style={{ color: '#5a6374', fontSize: 13, lineHeight: 1.7 }}>
+                {sol.description}
+              </p>
             </div>
-            <div>
-              <h3 style={{ color: '#f9fafb', fontWeight: 700, fontSize: 15, marginBottom: 8 }}>{sol.title}</h3>
-              <p style={{ color: '#6b7280', fontSize: 13, lineHeight: 1.7 }}>{sol.description}</p>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Stats bar */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', marginTop: 48, border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, overflow: 'hidden', position: 'relative', zIndex: 1 }}>
-        {stats.map((s, i) => (
-          <div key={i} style={{ padding: '20px 24px', background: 'rgba(255,255,255,0.02)', borderRight: i < 3 ? '1px solid rgba(255,255,255,0.07)' : 'none' }}>
-            <p style={{ fontSize: 24, fontWeight: 900, color: '#ef4444', lineHeight: 1 }}>{s.value}</p>
-            <p style={{ fontSize: 11, color: '#4b5563', marginTop: 6 }}>{s.label}</p>
           </div>
         ))}
       </div>
