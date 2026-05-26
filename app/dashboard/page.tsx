@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useRef } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import { defaultConfig, ProposalConfig, type ProposalType } from '@/lib/types'
 import { getComputedPlans, getScaleTier, SCALE_LABELS, type Billing } from '@/lib/plansConfig'
 import Sidebar from '@/components/ui/Sidebar'
@@ -69,6 +69,32 @@ export default function DashboardPage() {
     { id: 'sections', label: 'Secciones' },
     { id: 'plans',    label: 'Planes' },
   ]
+
+  // ── Section scroll tracker ─────────────────────────────────────────────────
+  const scrollContainerRef = useRef<HTMLDivElement>(null)
+  const [activeSection, setActiveSection] = useState<string | null>(null)
+
+  useEffect(() => {
+    const container = scrollContainerRef.current
+    if (!container) return
+
+    const handleScroll = () => {
+      const sections = container.querySelectorAll<HTMLElement>('[data-export-section]')
+      let current: string | null = null
+      const mid = container.getBoundingClientRect().top + container.clientHeight * 0.35
+
+      sections.forEach((el) => {
+        const rect = el.getBoundingClientRect()
+        if (rect.top <= mid) current = el.id.replace('preview-section-', '')
+      })
+
+      setActiveSection(current)
+    }
+
+    container.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    return () => container.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const currentTier = getScaleTier(config.brand.branches)
   const scaleLabel  = SCALE_LABELS[currentTier]
@@ -200,7 +226,23 @@ export default function DashboardPage() {
         </div>
 
         {/* Preview canvas */}
-        <div className="flex-1 overflow-auto p-8">
+        <div ref={scrollContainerRef} className="flex-1 overflow-auto p-8 relative">
+          {/* Section indicator */}
+          {activeSection && (() => {
+            const enabledSections = config.sections.filter(s => s.enabled).sort((a, b) => a.order - b.order)
+            const idx = enabledSections.findIndex(s => s.id === activeSection)
+            const section = enabledSections[idx]
+            if (!section) return null
+            return (
+              <div className="sticky top-4 z-10 flex justify-end pointer-events-none mb-[-36px]">
+                <div className="flex items-center gap-2 bg-gray-900/90 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-lg border border-white/10">
+                  <span className="text-gray-400 tabular-nums">{idx + 1}/{enabledSections.length}</span>
+                  <span className="w-px h-3 bg-white/20" />
+                  <span>{section.label}</span>
+                </div>
+              </div>
+            )
+          })()}
           <div className="max-w-4xl mx-auto">
             <ProposalPreview config={config} />
           </div>
