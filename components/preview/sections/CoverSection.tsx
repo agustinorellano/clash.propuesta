@@ -70,19 +70,6 @@ export default function CoverSection({ brand }: CoverSectionProps) {
           <p style={{ color: '#4b5563', fontSize: 13 }}>{brand.branches} sucursales</p>
         )}
 
-        {/* Key metrics strip */}
-        <div style={{ display: 'flex', gap: 0, marginTop: 56, border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, overflow: 'hidden' }}>
-          {[
-            { value: '300+', label: 'marcas activas' },
-            { value: '10K+', label: 'sucursales' },
-            { value: '2M+',  label: 'interacciones / mes' },
-          ].map((stat, i) => (
-            <div key={i} style={{ padding: '18px 32px', background: 'rgba(255,255,255,0.03)', borderRight: i < 2 ? '1px solid rgba(255,255,255,0.07)' : 'none', textAlign: 'center' }}>
-              <p style={{ fontSize: 22, fontWeight: 900, color: '#fff', lineHeight: 1 }}>{stat.value}</p>
-              <p style={{ fontSize: 10, color: '#4b5563', marginTop: 5, letterSpacing: '0.05em' }}>{stat.label}</p>
-            </div>
-          ))}
-        </div>
       </div>
 
       {/* Bottom footer */}
