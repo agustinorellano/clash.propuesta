@@ -1,15 +1,13 @@
-export interface PlanData {
-  id: string
-  name: string
-  price: string
-  priceNote: string
-  description: string
-  features: string[]
-  highlighted: boolean
-  visible: boolean
-}
+import type { Billing, ComputedPlanData } from './plansConfig'
+import { getComputedPlans } from './plansConfig'
+
+// PlanData es idéntico a ComputedPlanData — re-exportamos como alias
+export type PlanData = ComputedPlanData
+
+export type { Billing }
 
 export interface ProposalConfig {
+  billing: Billing
   brand: {
     name: string
     logoUrl: string
@@ -29,6 +27,7 @@ export interface ProposalConfig {
 }
 
 export const defaultConfig: ProposalConfig = {
+  billing: 'monthly',
   brand: { name: '', logoUrl: '', logoBase64: '', observations: '', branches: 1, operationType: '', needs: '' },
   sections: [
     { id: 'cover',    label: 'Portada',          enabled: true,  order: 0 },
@@ -40,69 +39,6 @@ export const defaultConfig: ProposalConfig = {
     { id: 'plans',    label: 'Planes',            enabled: true,  order: 6 },
     { id: 'case',     label: 'Caso Barber King',  enabled: false, order: 7 },
   ],
-  plans: [
-    {
-      id: 'free',
-      name: 'Gratuito',
-      price: 'Gratis',
-      priceNote: 'Sin costo de activación',
-      description: 'Para comenzar a digitalizar la comunicación de beneficios sin inversión inicial.',
-      features: [
-        'Panel de gestión básico — inicio para carga de promociones',
-        'Dashboard: Publicaciones, Activos por vencer, Inactivos, Sucursales y QR de sucursales',
-        'Distribución por link y QR genérico (sin diseño personalizado)',
-        'Soporte por email',
-      ],
-      highlighted: false,
-      visible: true,
-    },
-    {
-      id: 'managed',
-      name: 'Promos gestionadas',
-      price: 'Consultar',
-      priceNote: 'Personalizado según operación',
-      description: 'Para marcas que quieren operar sin fricción con el respaldo de nuestro equipo.',
-      features: [
-        'Todo lo incluido en el plan Gratuito',
-        'Onboarding personalizado',
-        'Cargamos y mantenemos tus promociones por vos.',
-        'Analytics avanzado — Mi audiencia + todas las funcionalidades del dashboard',
-        'Soporte prioritario (WhatsApp y email)',
-      ],
-      highlighted: true,
-      visible: true,
-    },
-    {
-      id: 'scale',
-      name: 'Scale',
-      price: 'Personalizado',
-      priceNote: 'Según volumen y operación',
-      description: 'Para grandes marcas con operaciones complejas y múltiples canales.',
-      features: [
-        'Todo lo incluido en Promos gestionadas',
-        'Integración con sistemas propios — widget para web, pantallas y tótems digitales',
-        'Account Manager dedicado — trabajo operativo conjunto, seguimiento estratégico y coordinación de comunicación',
-        'Reportes personalizados trimestrales — análisis, recomendaciones y sugerencias operativas',
-        'Kit comercial — QR personalizado para la marca',
-        'Próximamente: envío automatizado de emails a managers de sucursales',
-      ],
-      highlighted: false,
-      visible: true,
-    },
-    {
-      id: 'custom',
-      name: 'Propuesta a medida',
-      price: 'A medida',
-      priceNote: 'Propuesta completamente personalizada',
-      description: 'Diseñado desde cero para marcas con necesidades únicas y operaciones de alta escala.',
-      features: [
-        'Todo lo incluido en Scale',
-        'Materiales físicos incluidos — coordinación de proveedores, producción y entrega en sucursales',
-        'Vistas personalizadas de widget (sin marca de agua)',
-        'Página web personalizada de promociones para tu marca',
-      ],
-      highlighted: false,
-      visible: true,
-    },
-  ],
+  // Planes calculados para 1 sucursal, facturación mensual
+  plans: getComputedPlans(1, 'monthly'),
 }

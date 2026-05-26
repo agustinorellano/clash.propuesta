@@ -2,12 +2,13 @@
 
 import { useState, useCallback } from 'react'
 import { defaultConfig, ProposalConfig } from '@/lib/types'
+import { getComputedPlans, getScaleTier, SCALE_LABELS, type Billing } from '@/lib/plansConfig'
 import Sidebar from '@/components/ui/Sidebar'
 import BrandEditor from '@/components/editor/BrandEditor'
 import BlockSelector from '@/components/editor/BlockSelector'
 import PlanEditor from '@/components/editor/PlanEditor'
 import ProposalPreview from '@/components/preview/ProposalPreview'
-import { FileDown, Loader2, AlertCircle } from 'lucide-react'
+import { FileDown, Loader2, AlertCircle, CalendarDays, CalendarRange } from 'lucide-react'
 
 type Tab = 'brand' | 'sections' | 'plans'
 
@@ -17,16 +18,49 @@ export default function DashboardPage() {
   const [exporting, setExporting] = useState(false)
   const [exportError, setExportError] = useState<string | null>(null)
 
-  const updateConfig = useCallback((partial: Partial<ProposalConfig>) => {
-    setConfig((prev) => ({ ...prev, ...partial }))
-  }, [])
+  // ── Sync plan prices when branches or billing change ──────────────────────
+  const syncPlanPrices = useCallback(
+    (branches: number, billing: Billing, prevPlans: ProposalConfig['plans']) => {
+      const computed = getComputedPlans(branches, billing)
+      return prevPlans.map((plan) => {
+        const c = computed.find((p) => p.id === plan.id)
+        if (!c) return plan
+        // Update price / priceNote / highlighted; preserve user-edited features, name, description, visible
+        return { ...plan, price: c.price, priceNote: c.priceNote, highlighted: c.highlighted }
+      })
+    },
+    [],
+  )
 
   const updateBrand = useCallback(
     (brand: Partial<ProposalConfig['brand']>) => {
-      setConfig((prev) => ({ ...prev, brand: { ...prev.brand, ...brand } }))
+      setConfig((prev) => {
+        const newBrand = { ...prev.brand, ...brand }
+        // If branches changed → recompute plan prices
+        const branchesChanged = 'branches' in brand && brand.branches !== prev.brand.branches
+        const newPlans = branchesChanged
+          ? syncPlanPrices(newBrand.branches, prev.billing, prev.plans)
+          : prev.plans
+        return { ...prev, brand: newBrand, plans: newPlans }
+      })
     },
-    []
+    [syncPlanPrices],
   )
+
+  const setBilling = useCallback(
+    (billing: Billing) => {
+      setConfig((prev) => ({
+        ...prev,
+        billing,
+        plans: syncPlanPrices(prev.brand.branches, billing, prev.plans),
+      }))
+    },
+    [syncPlanPrices],
+  )
+
+  const updateConfig = useCallback((partial: Partial<ProposalConfig>) => {
+    setConfig((prev) => ({ ...prev, ...partial }))
+  }, [])
 
   const handleExportPDF = async () => {
     setExporting(true)
@@ -46,7 +80,8 @@ export default function DashboardPage() {
       const blob = await res.blob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
-      const slug = (config.brand.name || 'cliente').toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+      const slug = (config.brand.name || 'cliente')
+        .toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
       a.href = url
       a.download = `propuesta-clash-${slug}.pdf`
       document.body.appendChild(a)
@@ -66,6 +101,9 @@ export default function DashboardPage() {
     { id: 'plans', label: 'Planes' },
   ]
 
+  const currentTier = getScaleTier(config.brand.branches)
+  const scaleLabel = SCALE_LABELS[currentTier]
+
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
       {/* Left Panel — Editor */}
@@ -74,6 +112,44 @@ export default function DashboardPage() {
           await fetch('/api/auth/logout', { method: 'POST' })
           window.location.href = '/login'
         }} />
+
+        {/* Billing toggle */}
+        <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+          <p className="text-xs text-gray-500 mb-2 font-medium">Facturación</p>
+          <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-white">
+            <button
+              onClick={() => setBilling('monthly')}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold transition-colors ${
+                config.billing === 'monthly'
+                  ? 'bg-red-600 text-white'
+                  : 'text-gray-500 hover:bg-gray-50'
+              }`}
+            >
+              <CalendarDays className="w-3 h-3" />
+              Mensual
+            </button>
+            <button
+              onClick={() => setBilling('annual')}
+              className={`flex-1 flex items-center justify-center gap-1.5 py-1.5 text-xs font-semibold transition-colors ${
+                config.billing === 'annual'
+                  ? 'bg-red-600 text-white'
+                  : 'text-gray-500 hover:bg-gray-50'
+              }`}
+            >
+              <CalendarRange className="w-3 h-3" />
+              Anual
+              <span className={`text-xs font-bold ${config.billing === 'annual' ? 'text-yellow-300' : 'text-green-600'}`}>
+                −30%
+              </span>
+            </button>
+          </div>
+          {config.brand.branches > 0 && (
+            <p className="text-xs text-gray-400 mt-1.5">
+              Escala activa:{' '}
+              <span className="font-semibold text-gray-600">{scaleLabel}</span>
+            </p>
+          )}
+        </div>
 
         {/* Tab navigation */}
         <div className="flex border-b border-gray-200 px-2 pt-2">
@@ -101,7 +177,12 @@ export default function DashboardPage() {
             <BlockSelector sections={config.sections} onChange={(sections) => updateConfig({ sections })} />
           )}
           {activeTab === 'plans' && (
-            <PlanEditor plans={config.plans} onChange={(plans) => updateConfig({ plans })} />
+            <PlanEditor
+              plans={config.plans}
+              billing={config.billing}
+              branches={config.brand.branches}
+              onChange={(plans) => updateConfig({ plans })}
+            />
           )}
         </div>
       </div>

@@ -2,10 +2,13 @@
 
 import { useState } from 'react'
 import { PlanData } from '@/lib/types'
-import { ChevronDown, ChevronUp, Plus, X, Star, Eye, EyeOff } from 'lucide-react'
+import { getScaleTier, SCALE_LABELS, type Billing } from '@/lib/plansConfig'
+import { ChevronDown, ChevronUp, Plus, X, Star, Eye, EyeOff, Lock } from 'lucide-react'
 
 interface PlanEditorProps {
   plans: PlanData[]
+  billing: Billing
+  branches: number
   onChange: (plans: PlanData[]) => void
 }
 
@@ -51,7 +54,7 @@ function PlanCard({
           className="flex-1 flex items-center gap-2 text-left"
         >
           <span className="text-sm font-semibold text-gray-900 flex-1">{plan.name}</span>
-          <span className="text-xs text-gray-500">{plan.price}</span>
+          <span className="text-xs font-semibold text-gray-700">{plan.price}</span>
           {expanded ? (
             <ChevronUp className="w-4 h-4 text-gray-400" />
           ) : (
@@ -85,29 +88,23 @@ function PlanCard({
       {/* Expanded editor */}
       {expanded && (
         <div className="p-3 pt-0 border-t border-gray-100 bg-gray-50 space-y-3">
-          <div className="grid grid-cols-2 gap-2">
-            <div>
-              <label className="block text-xs text-gray-500 mb-1">Precio</label>
-              <input
-                type="text"
-                value={plan.price}
-                onChange={(e) => onUpdate({ ...plan, price: e.target.value })}
-                placeholder="Gratis / $X / Consultar"
-                className={inputClass}
-              />
+
+          {/* Precio — auto-calculado, solo lectura */}
+          <div className="rounded-lg bg-white border border-gray-200 p-2.5">
+            <div className="flex items-center gap-1.5 mb-1">
+              <Lock className="w-3 h-3 text-gray-400" />
+              <span className="text-xs text-gray-400 font-medium">Precio (auto-calculado)</span>
             </div>
-            <div>
-              <label className="block text-xs text-gray-500 mb-1">Nota precio</label>
-              <input
-                type="text"
-                value={plan.priceNote}
-                onChange={(e) => onUpdate({ ...plan, priceNote: e.target.value })}
-                placeholder="Por mes / Sin activación"
-                className={inputClass}
-              />
+            <div className="flex items-baseline gap-2">
+              <span className="text-sm font-bold text-gray-900">{plan.price}</span>
+              <span className="text-xs text-gray-400 leading-tight">{plan.priceNote}</span>
             </div>
+            <p className="text-xs text-gray-400 mt-1">
+              Se actualiza automáticamente según sucursales y facturación.
+            </p>
           </div>
 
+          {/* Descripción */}
           <div>
             <label className="block text-xs text-gray-500 mb-1">Descripción</label>
             <textarea
@@ -118,6 +115,7 @@ function PlanCard({
             />
           </div>
 
+          {/* Features */}
           <div>
             <label className="block text-xs text-gray-500 mb-1.5">
               Features ({plan.features.length})
@@ -164,10 +162,13 @@ function PlanCard({
   )
 }
 
-export default function PlanEditor({ plans, onChange }: PlanEditorProps) {
+export default function PlanEditor({ plans, billing, branches, onChange }: PlanEditorProps) {
   function updatePlan(updated: PlanData) {
     onChange(plans.map((p) => (p.id === updated.id ? updated : p)))
   }
+
+  const tier = getScaleTier(branches)
+  const scaleLabel = SCALE_LABELS[tier]
 
   return (
     <div className="p-4 space-y-3">
@@ -175,7 +176,9 @@ export default function PlanEditor({ plans, onChange }: PlanEditorProps) {
         <h2 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">
           Planes comerciales
         </h2>
-        <p className="text-xs text-gray-400 mt-0.5">Edita precios y features</p>
+        <p className="text-xs text-gray-400 mt-0.5">
+          {scaleLabel} · {billing === 'monthly' ? 'Mensual' : 'Anual −30%'}
+        </p>
       </div>
 
       {plans.map((plan) => (
