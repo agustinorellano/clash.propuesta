@@ -51,8 +51,8 @@ export default function PlansSection({ plans }: PlansSectionProps) {
         </p>
       </div>
 
-      {/* Plan cards — alignItems start evita que las cards se estiren */}
-      <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 14, alignItems: 'start' }}>
+      {/* Plan cards — stretch para que todas tengan el mismo alto */}
+      <div style={{ display: 'grid', gridTemplateColumns: cols, gap: 14, alignItems: 'stretch' }}>
         {visiblePlans.map((plan) => {
           const accent = getAccent(plan.id)
           const isAnnual = plan.priceNote?.includes('anual')
@@ -141,7 +141,7 @@ export default function PlansSection({ plans }: PlansSectionProps) {
               </div>
 
               {/* Features */}
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: 7 }}>
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: 7, flex: 1 }}>
                 {plan.features.map((feature, i) => {
                   const isSpecial = feature.startsWith('✦') || feature.startsWith('★')
                   const label = feature.replace(/^[✦★]\s*/, '')
