@@ -1,77 +1,209 @@
+// Caso real Burger King Argentina — extraído directamente de Clash Conecta
+
 export default function CaseSection() {
-  const metrics = [
-    { icon: '📈', value: '+340%', label: 'Aumento en visualizaciones de beneficios' },
-    { icon: '👥', value: '2.800', label: 'Clientes únicos registrados en 3 meses' },
-    { icon: '📍', value: '12',    label: 'Sucursales integradas a la plataforma' },
-    { icon: '⭐', value: '4.8/5', label: 'Satisfacción del cliente final' },
+  const stats = [
+    { value: '120+', label: 'locales activos' },
+    { value: '4',    label: 'formatos físicos' },
+    { value: '100%', label: 'on-brand' },
   ]
 
+  const materials = [
+    { name: 'QR personalizado',    sub: 'Identidad BK × Clash' },
+    { name: 'Cartel de mostrador', sub: 'Soporte acrílico'      },
+    { name: 'Sticker de mesa',     sub: 'Autoadhesivo circular' },
+    { name: 'Póster enmarcado',    sub: 'Salón y punto de venta'},
+  ]
+
+  // BK brand colors
+  const BK_ORANGE = '#D62300'
+  const BK_AMBER  = '#FF8C00'
+
   return (
-    <div style={{ background: '#f9fafb', padding: '64px 56px' }}>
-      {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.22em', textTransform: 'uppercase' }}>
-          Caso de éxito
+    <div style={{ background: '#0f0f11', padding: '56px 48px' }}>
+
+      {/* ── Badge ── */}
+      <div style={{ marginBottom: 24 }}>
+        <span style={{
+          display: 'inline-flex', alignItems: 'center', gap: 6,
+          background: 'rgba(214,35,0,0.15)', color: BK_ORANGE,
+          fontSize: 10, fontWeight: 700,
+          letterSpacing: '0.18em', textTransform: 'uppercase',
+          padding: '5px 12px', borderRadius: 999,
+          border: `1px solid rgba(214,35,0,0.25)`,
+        }}>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+            style={{ width: 11, height: 11 }}>
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Caso Real
         </span>
-        <h2 style={{ fontSize: 32, fontWeight: 800, color: '#111827', marginTop: 8, lineHeight: 1.15 }}>
-          Barber King
-        </h2>
-        <p style={{ color: '#6b7280', fontSize: 14, marginTop: 4 }}>
-          Cadena de barberías premium — Argentina
-        </p>
       </div>
 
-      {/* Quote */}
-      <div style={{
-        background: '#fff', border: '1px solid #e5e7eb',
-        borderRadius: 16, padding: '28px 28px',
-        marginBottom: 24, position: 'relative',
-      }}>
-        <div style={{ fontSize: 48, color: '#dc2626', fontFamily: 'Georgia, serif', lineHeight: 1, marginBottom: 10, userSelect: 'none' }}>
-          "
-        </div>
-        <p style={{ color: '#374151', fontSize: 15, lineHeight: 1.7, marginBottom: 18 }}>
-          Antes nuestros clientes no sabían que tenían beneficios en cada visita. Con Clash,
-          en menos de un mes triplicamos las visualizaciones y los clientes comenzaron a
-          preguntar por los beneficios proactivamente. Es una herramienta que realmente
-          cambia la relación con el cliente.
-        </p>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <div style={{
-            width: 34, height: 34, background: '#e5e7eb', borderRadius: '50%',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 11, fontWeight: 700, color: '#374151',
-          }}>
-            MG
-          </div>
-          <div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#111827' }}>Marcos García</div>
-            <div style={{ fontSize: 11, color: '#6b7280' }}>CEO, Barber King</div>
-          </div>
-        </div>
-      </div>
-
-      {/* Metrics 2x2 */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 18 }}>
-        {metrics.map((m, i) => (
-          <div key={i} style={{ background: '#fff', border: '1px solid #e5e7eb', borderRadius: 12, padding: '18px 20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
-              <span style={{ fontSize: 18 }}>{m.icon}</span>
-              <span style={{ fontSize: 24, fontWeight: 900, color: '#111827' }}>{m.value}</span>
+      {/* ── Header row: title + stats ── */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 24, marginBottom: 28, flexWrap: 'wrap' }}>
+        <div style={{ flex: 1, minWidth: 220 }}>
+          {/* BK logo placeholder + title */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/assets/brands/bk-logo.png"
+              alt="Burger King"
+              style={{ height: 36, width: 'auto', objectFit: 'contain' }}
+            />
+            <div>
+              <h2 style={{ fontSize: 22, fontWeight: 800, color: '#fff', lineHeight: 1.2, margin: 0 }}>
+                Burger King Argentina
+              </h2>
+              <p style={{ color: '#6b7280', fontSize: 12, marginTop: 3 }}>
+                Cadena de fast food — +120 locales en Argentina
+              </p>
             </div>
-            <p style={{ fontSize: 12, color: '#6b7280' }}>{m.label}</p>
           </div>
-        ))}
+          <p style={{ color: '#9ca3af', fontSize: 13, lineHeight: 1.65, maxWidth: 440 }}>
+            Implementación personalizada de materiales físicos de comunicación de beneficios
+            para más de 120 locales en todo el país.
+          </p>
+        </div>
+
+        {/* Stats strip */}
+        <div style={{ display: 'flex', gap: 16, flexShrink: 0 }}>
+          {stats.map((s, i) => (
+            <div key={i} style={{
+              textAlign: 'center',
+              background: 'rgba(255,255,255,0.04)',
+              border: '1px solid rgba(255,255,255,0.08)',
+              borderRadius: 12, padding: '14px 18px', minWidth: 70,
+            }}>
+              <div style={{ fontSize: 22, fontWeight: 900, color: BK_ORANGE }}>{s.value}</div>
+              <div style={{ fontSize: 10, color: '#6b7280', marginTop: 3 }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Context note */}
-      <div style={{ padding: '14px 18px', background: '#fef2f2', border: '1px solid #fecaca', borderRadius: 12 }}>
-        <p style={{ fontSize: 12, color: '#374151', lineHeight: 1.6 }}>
-          <span style={{ fontWeight: 600, color: '#dc2626' }}>Implementación:</span>{' '}
-          Barber King comenzó con el plan Gestión Asistida. En 60 días migró las 12 sucursales,
-          capacitó al equipo y lanzó su primer programa de beneficios segmentado por tipo de cliente.
-        </p>
+      {/* ── Context + Solution cards ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 24 }}>
+        {/* Context */}
+        <div style={{
+          background: 'rgba(255,255,255,0.03)',
+          border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: 14, padding: '20px 22px',
+        }}>
+          <div style={{
+            display: 'inline-block',
+            fontSize: 10, fontWeight: 700,
+            color: '#6b7280', letterSpacing: '0.12em', textTransform: 'uppercase',
+            marginBottom: 10,
+          }}>
+            El contexto
+          </div>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#f3f4f6', marginBottom: 8 }}>
+            Escala nacional, identidad local
+          </h3>
+          <p style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.65 }}>
+            BK Argentina opera más de 120 locales con la necesidad de mantener coherencia visual
+            y comunicar beneficios específicos por sucursal de forma ágil y autogestionable.
+          </p>
+        </div>
+
+        {/* Solution */}
+        <div style={{
+          background: 'rgba(214,35,0,0.06)',
+          border: `1px solid rgba(214,35,0,0.2)`,
+          borderRadius: 14, padding: '20px 22px',
+        }}>
+          <div style={{
+            display: 'inline-block',
+            fontSize: 10, fontWeight: 700,
+            color: BK_ORANGE, letterSpacing: '0.12em', textTransform: 'uppercase',
+            marginBottom: 10,
+          }}>
+            Solución implementada
+          </div>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#f3f4f6', marginBottom: 10 }}>
+            Materiales físicos BK × Clash
+          </h3>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            {materials.map((m, i) => (
+              <li key={i} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke={BK_ORANGE} strokeWidth="2.5"
+                  style={{ width: 13, height: 13, flexShrink: 0 }}>
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span style={{ fontSize: 12, color: '#d1d5db' }}>
+                  <strong style={{ color: '#f3f4f6', fontWeight: 600 }}>{m.name}</strong>
+                  {' — '}{m.sub}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
+
+      {/* ── QR + Physical materials showcase ── */}
+      <div style={{
+        background: 'rgba(255,255,255,0.02)',
+        border: '1px solid rgba(255,255,255,0.07)',
+        borderRadius: 16, padding: '24px',
+        display: 'flex', alignItems: 'center', gap: 28,
+      }}>
+        {/* QR visual */}
+        <div style={{ flexShrink: 0, textAlign: 'center' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/qr-bk-sticker.png"
+            alt="QR Burger King × Clash"
+            style={{ width: 110, height: 'auto', objectFit: 'contain', borderRadius: 10 }}
+          />
+          <div style={{ fontSize: 10, color: '#6b7280', marginTop: 8, fontWeight: 600, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            QR personalizado
+          </div>
+        </div>
+
+        {/* Divider */}
+        <div style={{ width: 1, background: 'rgba(255,255,255,0.08)', alignSelf: 'stretch', flexShrink: 0 }} />
+
+        {/* Right: headline + material cards */}
+        <div style={{ flex: 1 }}>
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: 5,
+            background: 'rgba(214,35,0,0.12)', color: BK_ORANGE,
+            fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', textTransform: 'uppercase',
+            padding: '3px 10px', borderRadius: 999, marginBottom: 10,
+          }}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+              style={{ width: 10, height: 10 }}>
+              <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+              <path d="M14 14h.01M18 14h.01M14 18h.01M18 18h.01"/>
+            </svg>
+            Implementación física
+          </div>
+          <h3 style={{ fontSize: 14, fontWeight: 700, color: '#f3f4f6', marginBottom: 6 }}>
+            El mismo material, tres aplicaciones reales
+          </h3>
+          <p style={{ fontSize: 12, color: '#9ca3af', marginBottom: 14, lineHeight: 1.55 }}>
+            Diseño "Tus promos acá" aplicado en cada punto de contacto dentro del local.
+          </p>
+          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+            {['Cartel de mostrador', 'Sticker de mesa', 'Póster enmarcado'].map((label, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: 6,
+                background: 'rgba(255,255,255,0.04)',
+                border: '1px solid rgba(255,255,255,0.08)',
+                borderRadius: 8, padding: '6px 12px',
+              }}>
+                <svg viewBox="0 0 24 24" fill="none" stroke={BK_AMBER} strokeWidth="2.5"
+                  style={{ width: 11, height: 11, flexShrink: 0 }}>
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                <span style={{ fontSize: 11, color: '#d1d5db', fontWeight: 500 }}>{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
     </div>
   )
 }
