@@ -109,22 +109,29 @@ function MallPlansSection() {
           alignSelf: 'stretch', flexShrink: 0,
         }} />
 
-        {/* Derecha — features en 2 columnas */}
+        {/* Derecha — features verticales en bloques */}
         <div style={{
           flex: 1,
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '16px 28px',
-          alignContent: 'start',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 8,
         }}>
           {MALL_FEATURES.map((feature, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+            <div key={i} style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              background: '#f9fafb',
+              border: '1px solid #f0f0f0',
+              borderRadius: 8,
+              padding: '10px 14px',
+            }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
                 stroke="#9ca3af" strokeWidth="2.5"
-                style={{ flexShrink: 0, marginTop: 2 }}>
+                style={{ flexShrink: 0 }}>
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span style={{ fontSize: 13, color: '#374151', lineHeight: 1.5 }}>
+              <span style={{ fontSize: 12, color: '#374151', lineHeight: 1.4 }}>
                 {feature}
               </span>
             </div>
