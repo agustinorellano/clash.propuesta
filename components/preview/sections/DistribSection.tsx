@@ -146,16 +146,6 @@ export default function DistribSection() {
                     <div style={{ color: '#fff', fontSize: 15, fontWeight: 700 }}>{item.title}</div>
                     <div style={{ color: 'rgba(255,255,255,0.4)', fontSize: 12, marginTop: 2 }}>{item.sub}</div>
                   </div>
-                  {/* Chevron — apuntando arriba si está abierto (primero), abajo si cerrado */}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                    style={{
-                      width: 18, height: 18,
-                      color: i === 0 ? '#dc2626' : 'rgba(255,255,255,0.3)',
-                      flexShrink: 0,
-                      transform: i === 0 ? 'rotate(180deg)' : 'none',
-                    }}>
-                    <path d="M6 9l6 6 6-6"/>
-                  </svg>
                 </div>
                 {/* Body — expandido para PDF */}
                 <div style={{
