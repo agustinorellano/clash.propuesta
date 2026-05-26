@@ -8,15 +8,16 @@ import BrandEditor from '@/components/editor/BrandEditor'
 import BlockSelector from '@/components/editor/BlockSelector'
 import PlanEditor from '@/components/editor/PlanEditor'
 import ProposalPreview from '@/components/preview/ProposalPreview'
-import { FileDown, Loader2, AlertCircle, CalendarDays, CalendarRange } from 'lucide-react'
+import ExportModal from '@/components/ExportModal'
+import type { ExportFormat } from '@/app/api/pdf/route'
+import { FileDown, CalendarDays, CalendarRange } from 'lucide-react'
 
 type Tab = 'brand' | 'sections' | 'plans'
 
 export default function DashboardPage() {
   const [config, setConfig] = useState<ProposalConfig>(defaultConfig)
   const [activeTab, setActiveTab] = useState<Tab>('brand')
-  const [exporting, setExporting] = useState(false)
-  const [exportError, setExportError] = useState<string | null>(null)
+  const [showExportModal, setShowExportModal] = useState(false)
 
   // ── Sync plan prices when branches or billing change ──────────────────────
   const syncPlanPrices = useCallback(
@@ -25,7 +26,6 @@ export default function DashboardPage() {
       return prevPlans.map((plan) => {
         const c = computed.find((p) => p.id === plan.id)
         if (!c) return plan
-        // Update price / priceNote / highlighted; preserve user-edited features, name, description, visible
         return { ...plan, price: c.price, priceNote: c.priceNote, highlighted: c.highlighted }
       })
     },
@@ -36,7 +36,6 @@ export default function DashboardPage() {
     (brand: Partial<ProposalConfig['brand']>) => {
       setConfig((prev) => {
         const newBrand = { ...prev.brand, ...brand }
-        // If branches changed → recompute plan prices
         const branchesChanged = 'branches' in brand && brand.branches !== prev.brand.branches
         const newPlans = branchesChanged
           ? syncPlanPrices(newBrand.branches, prev.billing, prev.plans)
@@ -62,51 +61,46 @@ export default function DashboardPage() {
     setConfig((prev) => ({ ...prev, ...partial }))
   }, [])
 
-  const handleExportPDF = async () => {
-    setExporting(true)
-    setExportError(null)
-    try {
-      const res = await fetch('/api/pdf', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(config),
-      })
+  // ── PDF export ─────────────────────────────────────────────────────────────
+  const handleExport = useCallback(async (format: ExportFormat) => {
+    const res = await fetch('/api/pdf', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ config, format }),
+    })
 
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}))
-        throw new Error(data.error || `Error ${res.status}`)
-      }
-
-      const blob = await res.blob()
-      const url = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      const slug = (config.brand.name || 'cliente')
-        .toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-      a.href = url
-      a.download = `propuesta-clash-${slug}.pdf`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(url)
-    } catch (err: any) {
-      setExportError(err.message || 'Error al generar el PDF')
-    } finally {
-      setExporting(false)
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}))
+      throw new Error(data.error || `Error ${res.status}`)
     }
-  }
+
+    const blob = await res.blob()
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    const slug = (config.brand.name || 'cliente')
+      .toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+    const suffix = format === 'slides' ? 'slides' : 'propuesta'
+    a.href = url
+    a.download = `clash-${suffix}-${slug}.pdf`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  }, [config])
 
   const tabs: { id: Tab; label: string }[] = [
-    { id: 'brand', label: 'Marca' },
+    { id: 'brand',    label: 'Marca' },
     { id: 'sections', label: 'Secciones' },
-    { id: 'plans', label: 'Planes' },
+    { id: 'plans',    label: 'Planes' },
   ]
 
   const currentTier = getScaleTier(config.brand.branches)
-  const scaleLabel = SCALE_LABELS[currentTier]
+  const scaleLabel  = SCALE_LABELS[currentTier]
 
   return (
     <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* Left Panel — Editor */}
+
+      {/* ── Left Panel — Editor ── */}
       <div className="w-80 flex-shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
         <Sidebar onLogout={async () => {
           await fetch('/api/auth/logout', { method: 'POST' })
@@ -187,7 +181,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Right Panel — Preview */}
+      {/* ── Right Panel — Preview ── */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top bar */}
         <div className="bg-white border-b border-gray-200 flex-shrink-0">
@@ -197,29 +191,13 @@ export default function DashboardPage() {
               {config.brand.name && <p className="text-xs text-gray-500">{config.brand.name}</p>}
             </div>
             <button
-              onClick={handleExportPDF}
-              disabled={exporting}
-              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 disabled:opacity-60 disabled:cursor-not-allowed text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+              onClick={() => setShowExportModal(true)}
+              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
             >
-              {exporting ? (
-                <>
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                  Generando PDF... (~20s)
-                </>
-              ) : (
-                <>
-                  <FileDown className="w-4 h-4" />
-                  Generar PDF
-                </>
-              )}
+              <FileDown className="w-4 h-4" />
+              Generar PDF
             </button>
           </div>
-          {exportError && (
-            <div className="flex items-center gap-2 px-6 pb-3 text-red-600 text-xs">
-              <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
-              <span>{exportError}</span>
-            </div>
-          )}
         </div>
 
         {/* Preview canvas */}
@@ -229,6 +207,15 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
+
+      {/* ── Export Modal ── */}
+      {showExportModal && (
+        <ExportModal
+          config={config}
+          onClose={() => setShowExportModal(false)}
+          onExport={handleExport}
+        />
+      )}
     </div>
   )
 }

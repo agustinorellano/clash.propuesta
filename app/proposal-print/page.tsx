@@ -1,3 +1,4 @@
+import { decodeConfig } from '@/lib/config-encoder'
 import { getRenderConfig } from '@/lib/render-cache'
 import CoverSection    from '@/components/preview/sections/CoverSection'
 import ConceptSection  from '@/components/preview/sections/ConceptSection'
@@ -11,42 +12,75 @@ import CaseSection     from '@/components/preview/sections/CaseSection'
 export default function ProposalPrintPage({
   searchParams,
 }: {
-  searchParams: { token?: string }
+  searchParams: { d?: string; token?: string; fmt?: string }
 }) {
-  const token = searchParams.token
-  if (!token) return <div className="p-8 text-red-600">Missing token</div>
+  let config: any = null
 
-  const config = getRenderConfig(token)
-  if (!config) return <div className="p-8 text-red-600">Token inválido o expirado</div>
+  // Primary: URL-encoded config (new approach, works on Vercel)
+  if (searchParams.d) {
+    try {
+      config = decodeConfig(searchParams.d)
+    } catch {
+      return <div className="p-8 text-red-600">Error al decodificar la propuesta</div>
+    }
+  }
+  // Legacy fallback: tmpdir token (works in local dev)
+  else if (searchParams.token) {
+    config = getRenderConfig(searchParams.token)
+    if (!config) return <div className="p-8 text-red-600">Token inválido o expirado</div>
+  }
+  else {
+    return <div className="p-8 text-red-600">Configuración no especificada</div>
+  }
+
+  const format = searchParams.fmt ?? 'a4'
 
   const enabledSections: any[] = (config.sections ?? [])
     .filter((s: any) => s.enabled)
     .sort((a: any, b: any) => a.order - b.order)
 
+  // Slides format: wider container, each section acts as a slide
+  const wrapperStyle: React.CSSProperties = {
+    margin: 0,
+    padding: 0,
+    background: '#fff',
+    ...(format === 'slides' ? { width: 1120, overflow: 'hidden' } : {}),
+  }
+
   return (
-    <div style={{ margin: 0, padding: 0, background: 'white' }}>
+    <div style={wrapperStyle}>
       {enabledSections.map((section) => {
         const id = `section-${section.id}`
-        switch (section.id) {
-          case 'cover':
-            return <div key={id} id={id}><CoverSection brand={config.brand} /></div>
-          case 'concept':
-            return <div key={id} id={id}><ConceptSection /></div>
-          case 'solution':
-            return <div key={id} id={id}><SolutionSection /></div>
-          case 'circuit':
-            return <div key={id} id={id}><CircuitSection /></div>
-          case 'distrib':
-            return <div key={id} id={id}><DistribSection /></div>
-          case 'analytics':
-            return <div key={id} id={id}><AnalyticsSection /></div>
-          case 'plans':
-            return <div key={id} id={id}><PlansSection plans={config.plans ?? []} /></div>
-          case 'case':
-            return <div key={id} id={id}><CaseSection /></div>
-          default:
-            return null
-        }
+
+        const sectionEl = (() => {
+          switch (section.id) {
+            case 'cover':     return <CoverSection brand={config.brand} />
+            case 'concept':   return <ConceptSection />
+            case 'solution':  return <SolutionSection />
+            case 'circuit':   return <CircuitSection />
+            case 'distrib':   return <DistribSection />
+            case 'analytics': return <AnalyticsSection />
+            case 'plans':     return <PlansSection plans={config.plans ?? []} />
+            case 'case':      return <CaseSection />
+            default:          return null
+          }
+        })()
+
+        if (!sectionEl) return null
+
+        return (
+          <div
+            key={id}
+            id={id}
+            style={format === 'slides' ? {
+              // Slides: ensure each section is treated as a contained slide
+              pageBreakAfter: 'always',
+              breakAfter: 'page',
+            } : {}}
+          >
+            {sectionEl}
+          </div>
+        )
       })}
     </div>
   )

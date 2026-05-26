@@ -1,10 +1,13 @@
+// AnalyticsSection — usa logos reales de /assets/brands/
+// Logos copiados desde clash-conecta/assets/brands/
+
 export default function AnalyticsSection() {
   const partners = [
-    { name: 'Banco ICBC',   pct: 32, color: '#0052A5', text: 'IC' },
-    { name: 'Mercado Pago', pct: 24, color: '#009ee3', text: 'MP' },
-    { name: 'MODO',         pct: 18, color: '#6C27BE', text: 'M'  },
-    { name: 'Naranja X',    pct: 15, color: '#FF6200', text: 'NX' },
-    { name: 'Personal Pay', pct: 11, color: '#5C2D91', text: 'PP' },
+    { name: 'Banco ICBC',   pct: 32, logo: '/assets/brands/icbc.png',         bg: '#0052A5' },
+    { name: 'Mercado Pago', pct: 24, logo: '/assets/brands/mercadopago.png',   bg: '#009ee3' },
+    { name: 'MODO',         pct: 18, logo: '/assets/brands/modo.png',          bg: '#6C27BE' },
+    { name: 'Naranja X',    pct: 15, logo: '/assets/brands/naranjax.png',      bg: '#FF6200' },
+    { name: 'Personal Pay', pct: 11, logo: '/assets/brands/personalpay.png',   bg: '#5C2D91' },
   ]
 
   const ageRows = [
@@ -117,31 +120,53 @@ export default function AnalyticsSection() {
           </div>
         </div>
 
-        {/* Col 3 — Top Partners */}
+        {/* Col 3 — Top Partners (logos reales) */}
         <div style={{ background: '#111114', borderRadius: 16, padding: 20, display: 'flex', flexDirection: 'column', gap: 12, border: '1px solid rgba(255,255,255,0.06)' }}>
           <p style={{ fontSize: 8, fontWeight: 700, color: '#4b5563', textTransform: 'uppercase', letterSpacing: '0.15em' }}>
             Top Partners por interacción
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            {partners.map((p) => (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 13 }}>
+            {partners.map((p, idx) => (
               <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                <div style={{ width: 28, height: 28, borderRadius: 8, background: p.color, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <span style={{ fontSize: 7, fontWeight: 900, color: '#fff' }}>{p.text}</span>
+                {/* Rank badge */}
+                <span style={{ fontSize: 9, fontWeight: 700, color: idx === 0 ? '#ef4444' : '#4b5563', width: 12, flexShrink: 0, textAlign: 'right' }}>
+                  {idx + 1}
+                </span>
+                {/* Logo */}
+                <div style={{
+                  width: 32, height: 32, borderRadius: 8,
+                  background: p.bg,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0, overflow: 'hidden',
+                  border: '1px solid rgba(255,255,255,0.08)',
+                }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={p.logo}
+                    alt={p.name}
+                    style={{ width: '80%', height: '80%', objectFit: 'contain', display: 'block' }}
+                  />
                 </div>
-                <span style={{ fontSize: 11, color: '#9ca3af', flex: 1 }}>{p.name}</span>
-                <div style={{ width: 72, height: 6, background: 'rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden' }}>
+                <span style={{ fontSize: 11, color: '#9ca3af', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</span>
+                <div style={{ width: 60, height: 5, background: 'rgba(255,255,255,0.06)', borderRadius: 4, overflow: 'hidden', flexShrink: 0 }}>
                   <div style={{ width: `${p.pct * 3}%`, height: '100%', background: '#ef4444', borderRadius: 4 }} />
                 </div>
-                <span style={{ fontSize: 11, fontWeight: 700, color: '#ef4444', width: 28, textAlign: 'right' }}>{p.pct}%</span>
+                <span style={{ fontSize: 11, fontWeight: 700, color: idx === 0 ? '#ef4444' : '#6b7280', width: 26, textAlign: 'right', flexShrink: 0 }}>{p.pct}%</span>
               </div>
             ))}
           </div>
 
-          {/* Quote */}
-          <div style={{ marginTop: 'auto', background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.18)', borderRadius: 12, padding: '14px 16px' }}>
-            <p style={{ fontSize: 12, color: '#d1d5db', lineHeight: 1.6 }}>
-              <span style={{ color: '#f87171', fontWeight: 700 }}>Los datos no son el final.</span>{' '}
-              Son el punto de partida para mejorar.
+          {/* Insight callout */}
+          <div style={{ marginTop: 'auto', background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 12, padding: '14px 16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.5">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+              </svg>
+              <span style={{ fontSize: 9, fontWeight: 700, color: '#f87171', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Insight</span>
+            </div>
+            <p style={{ fontSize: 11, color: '#d1d5db', lineHeight: 1.6 }}>
+              <span style={{ color: '#f87171', fontWeight: 700 }}>ICBC lidera</span> con 32% de interacciones.{' '}
+              <span style={{ color: '#9ca3af' }}>Billetera digital representa el 53% del engagement.</span>
             </p>
           </div>
         </div>
