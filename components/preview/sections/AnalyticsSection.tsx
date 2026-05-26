@@ -132,19 +132,18 @@ export default function AnalyticsSection() {
                 <span style={{ fontSize: 9, fontWeight: 700, color: idx === 0 ? '#ef4444' : '#4b5563', width: 12, flexShrink: 0, textAlign: 'right' }}>
                   {idx + 1}
                 </span>
-                {/* Logo */}
+                {/* Logo circular */}
                 <div style={{
-                  width: 32, height: 32, borderRadius: 8,
+                  width: 32, height: 32, borderRadius: '50%',
                   background: p.bg,
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   flexShrink: 0, overflow: 'hidden',
-                  border: '1px solid rgba(255,255,255,0.08)',
                 }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={p.logo}
                     alt={p.name}
-                    style={{ width: '80%', height: '80%', objectFit: 'contain', display: 'block' }}
+                    style={{ width: '75%', height: '75%', objectFit: 'contain', display: 'block' }}
                   />
                 </div>
                 <span style={{ fontSize: 11, color: '#9ca3af', flex: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{p.name}</span>
@@ -156,19 +155,6 @@ export default function AnalyticsSection() {
             ))}
           </div>
 
-          {/* Insight callout */}
-          <div style={{ marginTop: 'auto', background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.15)', borderRadius: 12, padding: '14px 16px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2.5">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-              </svg>
-              <span style={{ fontSize: 9, fontWeight: 700, color: '#f87171', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Insight</span>
-            </div>
-            <p style={{ fontSize: 11, color: '#d1d5db', lineHeight: 1.6 }}>
-              <span style={{ color: '#f87171', fontWeight: 700 }}>ICBC lidera</span> con 32% de interacciones.{' '}
-              <span style={{ color: '#9ca3af' }}>Billetera digital representa el 53% del engagement.</span>
-            </p>
-          </div>
         </div>
 
       </div>
