@@ -20,7 +20,7 @@ export default function ConceptSection() {
   return (
     <div style={{
       background: '#fef8f6',
-      minHeight: 1123,
+      height: 1123,
       padding: '72px 60px',
       display: 'flex',
       flexDirection: 'column',
@@ -28,14 +28,11 @@ export default function ConceptSection() {
       {/* Badge */}
       <div style={{ marginBottom: 40 }}>
         <span style={{
-          display: 'inline-flex', alignItems: 'center', gap: 7,
+          display: 'inline-block',
           background: '#fef2f2', border: '1px solid #fecaca',
           borderRadius: 999, padding: '6px 16px',
-          fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.22em', textTransform: 'uppercase',
+          fontSize: 11, fontWeight: 700, color: '#dc2626', letterSpacing: '0.15em', textTransform: 'uppercase',
         }}>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5">
-            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-          </svg>
           Concepto
         </span>
       </div>

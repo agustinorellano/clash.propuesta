@@ -43,8 +43,8 @@ export default function ProposalPreview({ config }: ProposalPreviewProps) {
   return (
     <div
       id="proposal-preview"
-      className="bg-white shadow-xl rounded-2xl overflow-hidden"
-      style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
+      className="bg-white shadow-xl overflow-hidden mx-auto"
+      style={{ fontFamily: "'Inter', system-ui, sans-serif", width: 794 }}
     >
       {enabledSections.length === 0 ? (
         <div className="flex flex-col items-center justify-center py-32 text-gray-400">

@@ -13,7 +13,7 @@ export default function CoverSection({ brand }: CoverSectionProps) {
   return (
     <div style={{
       background: '#0f0f11',
-      minHeight: 1123,
+      height: 1123,
       padding: '0',
       display: 'flex',
       flexDirection: 'column',

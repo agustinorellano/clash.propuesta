@@ -32,7 +32,7 @@ export default function SolutionSection() {
   return (
     <div style={{
       background: '#0f0f11',
-      minHeight: 1123,
+      height: 1123,
       padding: '72px 60px',
       display: 'flex',
       flexDirection: 'column',

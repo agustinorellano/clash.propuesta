@@ -21,7 +21,7 @@ export default function PlansSection({ plans }: PlansSectionProps) {
   return (
     <div style={{
       background: '#fff',
-      minHeight: 1123,
+      height: 1123,
       padding: '72px 60px',
       display: 'flex',
       flexDirection: 'column',

@@ -33,7 +33,7 @@ export default function DistribSection() {
   return (
     <div style={{
       background: '#f9fafb',
-      minHeight: 1123,
+      height: 1123,
       padding: '72px 60px',
       display: 'flex',
       flexDirection: 'column',

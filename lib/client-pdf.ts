@@ -42,9 +42,11 @@ export async function generatePDFClient(
       allowTaint: true,
       backgroundColor: null,
       logging: false,
-      // Captura el elemento aunque esté fuera del viewport
-      windowWidth: el.scrollWidth,
-      windowHeight: el.scrollHeight,
+      // Fuerza contexto A4 para que minHeight/height y media queries se respeten
+      windowWidth: 794,
+      windowHeight: 1123,
+      width: el.offsetWidth,
+      height: el.offsetHeight,
     })
 
     if (canvas.width === 0 || canvas.height === 0) continue
