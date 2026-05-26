@@ -32,7 +32,7 @@ export default function ProposalPreview({ config }: ProposalPreviewProps) {
       case 'analytics':
         return <AnalyticsSection />
       case 'plans':
-        return <PlansSection plans={config.plans} />
+        return <PlansSection plans={config.plans} proposalType={config.proposalType} />
       case 'case':
         return <CaseSection />
       default:

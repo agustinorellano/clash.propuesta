@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import { defaultConfig, ProposalConfig } from '@/lib/types'
+import { defaultConfig, ProposalConfig, type ProposalType } from '@/lib/types'
 import { getComputedPlans, getScaleTier, SCALE_LABELS, type Billing } from '@/lib/plansConfig'
 import Sidebar from '@/components/ui/Sidebar'
 import BrandEditor from '@/components/editor/BrandEditor'
@@ -56,6 +56,10 @@ export default function DashboardPage() {
     [syncPlanPrices],
   )
 
+  const setProposalType = useCallback((proposalType: ProposalType) => {
+    setConfig((prev) => ({ ...prev, proposalType }))
+  }, [])
+
   const updateConfig = useCallback((partial: Partial<ProposalConfig>) => {
     setConfig((prev) => ({ ...prev, ...partial }))
   }, [])
@@ -78,6 +82,29 @@ export default function DashboardPage() {
           await fetch('/api/auth/logout', { method: 'POST' })
           window.location.href = '/login'
         }} />
+
+        {/* Proposal type selector */}
+        <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+          <p className="text-xs text-gray-500 mb-2 font-medium">Tipo de propuesta</p>
+          <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-white">
+            {([
+              { id: 'commercial', label: 'Comercial' },
+              { id: 'mall',       label: 'Comercios de malls' },
+            ] as { id: ProposalType; label: string }[]).map((opt) => (
+              <button
+                key={opt.id}
+                onClick={() => setProposalType(opt.id)}
+                className={`flex-1 py-1.5 text-xs font-semibold transition-colors ${
+                  config.proposalType === opt.id
+                    ? 'bg-red-600 text-white'
+                    : 'text-gray-500 hover:bg-gray-50'
+                }`}
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         {/* Billing toggle */}
         <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">

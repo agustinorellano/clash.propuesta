@@ -6,8 +6,11 @@ export type PlanData = ComputedPlanData
 
 export type { Billing }
 
+export type ProposalType = 'commercial' | 'mall'
+
 export interface ProposalConfig {
   billing: Billing
+  proposalType: ProposalType
   brand: {
     name: string
     logoUrl: string
@@ -28,6 +31,7 @@ export interface ProposalConfig {
 
 export const defaultConfig: ProposalConfig = {
   billing: 'monthly',
+  proposalType: 'commercial',
   brand: { name: '', logoUrl: '', logoBase64: '', observations: '', branches: 1, operationType: '', needs: '' },
   sections: [
     { id: 'cover',    label: 'Portada',          enabled: true,  order: 0 },

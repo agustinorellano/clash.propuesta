@@ -1,7 +1,9 @@
 import { PlanData } from '@/lib/types'
+import type { ProposalType } from '@/lib/types'
 
 interface PlansSectionProps {
   plans: PlanData[]
+  proposalType?: ProposalType
 }
 
 const PLAN_ACCENT: Record<string, string> = {
@@ -18,15 +20,126 @@ function getAccent(id: string) {
 const MALL_FEATURES = [
   'Panel de gestión básico',
   'Carga de promociones',
-  'Dashboard básico',
+  'Dashboard básico de métricas',
   'Distribución multi-canal',
-  'Links inteligentes por local',
-  'QR para promociones',
-  'Seguimiento de promociones',
+  'Link inteligente por local',
+  'Código QR para promociones',
+  'Seguimiento de interacciones',
   'Soporte básico incluido',
 ]
 
-export default function PlansSection({ plans }: PlansSectionProps) {
+// ─── MODO MALL ─────────────────────────────────────────────────────────────
+function MallPlansSection() {
+  return (
+    <div style={{
+      background: '#fff',
+      minHeight: 1123,
+      padding: '72px 60px',
+      display: 'flex',
+      flexDirection: 'column',
+    }}>
+      {/* Header */}
+      <div style={{ marginBottom: 52 }}>
+        <span style={{
+          fontSize: 10, fontWeight: 700, color: '#dc2626',
+          letterSpacing: '0.25em', textTransform: 'uppercase',
+        }}>
+          Plan incluido
+        </span>
+        <h2 style={{
+          fontSize: 44, fontWeight: 900, color: '#0d0d0f',
+          marginTop: 16, lineHeight: 1.08, letterSpacing: '-1px',
+        }}>
+          Tu espacio en el mall
+        </h2>
+        <p style={{ color: '#6b7280', fontSize: 14, marginTop: 14, maxWidth: 500, lineHeight: 1.75 }}>
+          Como comercio adherido, ya formás parte del ecosistema digital del centro comercial.
+          Estas son las herramientas digitales que tenés disponibles.
+        </p>
+      </div>
+
+      {/* Card única — horizontal, prominente */}
+      <div style={{
+        border: '1px solid #e8e8e8',
+        borderRadius: 16,
+        background: '#fafafa',
+        padding: '36px 36px',
+        flex: 1,
+        display: 'flex',
+        gap: 40,
+        alignItems: 'flex-start',
+      }}>
+        {/* Izquierda — nombre + descripción + precio */}
+        <div style={{ width: 210, flexShrink: 0 }}>
+          <div style={{
+            width: 8, height: 8, borderRadius: '50%',
+            background: '#9ca3af', marginBottom: 16,
+          }} />
+          <h3 style={{
+            fontWeight: 800, color: '#0d0d0f',
+            fontSize: 20, marginBottom: 12, lineHeight: 1.2,
+          }}>
+            Tu plan incluido
+          </h3>
+          <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.7, marginBottom: 28 }}>
+            Funcionalidades digitales para tu comercio dentro del ecosistema del mall.
+          </p>
+
+          {/* Badge de precio */}
+          <div style={{
+            background: '#fff',
+            border: '1px solid #e8e8e8',
+            borderRadius: 10,
+            padding: '14px 16px',
+          }}>
+            <p style={{
+              fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 4,
+            }}>
+              Incluido en tu contrato
+            </p>
+            <p style={{ fontSize: 11, color: '#9ca3af', lineHeight: 1.55 }}>
+              Sin costo adicional — incluido en el acuerdo con el centro comercial.
+            </p>
+          </div>
+        </div>
+
+        {/* Divider vertical */}
+        <div style={{
+          width: 1, background: '#e8e8e8',
+          alignSelf: 'stretch', flexShrink: 0,
+        }} />
+
+        {/* Derecha — features en 2 columnas */}
+        <div style={{
+          flex: 1,
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: '16px 28px',
+          alignContent: 'start',
+        }}>
+          {MALL_FEATURES.map((feature, i) => (
+            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 10 }}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
+                stroke="#9ca3af" strokeWidth="2.5"
+                style={{ flexShrink: 0, marginTop: 2 }}>
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              <span style={{ fontSize: 13, color: '#374151', lineHeight: 1.5 }}>
+                {feature}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── MODO COMERCIAL ─────────────────────────────────────────────────────────
+export default function PlansSection({ plans, proposalType = 'commercial' }: PlansSectionProps) {
+  // Modo mall — renderiza layout completamente distinto
+  if (proposalType === 'mall') return <MallPlansSection />
+
   const visiblePlans = plans.filter((p) => p.visible)
   const cols = visiblePlans.length <= 2
     ? `repeat(${visiblePlans.length}, 1fr)`
@@ -42,8 +155,7 @@ export default function PlansSection({ plans }: PlansSectionProps) {
       display: 'flex',
       flexDirection: 'column',
     }}>
-
-      {/* ── PLANES COMERCIALES ── */}
+      {/* Header */}
       <div style={{ marginBottom: 10 }}>
         <span style={{
           fontSize: 10, fontWeight: 700, color: '#dc2626',
@@ -61,7 +173,6 @@ export default function PlansSection({ plans }: PlansSectionProps) {
           la comunicación de tus beneficios.
         </p>
 
-        {/* Sub-label enterprise */}
         <p style={{
           fontSize: 9, fontWeight: 700, color: '#9ca3af',
           textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 16,
@@ -169,95 +280,6 @@ export default function PlansSection({ plans }: PlansSectionProps) {
             </div>
           )
         })}
-      </div>
-
-      {/* ── DIVIDER ── */}
-      <div style={{
-        display: 'flex', alignItems: 'center', gap: 16,
-        margin: '40px 0 32px',
-      }}>
-        <div style={{ flex: 1, height: 1, background: '#e8e8e8' }} />
-        <span style={{
-          fontSize: 9, fontWeight: 600, color: '#c4c4c4',
-          letterSpacing: '0.2em', textTransform: 'uppercase', flexShrink: 0,
-        }}>
-          También disponible
-        </span>
-        <div style={{ flex: 1, height: 1, background: '#e8e8e8' }} />
-      </div>
-
-      {/* ── PLANES PARA MALLS ── */}
-      <div style={{ marginBottom: 20 }}>
-        <p style={{
-          fontSize: 9, fontWeight: 700, color: '#9ca3af',
-          textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 6,
-        }}>
-          Planes para comercios de malls
-        </p>
-        <p style={{ fontSize: 12, color: '#9ca3af', lineHeight: 1.5 }}>
-          Para comercios adheridos al ecosistema del shopping — funcionalidades incluidas dentro del plan del mall.
-        </p>
-      </div>
-
-      {/* Mall plan card — horizontal, más liviano */}
-      <div style={{
-        border: '1px solid #e8e8e8',
-        borderRadius: 12,
-        background: '#fafafa',
-        padding: '24px 28px',
-        display: 'flex',
-        gap: 32,
-        alignItems: 'flex-start',
-      }}>
-        {/* Left — nombre + descripción */}
-        <div style={{ flexShrink: 0, width: 180 }}>
-          <div style={{
-            width: 7, height: 7, borderRadius: '50%',
-            background: '#6b7280', marginBottom: 10,
-          }} />
-          <h3 style={{
-            fontWeight: 700, color: '#0d0d0f',
-            fontSize: 14, marginBottom: 8, lineHeight: 1.3,
-          }}>
-            Plan para comercios adheridos
-          </h3>
-          <p style={{ fontSize: 11, color: '#9ca3af', lineHeight: 1.6, marginBottom: 14 }}>
-            Funcionalidades disponibles para comercios dentro del ecosistema del mall.
-          </p>
-          <div style={{
-            display: 'inline-block',
-            background: '#f3f4f6',
-            border: '1px solid #e8e8e8',
-            borderRadius: 8,
-            padding: '6px 12px',
-          }}>
-            <span style={{ fontSize: 10, fontWeight: 700, color: '#6b7280' }}>Incluido en el plan del mall</span>
-          </div>
-        </div>
-
-        {/* Divider vertical */}
-        <div style={{ width: 1, background: '#e8e8e8', alignSelf: 'stretch', flexShrink: 0 }} />
-
-        {/* Right — features en 2 columnas */}
-        <div style={{
-          flex: 1,
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: '8px 24px',
-        }}>
-          {MALL_FEATURES.map((feature, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 7 }}>
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
-                stroke="#9ca3af" strokeWidth="2.5"
-                style={{ flexShrink: 0, marginTop: 2 }}>
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              <span style={{ fontSize: 11, color: '#6b7280', lineHeight: 1.5 }}>
-                {feature}
-              </span>
-            </div>
-          ))}
-        </div>
       </div>
     </div>
   )
