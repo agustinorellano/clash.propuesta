@@ -95,10 +95,7 @@ export default function CoverSection({ brand }: CoverSectionProps) {
         )}
 
         {brand.operationType && (
-          <p style={{ color: '#5a6374', fontSize: 14, marginBottom: 6 }}>{brand.operationType}</p>
-        )}
-        {brand.branches > 1 && (
-          <p style={{ color: '#2a2f38', fontSize: 13 }}>{brand.branches} sucursales</p>
+          <p style={{ color: '#5a6374', fontSize: 14 }}>{brand.operationType}</p>
         )}
       </div>
 
