@@ -53,7 +53,7 @@ export default function ProposalPreview({ config }: ProposalPreviewProps) {
         </div>
       ) : (
         enabledSections.map((section) => (
-          <div key={section.id}>{renderSection(section.id)}</div>
+          <div key={section.id} id={`preview-section-${section.id}`} data-export-section>{renderSection(section.id)}</div>
         ))
       )}
 

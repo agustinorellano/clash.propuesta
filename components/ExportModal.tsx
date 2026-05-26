@@ -4,12 +4,12 @@ import { useState } from 'react'
 import { ProposalConfig } from '@/lib/types'
 import { getScaleTier, SCALE_LABELS } from '@/lib/plansConfig'
 import type { ExportFormat } from '@/app/api/pdf/route'
+import { generatePDFClient } from '@/lib/client-pdf'
 import { X, Loader2, AlertCircle, FileText, Monitor } from 'lucide-react'
 
 interface ExportModalProps {
   config: ProposalConfig
   onClose: () => void
-  onExport: (format: ExportFormat) => Promise<void>
 }
 
 const FORMAT_OPTIONS: { id: ExportFormat; icon: React.ReactNode; label: string; sub: string }[] = [
@@ -45,7 +45,7 @@ const FORMAT_OPTIONS: { id: ExportFormat; icon: React.ReactNode; label: string; 
   },
 ]
 
-export default function ExportModal({ config, onClose, onExport }: ExportModalProps) {
+export default function ExportModal({ config, onClose }: ExportModalProps) {
   const [format, setFormat] = useState<ExportFormat>('a4')
   const [exporting, setExporting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -64,7 +64,7 @@ export default function ExportModal({ config, onClose, onExport }: ExportModalPr
     setExporting(true)
     setError(null)
     try {
-      await onExport(format)
+      await generatePDFClient(config.brand.name, format)
       onClose()
     } catch (err: any) {
       setError(err.message || 'Error al generar el PDF')

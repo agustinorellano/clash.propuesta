@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import { defaultConfig, ProposalConfig } from '@/lib/types'
 import { getComputedPlans, getScaleTier, SCALE_LABELS, type Billing } from '@/lib/plansConfig'
 import Sidebar from '@/components/ui/Sidebar'
@@ -9,7 +9,6 @@ import BlockSelector from '@/components/editor/BlockSelector'
 import PlanEditor from '@/components/editor/PlanEditor'
 import ProposalPreview from '@/components/preview/ProposalPreview'
 import ExportModal from '@/components/ExportModal'
-import type { ExportFormat } from '@/app/api/pdf/route'
 import { FileDown, CalendarDays, CalendarRange } from 'lucide-react'
 
 type Tab = 'brand' | 'sections' | 'plans'
@@ -60,33 +59,6 @@ export default function DashboardPage() {
   const updateConfig = useCallback((partial: Partial<ProposalConfig>) => {
     setConfig((prev) => ({ ...prev, ...partial }))
   }, [])
-
-  // ── PDF export ─────────────────────────────────────────────────────────────
-  const handleExport = useCallback(async (format: ExportFormat) => {
-    const res = await fetch('/api/pdf', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ config, format }),
-    })
-
-    if (!res.ok) {
-      const data = await res.json().catch(() => ({}))
-      throw new Error(data.error || `Error ${res.status}`)
-    }
-
-    const blob = await res.blob()
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement('a')
-    const slug = (config.brand.name || 'cliente')
-      .toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
-    const suffix = format === 'slides' ? 'slides' : 'propuesta'
-    a.href = url
-    a.download = `clash-${suffix}-${slug}.pdf`
-    document.body.appendChild(a)
-    a.click()
-    document.body.removeChild(a)
-    URL.revokeObjectURL(url)
-  }, [config])
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'brand',    label: 'Marca' },
@@ -213,7 +185,6 @@ export default function DashboardPage() {
         <ExportModal
           config={config}
           onClose={() => setShowExportModal(false)}
-          onExport={handleExport}
         />
       )}
     </div>
