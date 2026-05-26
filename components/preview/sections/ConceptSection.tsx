@@ -19,7 +19,7 @@ export default function ConceptSection() {
 
   return (
     <div style={{
-      background: '#fef8f6',
+      background: '#ffffff',
       height: 1123,
       padding: '72px 60px',
       display: 'flex',
@@ -54,7 +54,7 @@ export default function ConceptSection() {
       </div>
 
       {/* Divider */}
-      <div style={{ height: 1, background: '#e8dbd8', marginBottom: 52 }} />
+      <div style={{ height: 1, background: '#e8e8e8', marginBottom: 52 }} />
 
       {/* 3 pillars */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 32, flex: 1 }}>
@@ -78,19 +78,6 @@ export default function ConceptSection() {
         ))}
       </div>
 
-      {/* Quote block */}
-      <div style={{
-        marginTop: 52,
-        padding: '24px 28px',
-        background: '#fff',
-        borderLeft: '3px solid #dc2626',
-        borderRadius: '0 8px 8px 0',
-      }}>
-        <p style={{ fontSize: 15, fontWeight: 600, color: '#0d0d0f', lineHeight: 1.6 }}>
-          "El beneficio que nadie comunica, es un beneficio perdido."
-        </p>
-        <p style={{ fontSize: 12, color: '#9ca3af', marginTop: 8 }}>— Premisa de diseño de Clash</p>
-      </div>
     </div>
   )
 }

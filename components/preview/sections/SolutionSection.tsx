@@ -57,7 +57,7 @@ export default function SolutionSection() {
             borderBottom: '1px solid rgba(255,255,255,0.07)',
           }}>
             <span style={{
-              fontSize: 11, fontWeight: 700, color: '#2a2f38',
+              fontSize: 11, fontWeight: 700, color: '#f1f1f1',
               width: 24, flexShrink: 0, paddingTop: 2,
               fontVariantNumeric: 'tabular-nums',
             }}>

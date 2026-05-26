@@ -100,48 +100,53 @@ export default function AnalyticsSection() {
             border: '1px solid rgba(255,255,255,0.06)', flex: 1,
           }}>
             <p style={{
-              fontSize: 9, fontWeight: 700, color: '#374151',
-              textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16,
+              fontSize: 8, fontWeight: 700, color: '#374151',
+              textTransform: 'uppercase', letterSpacing: '0.16em', marginBottom: 16,
             }}>
-              Top Partners
+              Rendimiento — Top Partners por interacción
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
               {partners.map((p, idx) => (
                 <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  <span style={{
-                    fontSize: 9, fontWeight: 700,
-                    color: idx === 0 ? '#dc2626' : '#2a2f38',
-                    width: 12, flexShrink: 0, textAlign: 'right',
-                  }}>
-                    {idx + 1}
-                  </span>
+                  {/* Logo cuadrado con esquinas redondeadas */}
                   <div style={{
-                    width: 28, height: 28, borderRadius: '50%',
+                    width: 32, height: 32, borderRadius: 8,
                     background: p.bg, flexShrink: 0, overflow: 'hidden',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.logo} alt={p.name} style={{ width: '75%', height: '75%', objectFit: 'contain' }} />
+                    <img src={p.logo} alt={p.name} style={{ width: '70%', height: '70%', objectFit: 'contain', display: 'block' }} />
                   </div>
                   <span style={{
-                    fontSize: 10, color: '#9ca3af', flex: 1,
+                    fontSize: 11, color: '#d1d5db', flex: 1, fontWeight: 500,
                     overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
                   }}>
                     {p.name}
                   </span>
-                  <div style={{ width: 44, height: 3, background: 'rgba(255,255,255,0.05)', borderRadius: 2, overflow: 'hidden', flexShrink: 0 }}>
-                    <div style={{ width: `${p.pct * 3}%`, height: '100%', background: idx === 0 ? '#dc2626' : '#2a2f38', borderRadius: 2 }} />
+                  {/* Barra */}
+                  <div style={{ width: 52, height: 3, background: 'rgba(255,255,255,0.06)', borderRadius: 2, overflow: 'hidden', flexShrink: 0 }}>
+                    <div style={{ width: `${p.pct * 3}%`, height: '100%', background: '#dc2626', borderRadius: 2 }} />
                   </div>
                   <span style={{
-                    fontSize: 10, fontWeight: 700,
-                    color: idx === 0 ? '#dc2626' : '#5a6374',
-                    width: 28, textAlign: 'right', flexShrink: 0,
+                    fontSize: 11, fontWeight: 700, color: '#f1f1f1',
+                    width: 30, textAlign: 'right', flexShrink: 0,
                     fontVariantNumeric: 'tabular-nums',
                   }}>
                     {p.pct}%
                   </span>
                 </div>
               ))}
+            </div>
+            {/* Callout */}
+            <div style={{
+              marginTop: 16, padding: '12px 14px',
+              background: '#1a1a1e', borderRadius: 8,
+              border: '1px solid rgba(255,255,255,0.06)',
+            }}>
+              <p style={{ fontSize: 11, lineHeight: 1.55, color: '#9ca3af' }}>
+                <span style={{ color: '#dc2626', fontWeight: 700 }}>Los datos no son el final.</span>{' '}
+                Son el punto de partida para mejorar.
+              </p>
             </div>
           </div>
         </div>
