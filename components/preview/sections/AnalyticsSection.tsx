@@ -121,7 +121,6 @@ export default function AnalyticsSection() {
                     width: 26, height: 26,
                     objectFit: 'contain',
                     flexShrink: 0,
-                    borderRadius: 5,
                   }}
                 />
                 {/* .dp-name */}
