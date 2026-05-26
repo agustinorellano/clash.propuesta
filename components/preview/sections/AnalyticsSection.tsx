@@ -99,52 +99,66 @@ export default function AnalyticsSection() {
             background: '#111114', borderRadius: 12, padding: 20,
             border: '1px solid rgba(255,255,255,0.06)', flex: 1,
           }}>
+            {/* Título — copia exacta de clash-conecta .dash-panel-title */}
             <p style={{
-              fontSize: 8, fontWeight: 700, color: '#374151',
-              textTransform: 'uppercase', letterSpacing: '0.16em', marginBottom: 16,
+              fontSize: 9, fontWeight: 700, textTransform: 'uppercase',
+              letterSpacing: '1.5px', color: '#9CA3AF', marginBottom: 16,
             }}>
-              Rendimiento — Top Partners por interacción
+              Rendimiento — Top partners por interacción
             </p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-              {partners.map((p, idx) => (
-                <div key={p.name} style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                  {/* Logo cuadrado con esquinas redondeadas */}
+
+            {/* Filas — copia exacta de clash-conecta .dash-partner */}
+            {partners.map((p) => (
+              <div key={p.name} style={{
+                display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12,
+              }}>
+                {/* .dp-logo — el PNG ya trae su fondo de marca */}
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={p.logo}
+                  alt={p.name}
+                  style={{
+                    width: 26, height: 26,
+                    objectFit: 'contain',
+                    flexShrink: 0,
+                    borderRadius: 5,
+                  }}
+                />
+                {/* .dp-name */}
+                <span style={{
+                  fontSize: 13, color: '#f1f1f1', fontWeight: 500, flex: 1,
+                  overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                }}>
+                  {p.name}
+                </span>
+                {/* .dp-bar-bg + .dp-bar-fill */}
+                <div style={{
+                  width: 72, height: 4,
+                  background: 'rgba(255,255,255,0.12)',
+                  borderRadius: 2, overflow: 'hidden', flexShrink: 0,
+                }}>
                   <div style={{
-                    width: 32, height: 32, borderRadius: 8,
-                    background: p.bg, flexShrink: 0, overflow: 'hidden',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={p.logo} alt={p.name} style={{ width: '70%', height: '70%', objectFit: 'contain', display: 'block' }} />
-                  </div>
-                  <span style={{
-                    fontSize: 11, color: '#d1d5db', flex: 1, fontWeight: 500,
-                    overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                  }}>
-                    {p.name}
-                  </span>
-                  {/* Barra */}
-                  <div style={{ width: 52, height: 3, background: 'rgba(255,255,255,0.06)', borderRadius: 2, overflow: 'hidden', flexShrink: 0 }}>
-                    <div style={{ width: `${p.pct * 3}%`, height: '100%', background: '#dc2626', borderRadius: 2 }} />
-                  </div>
-                  <span style={{
-                    fontSize: 11, fontWeight: 700, color: '#f1f1f1',
-                    width: 30, textAlign: 'right', flexShrink: 0,
-                    fontVariantNumeric: 'tabular-nums',
-                  }}>
-                    {p.pct}%
-                  </span>
+                    width: `${p.pct * 3}%`, height: '100%',
+                    background: '#DC2626', borderRadius: 2,
+                  }} />
                 </div>
-              ))}
-            </div>
-            {/* Callout */}
+                {/* .dp-pct */}
+                <span style={{
+                  fontSize: 12, fontWeight: 700, color: '#DC2626',
+                  width: 28, textAlign: 'right', flexShrink: 0,
+                }}>
+                  {p.pct}%
+                </span>
+              </div>
+            ))}
+
+            {/* .dash-caption — copia exacta */}
             <div style={{
-              marginTop: 16, padding: '12px 14px',
-              background: '#1a1a1e', borderRadius: 8,
-              border: '1px solid rgba(255,255,255,0.06)',
+              background: '#1C1C1E', borderRadius: 10,
+              padding: '14px 16px', marginTop: 4,
             }}>
-              <p style={{ fontSize: 11, lineHeight: 1.55, color: '#9ca3af' }}>
-                <span style={{ color: '#dc2626', fontWeight: 700 }}>Los datos no son el final.</span>{' '}
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>
+                <strong style={{ color: '#DC2626' }}>Los datos no son el final.</strong>{' '}
                 Son el punto de partida para mejorar.
               </p>
             </div>
