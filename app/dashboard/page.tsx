@@ -225,8 +225,12 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* Preview canvas */}
-        <div ref={scrollContainerRef} className="flex-1 overflow-auto p-8 relative">
+        {/* Preview canvas — documento editor, fondo gris */}
+        <div
+          ref={scrollContainerRef}
+          className="flex-1 overflow-auto relative"
+          style={{ background: '#c8c8c8', padding: '36px 48px 64px' }}
+        >
           {/* Section indicator */}
           {activeSection && (() => {
             const enabledSections = config.sections.filter(s => s.enabled).sort((a, b) => a.order - b.order)
@@ -235,15 +239,25 @@ export default function DashboardPage() {
             if (!section) return null
             return (
               <div className="sticky top-4 z-10 flex justify-end pointer-events-none mb-[-36px]">
-                <div className="flex items-center gap-2 bg-gray-900/90 backdrop-blur-sm text-white text-xs font-medium px-3 py-1.5 rounded-full shadow-lg border border-white/10">
-                  <span className="text-gray-400 tabular-nums">{idx + 1}/{enabledSections.length}</span>
-                  <span className="w-px h-3 bg-white/20" />
+                <div style={{
+                  display: 'flex', alignItems: 'center', gap: 8,
+                  background: 'rgba(15,15,17,0.85)',
+                  backdropFilter: 'blur(8px)',
+                  color: '#fff', fontSize: 11, fontWeight: 500,
+                  padding: '5px 12px', borderRadius: 999,
+                  border: '1px solid rgba(255,255,255,0.08)',
+                  boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+                }}>
+                  <span style={{ color: 'rgba(255,255,255,0.4)', fontVariantNumeric: 'tabular-nums' }}>
+                    {idx + 1}/{enabledSections.length}
+                  </span>
+                  <span style={{ width: 1, height: 12, background: 'rgba(255,255,255,0.15)' }} />
                   <span>{section.label}</span>
                 </div>
               </div>
             )
           })()}
-          <div className="max-w-4xl mx-auto">
+          <div style={{ maxWidth: 794, margin: '0 auto' }}>
             <ProposalPreview config={config} />
           </div>
         </div>
