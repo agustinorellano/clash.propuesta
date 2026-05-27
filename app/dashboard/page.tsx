@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef, useEffect } from 'react'
-import { defaultConfig, ProposalConfig, type ProposalType } from '@/lib/types'
+import { defaultConfig, ProposalConfig, type ProposalType, type Promotion } from '@/lib/types'
 import { getComputedPlans, getScaleTier, SCALE_LABELS, type Billing } from '@/lib/plansConfig'
 import Sidebar from '@/components/ui/Sidebar'
 import BrandEditor from '@/components/editor/BrandEditor'
@@ -58,6 +58,41 @@ export default function DashboardPage() {
 
   const setProposalType = useCallback((proposalType: ProposalType) => {
     setConfig((prev) => ({ ...prev, proposalType }))
+  }, [])
+
+  // ── Promotion helpers ──────────────────────────────────────────────────────
+  const setPromoDiscount = useCallback((discount: number) => {
+    setConfig((prev) => ({
+      ...prev,
+      promotion: {
+        ...prev.promotion,
+        discount,
+        mode: discount === 0
+          ? 'none'
+          : prev.promotion.mode === 'none' ? 'all' : prev.promotion.mode,
+        planId: prev.promotion.mode === 'none' ? '' : prev.promotion.planId,
+      },
+    }))
+  }, [])
+
+  const setPromoMode = useCallback((mode: Promotion['mode']) => {
+    setConfig((prev) => ({
+      ...prev,
+      promotion: {
+        ...prev.promotion,
+        mode,
+        planId: mode === 'single'
+          ? (prev.promotion.planId || prev.plans.filter(p => p.visible)[0]?.id || '')
+          : '',
+      },
+    }))
+  }, [])
+
+  const setPromoPlanId = useCallback((planId: string) => {
+    setConfig((prev) => ({
+      ...prev,
+      promotion: { ...prev.promotion, planId },
+    }))
   }, [])
 
   const updateConfig = useCallback((partial: Partial<ProposalConfig>) => {
@@ -167,6 +202,97 @@ export default function DashboardPage() {
               Escala activa:{' '}
               <span className="font-semibold text-gray-600">{scaleLabel}</span>
             </p>
+          )}
+        </div>
+
+        {/* ── Promotion section ── */}
+        <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+          <p className="text-xs text-gray-500 mb-2 font-medium">Promoción aplicable</p>
+
+          {/* Preset pills */}
+          <div className="flex flex-wrap gap-1.5 mb-2">
+            {([0, 20, 25, 30, 40] as const).map((pct) => {
+              const active = pct === 0
+                ? config.promotion.discount === 0
+                : config.promotion.discount === pct && config.promotion.mode !== 'none'
+              return (
+                <button
+                  key={pct}
+                  onClick={() => setPromoDiscount(pct)}
+                  className={`px-2.5 py-1 text-xs font-semibold rounded-md border transition-colors ${
+                    active
+                      ? 'bg-red-600 text-white border-red-600'
+                      : 'border-gray-200 text-gray-500 bg-white hover:bg-gray-50'
+                  }`}
+                >
+                  {pct === 0 ? 'Sin desc.' : `−${pct}%`}
+                </button>
+              )
+            })}
+            {/* Custom % input */}
+            <div className="flex items-center">
+              <input
+                type="number" min={1} max={99}
+                placeholder="otro %"
+                value={
+                  config.promotion.discount > 0 && ![20, 25, 30, 40].includes(config.promotion.discount)
+                    ? config.promotion.discount
+                    : ''
+                }
+                onChange={(e) => {
+                  const v = parseInt(e.target.value)
+                  setPromoDiscount(isNaN(v) ? 0 : Math.min(99, Math.max(0, v)))
+                }}
+                className="w-16 px-2 py-1 text-xs border border-gray-200 rounded-md text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-red-400 bg-white"
+              />
+            </div>
+          </div>
+
+          {/* Apply-to: only when discount is active */}
+          {config.promotion.discount > 0 && config.promotion.mode !== 'none' && (
+            <div className="mt-1">
+              <p className="text-xs text-gray-400 mb-1.5">Aplicar a</p>
+              <div className="flex rounded-lg border border-gray-200 overflow-hidden bg-white mb-2">
+                <button
+                  onClick={() => setPromoMode('all')}
+                  className={`flex-1 py-1 text-xs font-semibold transition-colors ${
+                    config.promotion.mode === 'all'
+                      ? 'bg-red-600 text-white'
+                      : 'text-gray-500 hover:bg-gray-50'
+                  }`}
+                >
+                  Todos
+                </button>
+                <button
+                  onClick={() => setPromoMode('single')}
+                  className={`flex-1 py-1 text-xs font-semibold transition-colors ${
+                    config.promotion.mode === 'single'
+                      ? 'bg-red-600 text-white'
+                      : 'text-gray-500 hover:bg-gray-50'
+                  }`}
+                >
+                  Plan específico
+                </button>
+              </div>
+
+              {config.promotion.mode === 'single' && (
+                <div className="flex flex-col gap-1">
+                  {config.plans.filter((p) => p.visible).map((plan) => (
+                    <button
+                      key={plan.id}
+                      onClick={() => setPromoPlanId(plan.id)}
+                      className={`text-left px-2.5 py-1.5 text-xs rounded-md border transition-colors truncate ${
+                        config.promotion.planId === plan.id
+                          ? 'bg-red-50 border-red-200 text-red-700 font-semibold'
+                          : 'border-gray-200 text-gray-600 bg-white hover:bg-gray-50'
+                      }`}
+                    >
+                      {plan.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           )}
         </div>
 

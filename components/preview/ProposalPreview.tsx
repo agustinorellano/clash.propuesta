@@ -26,7 +26,7 @@ export default function ProposalPreview({ config }: ProposalPreviewProps) {
       case 'circuit':  return <CircuitSection />
       case 'distrib':  return <DistribSection />
       case 'analytics':return <AnalyticsSection />
-      case 'plans':    return <PlansSection plans={config.plans} proposalType={config.proposalType} />
+      case 'plans':    return <PlansSection plans={config.plans} proposalType={config.proposalType} promotion={config.promotion} />
       case 'clientview': return <ClientViewSection />
       case 'case':       return <CaseSection />
       default:           return null

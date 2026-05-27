@@ -8,9 +8,18 @@ export type { Billing }
 
 export type ProposalType = 'commercial' | 'mall'
 
+export type PromoMode = 'none' | 'all' | 'single'
+
+export interface Promotion {
+  mode: PromoMode
+  discount: number   // e.g. 20 = 20 %, 0 = sin descuento
+  planId: string     // sólo cuando mode === 'single'
+}
+
 export interface ProposalConfig {
   billing: Billing
   proposalType: ProposalType
+  promotion: Promotion
   brand: {
     name: string
     logoUrl: string
@@ -32,6 +41,7 @@ export interface ProposalConfig {
 export const defaultConfig: ProposalConfig = {
   billing: 'monthly',
   proposalType: 'commercial',
+  promotion: { mode: 'none', discount: 0, planId: '' },
   brand: { name: '', logoUrl: '', logoBase64: '', observations: '', branches: 1, operationType: '', needs: '' },
   sections: [
     { id: 'cover',      label: 'Portada',             enabled: true,  order: 0 },

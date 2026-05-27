@@ -1,9 +1,10 @@
 import { PlanData } from '@/lib/types'
-import type { ProposalType } from '@/lib/types'
+import type { ProposalType, Promotion } from '@/lib/types'
 
 interface PlansSectionProps {
   plans: PlanData[]
   proposalType?: ProposalType
+  promotion?: Promotion
 }
 
 const PLAN_ACCENT: Record<string, string> = {
@@ -15,6 +16,15 @@ const PLAN_ACCENT: Record<string, string> = {
 
 function getAccent(id: string) {
   return PLAN_ACCENT[id] ?? '#dc2626'
+}
+
+/** Calcula precio con descuento promocional. Retorna null si no aplica (ej: "Gratis", "A medida"). */
+function calcPromoPrice(price: string, discount: number): string | null {
+  if (discount <= 0) return null
+  const num = parseInt(price.replace(/[$.]/g, '').replace(/\./g, ''))
+  if (isNaN(num) || num === 0) return null
+  const discounted = Math.round(num * (1 - discount / 100))
+  return '$' + discounted.toLocaleString('es-AR').replace(/,/g, '.')
 }
 
 const MALL_FEATURES = [
@@ -38,7 +48,6 @@ function MallPlansSection() {
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* Header */}
       <div style={{ marginBottom: 52 }}>
         <span style={{
           fontSize: 10, fontWeight: 700, color: '#dc2626',
@@ -58,7 +67,6 @@ function MallPlansSection() {
         </p>
       </div>
 
-      {/* Card única — horizontal, prominente */}
       <div style={{
         border: '1px solid #e8e8e8',
         borderRadius: 16,
@@ -69,32 +77,16 @@ function MallPlansSection() {
         gap: 40,
         alignItems: 'flex-start',
       }}>
-        {/* Izquierda — nombre + descripción + precio */}
         <div style={{ width: 210, flexShrink: 0 }}>
-          <div style={{
-            width: 8, height: 8, borderRadius: '50%',
-            background: '#9ca3af', marginBottom: 16,
-          }} />
-          <h3 style={{
-            fontWeight: 800, color: '#0d0d0f',
-            fontSize: 20, marginBottom: 12, lineHeight: 1.2,
-          }}>
+          <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#9ca3af', marginBottom: 16 }} />
+          <h3 style={{ fontWeight: 800, color: '#0d0d0f', fontSize: 20, marginBottom: 12, lineHeight: 1.2 }}>
             Tu plan incluido
           </h3>
           <p style={{ fontSize: 13, color: '#6b7280', lineHeight: 1.7, marginBottom: 28 }}>
             Funcionalidades digitales para tu comercio dentro del ecosistema del mall.
           </p>
-
-          {/* Badge de precio */}
-          <div style={{
-            background: '#fff',
-            border: '1px solid #e8e8e8',
-            borderRadius: 10,
-            padding: '14px 16px',
-          }}>
-            <p style={{
-              fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 4,
-            }}>
+          <div style={{ background: '#fff', border: '1px solid #e8e8e8', borderRadius: 10, padding: '14px 16px' }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: '#374151', marginBottom: 4 }}>
               Incluido en tu contrato
             </p>
             <p style={{ fontSize: 11, color: '#9ca3af', lineHeight: 1.55 }}>
@@ -103,37 +95,20 @@ function MallPlansSection() {
           </div>
         </div>
 
-        {/* Divider vertical */}
-        <div style={{
-          width: 1, background: '#e8e8e8',
-          alignSelf: 'stretch', flexShrink: 0,
-        }} />
+        <div style={{ width: 1, background: '#e8e8e8', alignSelf: 'stretch', flexShrink: 0 }} />
 
-        {/* Derecha — features verticales en bloques */}
-        <div style={{
-          flex: 1,
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 8,
-        }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8 }}>
           {MALL_FEATURES.map((feature, i) => (
             <div key={i} style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              background: '#f9fafb',
-              border: '1px solid #f0f0f0',
-              borderRadius: 8,
-              padding: '10px 14px',
+              display: 'flex', alignItems: 'center', gap: 12,
+              background: '#f9fafb', border: '1px solid #f0f0f0',
+              borderRadius: 8, padding: '10px 14px',
             }}>
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-                stroke="#9ca3af" strokeWidth="2.5"
-                style={{ flexShrink: 0 }}>
+                stroke="#9ca3af" strokeWidth="2.5" style={{ flexShrink: 0 }}>
                 <polyline points="20 6 9 17 4 12"/>
               </svg>
-              <span style={{ fontSize: 12, color: '#374151', lineHeight: 1.4 }}>
-                {feature}
-              </span>
+              <span style={{ fontSize: 12, color: '#374151', lineHeight: 1.4 }}>{feature}</span>
             </div>
           ))}
         </div>
@@ -143,16 +118,13 @@ function MallPlansSection() {
 }
 
 // ─── MODO COMERCIAL ─────────────────────────────────────────────────────────
-export default function PlansSection({ plans, proposalType = 'commercial' }: PlansSectionProps) {
-  // Modo mall — renderiza layout completamente distinto
+export default function PlansSection({ plans, proposalType = 'commercial', promotion }: PlansSectionProps) {
   if (proposalType === 'mall') return <MallPlansSection />
 
   const visiblePlans = plans.filter((p) => p.visible)
   const cols = visiblePlans.length <= 2
     ? `repeat(${visiblePlans.length}, 1fr)`
-    : visiblePlans.length === 3
-      ? 'repeat(3, 1fr)'
-      : '1fr 1fr'
+    : visiblePlans.length === 3 ? 'repeat(3, 1fr)' : '1fr 1fr'
 
   return (
     <div style={{
@@ -162,6 +134,18 @@ export default function PlansSection({ plans, proposalType = 'commercial' }: Pla
       display: 'flex',
       flexDirection: 'column',
     }}>
+      {/* Animation keyframes */}
+      <style>{`
+        @keyframes promo-badge-in {
+          from { opacity: 0; transform: translateY(-3px) scale(0.92); }
+          to   { opacity: 1; transform: translateY(0)  scale(1); }
+        }
+        @keyframes promo-price-in {
+          from { opacity: 0; transform: translateY(4px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+      `}</style>
+
       {/* Header */}
       <div style={{ marginBottom: 10 }}>
         <span style={{
@@ -179,7 +163,6 @@ export default function PlansSection({ plans, proposalType = 'commercial' }: Pla
         <p style={{ color: '#6b7280', fontSize: 14, marginTop: 12, marginBottom: 32 }}>
           la comunicación de tus beneficios.
         </p>
-
         <p style={{
           fontSize: 9, fontWeight: 700, color: '#9ca3af',
           textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 16,
@@ -194,16 +177,39 @@ export default function PlansSection({ plans, proposalType = 'commercial' }: Pla
           const accent = getAccent(plan.id)
           const isAnnual = plan.priceNote?.includes('anual')
 
+          // ── Promotion logic ──────────────────────────────────────────────
+          const promoActive =
+            promotion &&
+            promotion.mode !== 'none' &&
+            promotion.discount > 0 &&
+            (promotion.mode === 'all' || promotion.planId === plan.id)
+
+          const promoPrice = promoActive
+            ? calcPromoPrice(plan.price, promotion!.discount)
+            : null
+
+          // Only show visual promo when the price actually changes (not for text prices)
+          const hasVisualPromo = promoActive && promoPrice !== null
+
+          // ── Badge key — triggers re-animation when promo changes ─────────
+          const promoBadgeKey = hasVisualPromo ? `${plan.id}-${promotion!.discount}` : `${plan.id}-none`
+
           return (
             <div key={plan.id} style={{
               position: 'relative',
               borderRadius: 12,
-              border: plan.highlighted ? `1.5px solid ${accent}` : '1px solid #e8e8e8',
+              border: plan.highlighted
+                ? `1.5px solid ${accent}`
+                : hasVisualPromo
+                  ? '1px solid rgba(220,38,38,0.18)'
+                  : '1px solid #e8e8e8',
               padding: '24px 20px',
               display: 'flex',
               flexDirection: 'column',
               background: '#fff',
             }}>
+
+              {/* Recomendado badge */}
               {plan.highlighted && (
                 <div style={{ position: 'absolute', top: -12, left: '50%', transform: 'translateX(-50%)' }}>
                   <span style={{
@@ -218,7 +224,8 @@ export default function PlansSection({ plans, proposalType = 'commercial' }: Pla
                 </div>
               )}
 
-              {isAnnual && (
+              {/* Annual badge (top-right) */}
+              {isAnnual && !hasVisualPromo && (
                 <div style={{ position: 'absolute', top: 14, right: 14 }}>
                   <span style={{
                     background: '#fef3c7', color: '#92400e',
@@ -230,6 +237,27 @@ export default function PlansSection({ plans, proposalType = 'commercial' }: Pla
                 </div>
               )}
 
+              {/* Promo badge (top-right) — replaces annual badge when promo active */}
+              {hasVisualPromo && (
+                <div
+                  key={promoBadgeKey}
+                  style={{
+                    position: 'absolute', top: 14, right: 14,
+                    animation: 'promo-badge-in 0.22s cubic-bezier(0.34, 1.4, 0.64, 1) both',
+                  }}
+                >
+                  <span style={{
+                    background: '#0d0d0f', color: '#fff',
+                    fontSize: 8, fontWeight: 800, letterSpacing: '0.05em',
+                    padding: '3px 8px', borderRadius: 5,
+                    display: 'inline-block',
+                  }}>
+                    −{promotion!.discount}%
+                  </span>
+                </div>
+              )}
+
+              {/* Plan name + description */}
               <div style={{ marginBottom: 16 }}>
                 <div style={{
                   width: 8, height: 8, borderRadius: '50%',
@@ -247,20 +275,68 @@ export default function PlansSection({ plans, proposalType = 'commercial' }: Pla
                 </p>
               </div>
 
+              {/* Price section */}
               <div style={{ marginBottom: 18, paddingBottom: 16, borderBottom: '1px solid #f0f0f0' }}>
-                <div style={{
-                  fontSize: visiblePlans.length === 3 ? 22 : 26,
-                  fontWeight: 900,
-                  color: plan.highlighted ? accent : '#0d0d0f',
-                  lineHeight: 1, letterSpacing: '-0.5px',
-                }}>
-                  {plan.price}
-                </div>
-                <div style={{ fontSize: 10, color: '#9ca3af', marginTop: 5, lineHeight: 1.4 }}>
-                  {plan.priceNote}
-                </div>
+                {hasVisualPromo ? (
+                  // ── Promo price display ──────────────────────────────────
+                  <div
+                    key={promoBadgeKey}
+                    style={{ animation: 'promo-price-in 0.25s ease both' }}
+                  >
+                    {/* Original price — crossed out */}
+                    <div style={{
+                      fontSize: 13, fontWeight: 600,
+                      color: '#c4c4c4',
+                      textDecoration: 'line-through',
+                      letterSpacing: '-0.2px',
+                      marginBottom: 4,
+                    }}>
+                      {plan.price}
+                    </div>
+                    {/* Discounted price */}
+                    <div style={{
+                      fontSize: visiblePlans.length === 3 ? 22 : 26,
+                      fontWeight: 900,
+                      color: accent,
+                      lineHeight: 1,
+                      letterSpacing: '-0.5px',
+                    }}>
+                      {promoPrice}
+                    </div>
+                    {/* Note row: priceNote + annual badge if both */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 5 }}>
+                      <span style={{ fontSize: 10, color: '#9ca3af' }}>{plan.priceNote}</span>
+                      {isAnnual && (
+                        <span style={{
+                          background: '#fef3c7', color: '#92400e',
+                          fontSize: 8, fontWeight: 700,
+                          padding: '1px 5px', borderRadius: 999,
+                        }}>
+                          −30% anual
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  // ── Standard price display ───────────────────────────────
+                  <div>
+                    <div style={{
+                      fontSize: visiblePlans.length === 3 ? 22 : 26,
+                      fontWeight: 900,
+                      color: plan.highlighted ? accent : '#0d0d0f',
+                      lineHeight: 1,
+                      letterSpacing: '-0.5px',
+                    }}>
+                      {plan.price}
+                    </div>
+                    <div style={{ fontSize: 10, color: '#9ca3af', marginTop: 5, lineHeight: 1.4 }}>
+                      {plan.priceNote}
+                    </div>
+                  </div>
+                )}
               </div>
 
+              {/* Features */}
               <ul style={{ display: 'flex', flexDirection: 'column', gap: 7, flex: 1 }}>
                 {plan.features.map((feature, i) => {
                   const isSpecial = feature.startsWith('✦') || feature.startsWith('★')
