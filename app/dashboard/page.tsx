@@ -441,45 +441,47 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* ── Scroll view ── */}
-          {viewMode === 'scroll' && (
-            <div
-              ref={scrollContainerRef}
-              className="flex-1 overflow-auto relative"
-              style={{ background: '#c8c8c8', padding: '36px 48px 64px' }}
-            >
-              {/* Section indicator */}
-              {activeSection && (() => {
-                const enabled = config.sections.filter(s => s.enabled).sort((a,b) => a.order - b.order)
-                const idx     = enabled.findIndex(s => s.id === activeSection)
-                const section = enabled[idx]
-                if (!section) return null
-                return (
-                  <div className="sticky top-4 z-10 flex justify-end pointer-events-none mb-[-36px]">
-                    <div style={{
-                      display: 'flex', alignItems: 'center', gap: 8,
-                      background: 'rgba(15,15,17,0.85)',
-                      backdropFilter: 'blur(8px)',
-                      color: '#fff', fontSize: 11, fontWeight: 500,
-                      padding: '5px 12px', borderRadius: 999,
-                      border: '1px solid rgba(255,255,255,0.08)',
-                      boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
-                    }}>
-                      <span style={{ color: 'rgba(255,255,255,0.4)', fontVariantNumeric: 'tabular-nums' }}>
-                        {idx + 1}/{enabled.length}
-                      </span>
-                      <span style={{ width: 1, height: 12, background: 'rgba(255,255,255,0.15)' }} />
-                      <span>{section.label}</span>
-                    </div>
+          {/* ── Scroll view ── always mounted so html2canvas finds [data-export-section] */}
+          <div
+            ref={scrollContainerRef}
+            className="flex-1 overflow-auto relative"
+            style={{
+              background: '#c8c8c8', padding: '36px 48px 64px',
+              // Hide visually when in grid mode but keep in DOM for PDF export
+              display: viewMode === 'scroll' ? undefined : 'none',
+            }}
+          >
+            {/* Section indicator */}
+            {activeSection && (() => {
+              const enabled = config.sections.filter(s => s.enabled).sort((a,b) => a.order - b.order)
+              const idx     = enabled.findIndex(s => s.id === activeSection)
+              const section = enabled[idx]
+              if (!section) return null
+              return (
+                <div className="sticky top-4 z-10 flex justify-end pointer-events-none mb-[-36px]">
+                  <div style={{
+                    display: 'flex', alignItems: 'center', gap: 8,
+                    background: 'rgba(15,15,17,0.85)',
+                    backdropFilter: 'blur(8px)',
+                    color: '#fff', fontSize: 11, fontWeight: 500,
+                    padding: '5px 12px', borderRadius: 999,
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    boxShadow: '0 2px 12px rgba(0,0,0,0.3)',
+                  }}>
+                    <span style={{ color: 'rgba(255,255,255,0.4)', fontVariantNumeric: 'tabular-nums' }}>
+                      {idx + 1}/{enabled.length}
+                    </span>
+                    <span style={{ width: 1, height: 12, background: 'rgba(255,255,255,0.15)' }} />
+                    <span>{section.label}</span>
                   </div>
-                )
-              })()}
+                </div>
+              )
+            })()}
 
-              <div style={{ maxWidth: 794, margin: '0 auto' }}>
-                <ProposalPreview config={config} />
-              </div>
+            <div style={{ maxWidth: 794, margin: '0 auto' }}>
+              <ProposalPreview config={config} />
             </div>
-          )}
+          </div>
 
           {/* ── Grid view ── */}
           {viewMode === 'grid' && (
