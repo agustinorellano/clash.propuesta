@@ -1,31 +1,25 @@
-import { LogOut } from 'lucide-react'
-
-interface SidebarProps {
-  onLogout: () => void
-}
-
-export default function Sidebar({ onLogout }: SidebarProps) {
+export default function Sidebar() {
   return (
-    <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-      <div className="flex items-center gap-2">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/clash-logo.png"
-          alt="Clash"
-          className="h-7 w-auto object-contain"
-          onError={(e) => {
-            // Fall back to SVG version
-            ;(e.currentTarget as HTMLImageElement).src = '/clash-logo.svg'
-          }}
-        />
-      </div>
-      <button
-        onClick={onLogout}
-        title="Cerrar sesión"
-        className="p-1.5 text-gray-400 hover:text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-      >
-        <LogOut className="w-4 h-4" />
-      </button>
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: 8,
+      padding: '12px 16px',
+      borderBottom: '1px solid #f0f0f0',
+      flexShrink: 0,
+    }}>
+      {/* Red accent square — identidad Clash */}
+      <div style={{
+        width: 20, height: 20,
+        background: '#dc2626', borderRadius: 5,
+        flexShrink: 0,
+      }} />
+      <span style={{
+        fontSize: 13, fontWeight: 800, color: '#0d0d0f',
+        letterSpacing: '-0.3px',
+        fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+      }}>
+        Clash{' '}
+        <span style={{ fontWeight: 500, color: '#9ca3af' }}>Propuesta</span>
+      </span>
     </div>
   )
 }
