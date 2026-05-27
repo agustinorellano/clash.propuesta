@@ -10,12 +10,20 @@ import ClientViewSection from '@/components/preview/sections/ClientViewSection'
 import CustomSection    from '@/components/preview/sections/CustomSection'
 import { decodeConfig } from '@/lib/config-encoder'
 import { getRenderConfig } from '@/lib/render-cache'
+import PrintFromLocal   from './PrintFromLocal'
 
 export default function ProposalPrintPage({
   searchParams,
 }: {
-  searchParams: { d?: string; token?: string; fmt?: string }
+  searchParams: { d?: string; token?: string; fmt?: string; local?: string }
 }) {
+  // ── Client-side localStorage approach (primary path) ─────────────────────
+  // ExportModal stores config in localStorage and passes the key here.
+  // PrintFromLocal reads it, renders sections, and auto-triggers window.print().
+  if (searchParams.local) {
+    return <PrintFromLocal localKey={searchParams.local} />
+  }
+
   let config: any = null
 
   if (searchParams.d) {

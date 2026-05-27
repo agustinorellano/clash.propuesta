@@ -2,8 +2,7 @@
 
 import { useState } from 'react'
 import { ProposalConfig } from '@/lib/types'
-import { generatePDFClient } from '@/lib/client-pdf'
-import { X, Loader2, FileDown, CheckCircle2, Tag } from 'lucide-react'
+import { X, Loader2, Printer, CheckCircle2, Tag } from 'lucide-react'
 
 interface ExportModalProps {
   config: ProposalConfig
@@ -34,7 +33,19 @@ export default function ExportModal({ config, onClose }: ExportModalProps) {
     setExporting(true)
     setError(null)
     try {
-      await generatePDFClient(config.brand.name, 'a4')
+      // Store config in localStorage and open the print-ready page in a new tab.
+      // That page reads the config, renders all sections, and auto-triggers
+      // window.print() — browser native PDF generation, no html2canvas artifacts.
+      const key = `clash-print-${Date.now()}`
+      localStorage.setItem(key, JSON.stringify(config))
+      const win = window.open(`/proposal-print?local=${key}`, '_blank')
+      if (!win) {
+        localStorage.removeItem(key)
+        throw new Error(
+          'No se pudo abrir la ventana de impresión. ' +
+          'Permitís las ventanas emergentes para este sitio e intentá de nuevo.',
+        )
+      }
       onClose()
     } catch (err: any) {
       setError(err.message || 'Error al generar el PDF')
@@ -201,18 +212,18 @@ export default function ExportModal({ config, onClose }: ExportModalProps) {
             {exporting ? (
               <>
                 <Loader2 size={15} style={{ animation: 'spin 1s linear infinite' }} />
-                Generando PDF…
+                Abriendo…
               </>
             ) : (
               <>
-                <FileDown size={15} />
-                Descargar propuesta A4
+                <Printer size={15} />
+                Generar PDF
               </>
             )}
           </button>
 
           <p style={{ fontSize: 10, color: '#d1d5db', textAlign: 'center', marginTop: 10 }}>
-            PDF vectorial · tipografías embebidas · calidad print
+            Se abre una nueva pestaña → Imprimir → Guardar como PDF
           </p>
         </div>
       </div>
