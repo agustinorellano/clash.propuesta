@@ -49,11 +49,12 @@ export default function DistribSection() {
     <div style={{
       background: '#0d0d0f',
       height: 1123,
-      padding: '72px 60px 60px',
+      padding: '56px 60px 52px',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
       position: 'relative',
+      boxSizing: 'border-box',
     }}>
       {/* Glow sutil */}
       <div style={{

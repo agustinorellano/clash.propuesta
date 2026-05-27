@@ -129,10 +129,12 @@ export default function PlansSection({ plans, proposalType = 'commercial', promo
   return (
     <div style={{
       background: '#fff',
-      minHeight: 1123,
-      padding: '72px 60px 60px',
+      height: 1123,
+      padding: '56px 60px 48px',
       display: 'flex',
       flexDirection: 'column',
+      overflow: 'hidden',
+      boxSizing: 'border-box',
     }}>
       {/* Animation keyframes */}
       <style>{`
@@ -155,17 +157,17 @@ export default function PlansSection({ plans, proposalType = 'commercial', promo
           Planes
         </span>
         <h2 style={{
-          fontSize: 44, fontWeight: 900, color: '#0d0d0f',
-          marginTop: 16, lineHeight: 1.08, letterSpacing: '-1px',
+          fontSize: 40, fontWeight: 900, color: '#0d0d0f',
+          marginTop: 12, lineHeight: 1.08, letterSpacing: '-1px',
         }}>
           Elegí la forma de escalar
         </h2>
-        <p style={{ color: '#6b7280', fontSize: 14, marginTop: 12, marginBottom: 32 }}>
+        <p style={{ color: '#6b7280', fontSize: 13, marginTop: 8, marginBottom: 20 }}>
           la comunicación de tus beneficios.
         </p>
         <p style={{
           fontSize: 9, fontWeight: 700, color: '#9ca3af',
-          textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 16,
+          textTransform: 'uppercase', letterSpacing: '0.18em', marginBottom: 12,
         }}>
           Planes comerciales
         </p>
@@ -337,7 +339,7 @@ export default function PlansSection({ plans, proposalType = 'commercial', promo
               </div>
 
               {/* Features */}
-              <ul style={{ display: 'flex', flexDirection: 'column', gap: 7, flex: 1 }}>
+              <ul style={{ display: 'flex', flexDirection: 'column', gap: 5, flex: 1, overflow: 'hidden' }}>
                 {plan.features.map((feature, i) => {
                   const isSpecial = feature.startsWith('✦') || feature.startsWith('★')
                   const label = feature.replace(/^[✦★]\s*/, '')

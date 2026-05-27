@@ -18,11 +18,12 @@ export default function CaseSection() {
     <div style={{
       background: '#0d0d0f',
       height: 1123,
-      padding: '72px 60px',
+      padding: '56px 60px',
       display: 'flex',
       flexDirection: 'column',
       position: 'relative',
       overflow: 'hidden',
+      boxSizing: 'border-box',
     }}>
       {/* Glow sutil */}
       <div style={{

@@ -35,13 +35,14 @@ export default function AnalyticsSection() {
     <div style={{
       background: '#0d0d0f',
       height: 1123,
-      padding: '72px 60px',
+      padding: '52px 60px 48px',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
+      boxSizing: 'border-box',
     }}>
       {/* Header */}
-      <div style={{ marginBottom: 40 }}>
+      <div style={{ marginBottom: 24, flexShrink: 0 }}>
         <span style={{
           fontSize: 10, fontWeight: 700, color: '#dc2626',
           letterSpacing: '0.25em', textTransform: 'uppercase',
@@ -49,12 +50,12 @@ export default function AnalyticsSection() {
           Analytics
         </span>
         <h2 style={{
-          fontSize: 44, fontWeight: 900, color: '#f1f1f1',
-          lineHeight: 1.08, marginTop: 16, letterSpacing: '-1px',
+          fontSize: 40, fontWeight: 900, color: '#f1f1f1',
+          lineHeight: 1.08, marginTop: 12, letterSpacing: '-1px',
         }}>
           Tu Dashboard
         </h2>
-        <p style={{ color: '#5a6374', fontSize: 13, marginTop: 10 }}>
+        <p style={{ color: '#5a6374', fontSize: 12, marginTop: 8 }}>
           Promociones → Interacción → Datos → Optimización
         </p>
       </div>
@@ -76,14 +77,14 @@ export default function AnalyticsSection() {
             }}>
               Estado de operación
             </p>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 8 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6 }}>
               {kpis.map((item, i) => (
                 <div key={i} style={{
                   background: 'rgba(255,255,255,0.03)', borderRadius: 8,
-                  padding: '12px 10px', border: '1px solid rgba(255,255,255,0.05)',
+                  padding: '8px 10px', border: '1px solid rgba(255,255,255,0.05)',
                 }}>
                   <p style={{
-                    fontSize: 20, fontWeight: 900, lineHeight: 1, marginBottom: 5,
+                    fontSize: 18, fontWeight: 900, lineHeight: 1, marginBottom: 4,
                     color: item.accent ? '#dc2626' : '#f1f1f1',
                   }}>
                     {item.val}
@@ -110,7 +111,7 @@ export default function AnalyticsSection() {
             {/* Filas — copia exacta de clash-conecta .dash-partner */}
             {partners.map((p) => (
               <div key={p.name} style={{
-                display: 'flex', alignItems: 'center', gap: 10, marginBottom: 12,
+                display: 'flex', alignItems: 'center', gap: 10, marginBottom: 9,
               }}>
                 {/* .dp-logo — el PNG ya trae su fondo de marca */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -151,10 +152,10 @@ export default function AnalyticsSection() {
               </div>
             ))}
 
-            {/* .dash-caption — copia exacta */}
+            {/* .dash-caption */}
             <div style={{
               background: '#1C1C1E', borderRadius: 10,
-              padding: '14px 16px', marginTop: 4,
+              padding: '10px 14px', marginTop: 2,
             }}>
               <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.75)', lineHeight: 1.5 }}>
                 <strong style={{ color: '#DC2626' }}>Los datos no son el final.</strong>{' '}
@@ -171,7 +172,7 @@ export default function AnalyticsSection() {
         }}>
           <p style={{
             fontSize: 9, fontWeight: 700, color: '#374151',
-            textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 24,
+            textTransform: 'uppercase', letterSpacing: '0.14em', marginBottom: 16,
           }}>
             Perfil del cliente
           </p>
@@ -183,7 +184,7 @@ export default function AnalyticsSection() {
           }}>
             Edad
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 32 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginBottom: 20 }}>
             {ageRows.map((r) => (
               <div key={r.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 10, color: '#5a6374', width: 32, flexShrink: 0 }}>{r.label}</span>
@@ -214,7 +215,7 @@ export default function AnalyticsSection() {
           }}>
             Género
           </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 32 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 7, marginBottom: 20 }}>
             {genderRows.map((r) => (
               <div key={r.label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <span style={{ fontSize: 10, color: '#5a6374', width: 32, flexShrink: 0 }}>{r.label}</span>
@@ -238,7 +239,7 @@ export default function AnalyticsSection() {
           </div>
 
           {/* Separator */}
-          <div style={{ height: 1, background: 'rgba(255,255,255,0.05)', marginBottom: 24 }} />
+          <div style={{ height: 1, background: 'rgba(255,255,255,0.05)', marginBottom: 16 }} />
 
           {/* Summary stats */}
           <p style={{

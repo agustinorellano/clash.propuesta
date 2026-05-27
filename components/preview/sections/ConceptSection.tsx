@@ -21,10 +21,11 @@ export default function ConceptSection() {
     <div style={{
       background: '#ffffff',
       height: 1123,
-      padding: '72px 60px',
+      padding: '56px 60px',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
+      boxSizing: 'border-box',
     }}>
       {/* Label */}
       <div style={{ marginBottom: 36 }}>

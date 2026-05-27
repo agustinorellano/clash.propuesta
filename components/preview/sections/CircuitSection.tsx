@@ -143,13 +143,14 @@ export default function CircuitSection() {
     <div style={{
       background: '#fff',
       height: 1123,
-      padding: '72px 60px',
+      padding: '56px 60px 52px',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
+      boxSizing: 'border-box',
     }}>
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: 52 }}>
+      <div style={{ textAlign: 'center', marginBottom: 36, flexShrink: 0 }}>
         <span style={{
           fontSize: 10, fontWeight: 700, color: '#dc2626',
           letterSpacing: '0.25em', textTransform: 'uppercase',
