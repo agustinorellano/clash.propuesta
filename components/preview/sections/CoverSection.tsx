@@ -9,7 +9,6 @@ export default function CoverSection({ brand }: CoverSectionProps) {
     day: 'numeric', month: 'long', year: 'numeric',
   })
   const effectiveLogo = brand.logoBase64 || brand.logoUrl
-  const initials = brand.name ? brand.name.substring(0, 2).toUpperCase() : null
 
   return (
     <div style={{
@@ -83,23 +82,6 @@ export default function CoverSection({ brand }: CoverSectionProps) {
               alt={brand.name}
               style={{ height: 64, maxWidth: 260, objectFit: 'contain', display: 'block', margin: '0 auto' }}
             />
-          </div>
-        ) : initials ? (
-          /* Placeholder con iniciales cuando no hay logo */
-          <div style={{
-            marginBottom: 52,
-            width: 88, height: 88,
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.09)',
-            borderRadius: 16,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <span style={{
-              fontSize: 30, fontWeight: 900,
-              color: 'rgba(255,255,255,0.22)', letterSpacing: '-1px',
-            }}>
-              {initials}
-            </span>
           </div>
         ) : null}
 

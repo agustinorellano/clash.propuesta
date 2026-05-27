@@ -67,27 +67,40 @@ export default function BrandEditor({ brand, onChange }: BrandEditorProps) {
         <span className="block text-xs font-medium text-gray-600 mb-2">Logo de la marca</span>
 
         {effectiveLogo ? (
-          /* Preview with remove button */
-          <div className="relative rounded-xl border border-gray-200 bg-gray-50 flex items-center justify-center p-3 h-24">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={effectiveLogo}
-              alt="Logo"
-              className="max-h-16 max-w-full object-contain"
-              onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3' }}
-            />
-            <button
-              onClick={clearLogo}
-              title="Quitar logo"
-              className="absolute top-2 right-2 p-1 bg-white rounded-full shadow-sm border border-gray-200 text-gray-400 hover:text-red-500 transition-colors"
-            >
-              <X className="w-3.5 h-3.5" />
-            </button>
-            {brand.logoBase64 && (
-              <span className="absolute bottom-2 left-2 text-xs text-gray-400 bg-white px-1.5 py-0.5 rounded-md border border-gray-100">
-                archivo
-              </span>
-            )}
+          /* Circular crop preview */
+          <div className="flex items-center gap-4 py-1">
+            {/* Circle avatar */}
+            <div style={{
+              width: 80, height: 80, borderRadius: '50%',
+              overflow: 'hidden', flexShrink: 0,
+              border: '2px solid #e5e7eb',
+              background: '#f9fafb',
+              boxShadow: '0 1px 6px rgba(0,0,0,0.08)',
+            }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={effectiveLogo}
+                alt="Logo"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }}
+                onError={(e) => { (e.target as HTMLImageElement).style.opacity = '0.3' }}
+              />
+            </div>
+            {/* Info + remove */}
+            <div className="flex flex-col gap-1.5 min-w-0">
+              <p className="text-xs font-semibold text-gray-700 truncate">
+                {brand.name || 'Logo cargado'}
+              </p>
+              <p className="text-xs text-gray-400">
+                {brand.logoBase64 ? 'Archivo local' : 'URL externa'}
+              </p>
+              <button
+                onClick={clearLogo}
+                className="flex items-center gap-1 text-xs text-gray-400 hover:text-red-500 transition-colors w-fit mt-0.5"
+              >
+                <X className="w-3 h-3" />
+                Quitar logo
+              </button>
+            </div>
           </div>
         ) : (
           /* Upload zone */

@@ -9,7 +9,7 @@ import BlockSelector from '@/components/editor/BlockSelector'
 import PlanEditor from '@/components/editor/PlanEditor'
 import ProposalPreview from '@/components/preview/ProposalPreview'
 import ExportModal from '@/components/ExportModal'
-import { FileDown, CalendarDays, CalendarRange } from 'lucide-react'
+import { FileDown, CalendarDays, CalendarRange, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 
 type Tab = 'brand' | 'sections' | 'plans'
 
@@ -17,6 +17,7 @@ export default function DashboardPage() {
   const [config, setConfig] = useState<ProposalConfig>(defaultConfig)
   const [activeTab, setActiveTab] = useState<Tab>('brand')
   const [showExportModal, setShowExportModal] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(true)
 
   // ── Sync plan prices when branches or billing change ──────────────────────
   const syncPlanPrices = useCallback(
@@ -138,7 +139,14 @@ export default function DashboardPage() {
     <div className="flex h-screen overflow-hidden bg-gray-50">
 
       {/* ── Left Panel — Editor ── */}
-      <div className="w-80 flex-shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-hidden">
+      <div
+        className="flex-shrink-0 bg-white border-r border-gray-200 flex flex-col overflow-hidden"
+        style={{
+          width: sidebarOpen ? 320 : 0,
+          minWidth: 0,
+          transition: 'width 0.22s cubic-bezier(0.4, 0, 0.2, 1)',
+        }}
+      >
         <Sidebar onLogout={async () => {
           await fetch('/api/auth/logout', { method: 'POST' })
           window.location.href = '/login'
@@ -297,15 +305,15 @@ export default function DashboardPage() {
         </div>
 
         {/* Tab navigation */}
-        <div className="flex border-b border-gray-200 px-2 pt-2">
+        <div className="flex gap-0.5 border-b border-gray-100 px-3 pt-2">
           {tabs.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex-1 py-2 px-2 text-xs font-semibold rounded-t-md transition-colors ${
+              className={`flex-1 py-1.5 px-1 text-xs font-semibold rounded-t-md transition-all ${
                 activeTab === tab.id
-                  ? 'bg-gray-50 text-gray-900 border-b-2 border-red-600'
-                  : 'text-gray-500 hover:text-gray-700'
+                  ? 'text-gray-900 border-b-2 border-red-600'
+                  : 'text-gray-400 hover:text-gray-600 hover:bg-gray-50'
               }`}
             >
               {tab.label}
@@ -336,16 +344,39 @@ export default function DashboardPage() {
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top bar */}
         <div className="bg-white border-b border-gray-200 flex-shrink-0">
-          <div className="h-14 flex items-center justify-between px-6">
-            <div>
-              <h1 className="text-sm font-semibold text-gray-900">Vista previa de propuesta</h1>
-              {config.brand.name && <p className="text-xs text-gray-500">{config.brand.name}</p>}
+          <div className="h-14 flex items-center justify-between px-4">
+            <div className="flex items-center gap-2">
+              {/* Sidebar toggle */}
+              <button
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+                title={sidebarOpen ? 'Ocultar panel' : 'Mostrar panel'}
+                className="p-1.5 rounded-md text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+              >
+                {sidebarOpen
+                  ? <PanelLeftClose className="w-4 h-4" />
+                  : <PanelLeftOpen  className="w-4 h-4" />
+                }
+              </button>
+              <div style={{ width: 1, height: 16, background: '#e5e7eb' }} />
+              <div>
+                <h1 className="text-sm font-semibold text-gray-900 leading-tight">Vista previa</h1>
+                {config.brand.name && (
+                  <p className="text-xs text-gray-400 leading-tight">{config.brand.name}</p>
+                )}
+              </div>
             </div>
+
             <button
               onClick={() => setShowExportModal(true)}
-              className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white text-sm font-semibold px-4 py-2 rounded-lg transition-colors"
+              className="flex items-center gap-2 text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition-all active:scale-[0.97]"
+              style={{
+                background: '#dc2626',
+                boxShadow: '0 1px 3px rgba(220,38,38,0.35), 0 1px 2px rgba(0,0,0,0.08)',
+              }}
+              onMouseEnter={e => (e.currentTarget.style.background = '#b91c1c')}
+              onMouseLeave={e => (e.currentTarget.style.background = '#dc2626')}
             >
-              <FileDown className="w-4 h-4" />
+              <FileDown className="w-3.5 h-3.5" />
               Generar PDF
             </button>
           </div>
