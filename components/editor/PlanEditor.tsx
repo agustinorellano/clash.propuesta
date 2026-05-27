@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { PlanData } from '@/lib/types'
-import { getScaleTier, SCALE_LABELS, type Billing } from '@/lib/plansConfig'
+import { type Billing } from '@/lib/plansConfig'
 import { ChevronDown, ChevronUp, Plus, X, Star, Eye, EyeOff, Lock } from 'lucide-react'
 
 interface PlanEditorProps {
@@ -167,9 +167,6 @@ export default function PlanEditor({ plans, billing, branches, onChange }: PlanE
     onChange(plans.map((p) => (p.id === updated.id ? updated : p)))
   }
 
-  const tier = getScaleTier(branches)
-  const scaleLabel = SCALE_LABELS[tier]
-
   return (
     <div className="p-4 space-y-3">
       <div className="pb-2 border-b border-gray-100">
@@ -177,7 +174,7 @@ export default function PlanEditor({ plans, billing, branches, onChange }: PlanE
           Planes comerciales
         </h2>
         <p className="text-xs text-gray-400 mt-0.5">
-          {scaleLabel} · {billing === 'monthly' ? 'Mensual' : 'Anual −30%'}
+          {billing === 'monthly' ? 'Facturación mensual' : 'Facturación anual −30%'}
         </p>
       </div>
 
