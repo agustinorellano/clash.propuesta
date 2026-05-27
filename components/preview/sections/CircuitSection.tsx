@@ -11,18 +11,6 @@ export default function CircuitSection() {
       position: 'relative',
     }}>
 
-      <style>{`
-        @keyframes circ-row-glow{0%,100%{background:#fff}50%{background:#fff8f8;border-color:#fecaca}}
-        @keyframes circ-dot-act{0%,100%{background:#d1d5db}50%{background:#22c55e;box-shadow:0 0 5px rgba(34,197,94,.4)}}
-        @keyframes circ-check-act{0%,100%{opacity:.2}50%{opacity:1}}
-        @keyframes circ-prog{0%{width:18%}100%{width:88%}}
-        @keyframes circ-line-pulse{0%,100%{opacity:.2}50%{opacity:.9}}
-        @keyframes circ-center-pulse{0%,100%{box-shadow:0 4px 14px rgba(220,38,38,.45)}50%{box-shadow:0 6px 26px rgba(220,38,38,.65),0 0 0 6px rgba(220,38,38,.09)}}
-        @keyframes circ-node-pop{0%,100%{box-shadow:0 2px 6px rgba(0,0,0,.06)}50%{box-shadow:0 4px 14px rgba(220,38,38,.15)}}
-        @keyframes circ-pulse-ring{0%{transform:translate(-50%,-50%) scale(.65);opacity:.55}100%{transform:translate(-50%,-50%) scale(1.95);opacity:0}}
-        @keyframes circ-notif{0%,100%{opacity:0;transform:translateX(10px)}18%,82%{opacity:1;transform:translateX(0)}}
-        @keyframes circ-tile-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-      `}</style>
 
       {/* Dot grid texture */}
       <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
@@ -99,26 +87,27 @@ export default function CircuitSection() {
               <span style={{ fontSize: 7.5, color: '#9ca3af' }}>3 de 8</span>
             </div>
             {[
-              { name: 'Promo verano 2025', st: 'ACTIVO', sc: '#22c55e', dc: '#22c55e', views: '2.4K', anim: true, delay: '0s'  },
-              { name: 'Descuento ICBC',    st: 'ACTIVO', sc: '#22c55e', dc: '#22c55e', views: '1.8K', anim: true, delay: '1.2s' },
-              { name: 'Combo especial',    st: 'DRAFT',  sc: '#f59e0b', dc: '#d1d5db', views: '—',    anim: false, delay: '' },
-              { name: 'Flash sale',        st: '',       sc: '#d1d5db', dc: '#e5e7eb', views: '—',    anim: false, delay: '', ghost: true },
+              { name: 'Promo verano 2025', st: 'ACTIVO', sc: '#22c55e', dc: '#22c55e', views: '2.4K', active: true  },
+              { name: 'Descuento ICBC',    st: 'ACTIVO', sc: '#22c55e', dc: '#22c55e', views: '1.8K', active: true  },
+              { name: 'Combo especial',    st: 'DRAFT',  sc: '#f59e0b', dc: '#d1d5db', views: '—',    active: false },
+              { name: 'Flash sale',        st: '',       sc: '#d1d5db', dc: '#e5e7eb', views: '—',    active: false, ghost: true },
             ].map((row, i) => (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', gap: 7, padding: '7px 8px',
-                borderRadius: 7, background: '#fff', border: '1px solid #f0f0f1', marginBottom: 5,
+                borderRadius: 7, marginBottom: 5,
                 opacity: row.ghost ? 0.28 : 1,
-                animation: row.anim ? `circ-row-glow 3.6s ${row.delay} ease-in-out infinite` : undefined,
+                background: row.active ? '#fff8f8' : '#fff',
+                border: `1px solid ${row.active ? '#fecaca' : '#f0f0f1'}`,
               }}>
                 <div style={{
                   width: 6, height: 6, borderRadius: '50%', background: row.dc, flexShrink: 0,
-                  animation: row.anim ? `circ-dot-act 3.6s ${row.delay} ease-in-out infinite` : undefined,
+                  boxShadow: row.active ? '0 0 5px rgba(34,197,94,.4)' : 'none',
                 }} />
                 <span style={{ flex: 1, fontSize: 9, color: '#374151', fontWeight: 500, lineHeight: 1.2 }}>{row.name}</span>
                 {row.st && <span style={{ fontSize: 7.5, fontWeight: 700, color: row.sc, letterSpacing: '0.04em' }}>{row.st}</span>}
                 <span style={{ fontSize: 7.5, color: '#9ca3af', marginLeft: 4 }}>{row.views}</span>
-                {row.anim && (
-                  <svg viewBox="0 0 12 12" fill="none" strokeLinecap="round" style={{ width: 10, height: 10, flexShrink: 0, animation: `circ-check-act 3.6s ${row.delay} ease-in-out infinite`, color: '#22c55e' }}>
+                {row.active && (
+                  <svg viewBox="0 0 12 12" fill="none" strokeLinecap="round" style={{ width: 10, height: 10, flexShrink: 0, color: '#22c55e' }}>
                     <polyline points="2,6 5,9 10,3" stroke="currentColor" strokeWidth="2.5"/>
                   </svg>
                 )}
@@ -126,7 +115,7 @@ export default function CircuitSection() {
             ))}
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', borderTop: '1px solid #ebebeb', marginTop: 2, flexShrink: 0 }}>
               <div style={{ flex: 1, height: 3, background: '#e8e8e8', borderRadius: 2, overflow: 'hidden' }}>
-                <div style={{ width: '72%', height: '100%', background: 'linear-gradient(90deg,#dc2626,#ff7070)', borderRadius: 2, animation: 'circ-prog 3s ease-in-out infinite alternate' }} />
+                <div style={{ width: '72%', height: '100%', background: 'linear-gradient(90deg,#dc2626,#ff7070)', borderRadius: 2 }} />
               </div>
               <span style={{ fontSize: 8, fontWeight: 600, color: '#9ca3af', whiteSpace: 'nowrap' }}>Sincronizando…</span>
             </div>
@@ -153,16 +142,16 @@ export default function CircuitSection() {
           <div style={{ flex: 1, background: 'linear-gradient(135deg,#fafafa 0%,#f4f4f5 100%)', borderRadius: 10, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 280 210" fill="none" preserveAspectRatio="xMidYMid meet">
               {[
-                { x2: 140, y2: 14  },
-                { x2: 237, y2: 58  },
-                { x2: 237, y2: 152 },
-                { x2: 140, y2: 196 },
-                { x2: 43,  y2: 152 },
-                { x2: 43,  y2: 58  },
+                { x2: 140, y2: 14,  opacity: 0.9 },
+                { x2: 237, y2: 58,  opacity: 0.5 },
+                { x2: 237, y2: 152, opacity: 0.8 },
+                { x2: 140, y2: 196, opacity: 0.4 },
+                { x2: 43,  y2: 152, opacity: 0.7 },
+                { x2: 43,  y2: 58,  opacity: 0.6 },
               ].map((ln, i) => (
                 <line key={i} x1="140" y1="105" x2={ln.x2} y2={ln.y2}
                   stroke="#e5e7eb" strokeWidth="1.5" strokeDasharray="4 3"
-                  style={{ animation: `circ-line-pulse 4.8s ${i * 0.4}s ease-in-out infinite` }}
+                  opacity={ln.opacity}
                 />
               ))}
             </svg>
@@ -172,8 +161,7 @@ export default function CircuitSection() {
               position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
               background: '#dc2626', color: '#fff', fontSize: 8, fontWeight: 900,
               letterSpacing: '0.8px', padding: '5px 9px', borderRadius: 8, whiteSpace: 'nowrap',
-              zIndex: 3, boxShadow: '0 4px 14px rgba(220,38,38,.4)',
-              animation: 'circ-center-pulse 2s ease-in-out infinite',
+              zIndex: 3, boxShadow: '0 6px 24px rgba(220,38,38,.55), 0 0 0 5px rgba(220,38,38,.09)',
             }}>PROMO</div>
 
             {/* 6 channel nodes */}
@@ -191,7 +179,6 @@ export default function CircuitSection() {
                 border: '1.5px solid #e5e7eb',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 zIndex: 2, boxShadow: '0 2px 8px rgba(0,0,0,.06)',
-                animation: `circ-node-pop 4.8s ${i * 0.4}s ease-in-out infinite`,
               }}>
                 {node.icon === 'ig' && (
                   <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" style={{ width: 14, height: 14 }}>
@@ -281,13 +268,16 @@ export default function CircuitSection() {
 
             {/* Center — phone with pulse rings */}
             <div style={{ position: 'relative', flexShrink: 0, width: 58, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {[46, 66, 86].map((size, i) => (
+              {[
+                { size: 46, opacity: 0.40 },
+                { size: 66, opacity: 0.22 },
+                { size: 86, opacity: 0.10 },
+              ].map((ring, i) => (
                 <div key={i} style={{
                   position: 'absolute', top: '50%', left: '50%',
-                  width: size, height: size, borderRadius: '50%',
-                  border: '1.5px solid rgba(220,38,38,.18)',
+                  width: ring.size, height: ring.size, borderRadius: '50%',
+                  border: `1.5px solid rgba(220,38,38,${ring.opacity})`,
                   transform: 'translate(-50%,-50%)',
-                  animation: `circ-pulse-ring 2.4s ${i * 0.8}s ease-out infinite`,
                 }} />
               ))}
               <div style={{ width: 34, height: 58, background: '#1a1a1a', borderRadius: 8, zIndex: 2, position: 'relative', boxShadow: '0 4px 16px rgba(0,0,0,.25)' }}>
@@ -304,15 +294,14 @@ export default function CircuitSection() {
             {/* Right — notification toasts */}
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 7, justifyContent: 'center' }}>
               {[
-                { chip: 'ICBC', bg: '#e00000', delay: '0s'  },
-                { chip: 'MODO', bg: '#111111', delay: '2.4s' },
-                { chip: 'MP',   bg: '#009ee3', delay: '4.8s' },
+                { chip: 'ICBC', bg: '#e00000' },
+                { chip: 'MODO', bg: '#111111' },
+                { chip: 'MP',   bg: '#009ee3' },
               ].map((n, i) => (
                 <div key={i} style={{
                   display: 'flex', alignItems: 'center', gap: 6,
                   background: '#fff', borderRadius: 8, padding: '6px 8px',
                   boxShadow: '0 2px 10px rgba(0,0,0,.1)',
-                  animation: `circ-notif 7.2s ${n.delay} ease-in-out infinite`,
                 }}>
                   <span style={{ fontSize: 6.5, fontWeight: 900, padding: '1px 4px', borderRadius: 3, background: n.bg, color: '#fff', flexShrink: 0 }}>{n.chip}</span>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -348,17 +337,16 @@ export default function CircuitSection() {
             {/* 2×3 KPI grid */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: '#e8e8e8', flex: 1 }}>
               {[
-                { v: '12',   l: 'Beneficios activos',  accent: false, delay: '.04s' },
-                { v: '5',    l: 'Por vencer',           accent: true,  delay: '.08s' },
-                { v: '75',   l: 'Sucursales activas',   accent: true,  delay: '.12s' },
-                { v: '30',   l: 'QR habilitados',       accent: false, delay: '.16s' },
-                { v: '1.4K', l: 'Me gusta',             accent: false, delay: '.20s' },
-                { v: '2.5K', l: 'Cal. positivas',       accent: false, delay: '.24s' },
+                { v: '12',   l: 'Beneficios activos', accent: false },
+                { v: '5',    l: 'Por vencer',          accent: true  },
+                { v: '75',   l: 'Sucursales activas',  accent: true  },
+                { v: '30',   l: 'QR habilitados',      accent: false },
+                { v: '1.4K', l: 'Me gusta',            accent: false },
+                { v: '2.5K', l: 'Cal. positivas',      accent: false },
               ].map((tile, i) => (
                 <div key={i} style={{
                   background: '#fff', padding: '10px 12px',
                   display: 'flex', flexDirection: 'column', gap: 2,
-                  animation: `circ-tile-in .4s ${tile.delay} ease both`,
                 }}>
                   <span style={{ fontSize: 22, fontWeight: 900, lineHeight: 1, color: tile.accent ? '#dc2626' : '#0d0d0f' }}>{tile.v}</span>
                   <span style={{ fontSize: 8, color: '#9ca3af', lineHeight: 1.25 }}>{tile.l}</span>
