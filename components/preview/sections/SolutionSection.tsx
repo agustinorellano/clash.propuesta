@@ -177,7 +177,7 @@ export default function SolutionSection() {
   return (
     <div style={{
       background: '#0d0d0f',
-      height: 1123,
+      width: 794, height: 1123,
       padding: '56px 60px 52px',
       display: 'flex',
       flexDirection: 'column',

@@ -24,15 +24,19 @@ export async function generatePDFClient(
   // ── 1. Esperar a que todas las web fonts estén resueltas ──────────────────
   await document.fonts.ready
 
-  // ── 2. Localizar secciones visibles en el preview ─────────────────────────
+  // ── 2. Localizar secciones en el contenedor off-screen dedicado ──────────
+  // #pdf-export-root siempre está montado a 794px exactos, independiente del
+  // view mode activo (scroll o grid). Esto garantiza layout correcto en todos
+  // los casos. Si por alguna razón no existe, buscamos globalmente.
+  const exportRoot = document.getElementById('pdf-export-root') ?? document
   const sectionEls = Array.from(
-    document.querySelectorAll<HTMLElement>('[data-export-section]'),
+    exportRoot.querySelectorAll<HTMLElement>('[data-export-section]'),
   )
 
   if (sectionEls.length === 0) {
     throw new Error(
       'No se encontraron secciones para exportar. ' +
-      'Asegurate de estar en vista de desplazamiento (no en la vista grid).',
+      'Activá al menos una sección desde el panel de Secciones.',
     )
   }
 

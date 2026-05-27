@@ -34,7 +34,7 @@ export default function AnalyticsSection() {
   return (
     <div style={{
       background: '#0d0d0f',
-      height: 1123,
+      width: 794, height: 1123,
       padding: '52px 60px 48px',
       display: 'flex',
       flexDirection: 'column',

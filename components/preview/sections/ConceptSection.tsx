@@ -20,7 +20,7 @@ export default function ConceptSection() {
   return (
     <div style={{
       background: '#ffffff',
-      height: 1123,
+      width: 794, height: 1123,
       padding: '56px 60px',
       display: 'flex',
       flexDirection: 'column',

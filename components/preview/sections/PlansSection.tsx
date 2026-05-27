@@ -129,7 +129,7 @@ export default function PlansSection({ plans, proposalType = 'commercial', promo
   return (
     <div style={{
       background: '#fff',
-      height: 1123,
+      width: 794, height: 1123,
       padding: '56px 60px 48px',
       display: 'flex',
       flexDirection: 'column',

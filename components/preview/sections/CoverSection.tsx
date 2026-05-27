@@ -13,12 +13,13 @@ export default function CoverSection({ brand }: CoverSectionProps) {
   return (
     <div style={{
       background: '#0d0d0f',
-      height: 1123,
+      width: 794, height: 1123,
       padding: '0',
       display: 'flex',
       flexDirection: 'column',
       position: 'relative',
       overflow: 'hidden',
+      boxSizing: 'border-box',
     }}>
 
       {/* ── Dot grid texture ── */}

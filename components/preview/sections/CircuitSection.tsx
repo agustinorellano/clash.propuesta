@@ -2,7 +2,7 @@ export default function CircuitSection() {
   return (
     <div style={{
       background: '#fff',
-      height: 1123,
+      width: 794, height: 1123,
       padding: '52px 56px 48px',
       display: 'flex',
       flexDirection: 'column',
