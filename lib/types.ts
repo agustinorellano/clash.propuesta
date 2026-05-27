@@ -41,7 +41,8 @@ export const defaultConfig: ProposalConfig = {
     { id: 'distrib',  label: 'Distribución',      enabled: true,  order: 4 },
     { id: 'analytics',label: 'Analytics',         enabled: true,  order: 5 },
     { id: 'plans',    label: 'Planes',            enabled: true,  order: 6 },
-    { id: 'case',     label: 'Caso Burger King',  enabled: false, order: 7 },
+    { id: 'clientview', label: 'Vista del cliente', enabled: true,  order: 7 },
+    { id: 'case',       label: 'Caso Burger King', enabled: false, order: 8 },
   ],
   // Planes calculados para 1 sucursal, facturación mensual
   plans: getComputedPlans(1, 'monthly'),

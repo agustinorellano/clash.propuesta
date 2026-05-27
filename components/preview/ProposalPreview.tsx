@@ -7,6 +7,7 @@ import DistribSection from './sections/DistribSection'
 import AnalyticsSection from './sections/AnalyticsSection'
 import PlansSection from './sections/PlansSection'
 import CaseSection from './sections/CaseSection'
+import ClientViewSection from './sections/ClientViewSection'
 
 interface ProposalPreviewProps {
   config: ProposalConfig
@@ -26,8 +27,9 @@ export default function ProposalPreview({ config }: ProposalPreviewProps) {
       case 'distrib':  return <DistribSection />
       case 'analytics':return <AnalyticsSection />
       case 'plans':    return <PlansSection plans={config.plans} proposalType={config.proposalType} />
-      case 'case':     return <CaseSection />
-      default:         return null
+      case 'clientview': return <ClientViewSection />
+      case 'case':       return <CaseSection />
+      default:           return null
     }
   }
 

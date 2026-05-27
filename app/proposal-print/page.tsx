@@ -6,6 +6,7 @@ import DistribSection   from '@/components/preview/sections/DistribSection'
 import AnalyticsSection from '@/components/preview/sections/AnalyticsSection'
 import PlansSection     from '@/components/preview/sections/PlansSection'
 import CaseSection      from '@/components/preview/sections/CaseSection'
+import ClientViewSection from '@/components/preview/sections/ClientViewSection'
 import { decodeConfig } from '@/lib/config-encoder'
 import { getRenderConfig } from '@/lib/render-cache'
 
@@ -100,8 +101,9 @@ export default function ProposalPrintPage({
               case 'distrib':   return <DistribSection />
               case 'analytics': return <AnalyticsSection />
               case 'plans':     return <PlansSection plans={config.plans ?? []} proposalType={config.proposalType} />
-              case 'case':      return <CaseSection />
-              default:          return null
+              case 'clientview': return <ClientViewSection />
+              case 'case':       return <CaseSection />
+              default:           return null
             }
           })()
 
