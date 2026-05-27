@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { ProposalConfig } from '@/lib/types'
 import { generatePDFClient } from '@/lib/client-pdf'
-import { X, Loader2, FileDown, CheckCircle2 } from 'lucide-react'
+import { X, Loader2, FileDown, CheckCircle2, Tag } from 'lucide-react'
 
 interface ExportModalProps {
   config: ProposalConfig
@@ -20,6 +20,15 @@ export default function ExportModal({ config, onClose }: ExportModalProps) {
 
   const visiblePlans = config.plans.filter(p => p.visible)
   const featuredPlan = visiblePlans.find(p => p.highlighted)
+
+  // ── Promotion summary ────────────────────────────────────────────────────
+  const promo = config.promotion
+  const hasPromo = promo && promo.mode !== 'none' && promo.discount > 0
+  const promoTargetName = hasPromo
+    ? promo.mode === 'all'
+      ? 'Todos los planes'
+      : visiblePlans.find(p => p.id === promo.planId)?.name ?? 'Plan específico'
+    : ''
 
   async function handleExport() {
     setExporting(true)
@@ -82,19 +91,20 @@ export default function ExportModal({ config, onClose }: ExportModalProps) {
 
         <div style={{ padding: '20px 24px 24px' }}>
 
-          {/* Resumen de secciones */}
+          {/* Sections checklist */}
           <div style={{
             background: '#f9fafb',
             border: '1px solid #f0f0f0',
             borderRadius: 10,
             padding: '14px 16px',
-            marginBottom: 16,
+            marginBottom: 12,
           }}>
             <p style={{
               fontSize: 9, fontWeight: 700, color: '#9ca3af',
               letterSpacing: '0.16em', textTransform: 'uppercase', marginBottom: 12,
             }}>
-              Secciones incluidas · {enabledSections.length} {enabledSections.length === 1 ? 'página' : 'páginas'}
+              Secciones incluidas · {enabledSections.length}{' '}
+              {enabledSections.length === 1 ? 'página' : 'páginas'}
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               {enabledSections.map((s, i) => (
@@ -112,12 +122,12 @@ export default function ExportModal({ config, onClose }: ExportModalProps) {
             </div>
           </div>
 
-          {/* Plan destacado si existe */}
+          {/* Featured plan */}
           {featuredPlan && (
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
               background: '#fef2f2', border: '1px solid #fecaca',
-              borderRadius: 10, padding: '10px 14px', marginBottom: 16,
+              borderRadius: 10, padding: '10px 14px', marginBottom: 12,
             }}>
               <span style={{ fontSize: 11, color: '#991b1b', fontWeight: 600 }}>
                 Plan sugerido
@@ -128,19 +138,49 @@ export default function ExportModal({ config, onClose }: ExportModalProps) {
             </div>
           )}
 
+          {/* Promotion summary — shown when a promo is active */}
+          {hasPromo && (
+            <div style={{
+              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+              background: '#0d0d0f', border: '1px solid #1f2937',
+              borderRadius: 10, padding: '10px 14px', marginBottom: 12,
+              gap: 8,
+            }}>
+              {/* Left: icon + label */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <Tag size={12} style={{ color: '#9ca3af', flexShrink: 0 }} />
+                <div>
+                  <p style={{ fontSize: 10, fontWeight: 700, color: '#9ca3af', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 1 }}>
+                    Promoción activa
+                  </p>
+                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.5)' }}>
+                    {promoTargetName}
+                  </p>
+                </div>
+              </div>
+              {/* Right: discount badge */}
+              <span style={{
+                fontSize: 14, fontWeight: 900, color: '#fff',
+                letterSpacing: '-0.5px', flexShrink: 0,
+              }}>
+                −{promo.discount}%
+              </span>
+            </div>
+          )}
+
           {/* Error */}
           {error && (
             <div style={{
               display: 'flex', alignItems: 'flex-start', gap: 8,
               background: '#fef2f2', border: '1px solid #fecaca',
-              borderRadius: 8, padding: '10px 12px', marginBottom: 16,
+              borderRadius: 8, padding: '10px 12px', marginBottom: 12,
               fontSize: 12, color: '#dc2626',
             }}>
               {error}
             </div>
           )}
 
-          {/* Botón de exportación */}
+          {/* Export button */}
           <button
             onClick={handleExport}
             disabled={exporting}
@@ -155,6 +195,7 @@ export default function ExportModal({ config, onClose }: ExportModalProps) {
               border: 'none',
               cursor: exporting ? 'not-allowed' : 'pointer',
               transition: 'background 0.15s',
+              boxShadow: exporting ? 'none' : '0 1px 4px rgba(220,38,38,0.3)',
             }}
           >
             {exporting ? (

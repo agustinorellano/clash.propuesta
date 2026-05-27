@@ -67,20 +67,24 @@ export default function CoverSection({ brand }: CoverSectionProps) {
         padding: '60px 80px', position: 'relative', zIndex: 1, textAlign: 'center',
       }}>
 
-        {/* Brand logo — grande */}
+        {/* Brand logo — circular */}
         {effectiveLogo ? (
           <div style={{
             marginBottom: 52,
-            padding: '24px 52px',
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.09)',
-            borderRadius: 16,
+            width: 112, height: 112,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            background: 'rgba(255,255,255,0.07)',
+            border: '1.5px solid rgba(255,255,255,0.12)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            padding: 16,
+            boxSizing: 'border-box',
           }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={effectiveLogo}
               alt={brand.name}
-              style={{ height: 64, maxWidth: 260, objectFit: 'contain', display: 'block', margin: '0 auto' }}
+              style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block' }}
             />
           </div>
         ) : null}
