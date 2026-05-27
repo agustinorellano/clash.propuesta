@@ -1,201 +1,389 @@
 export default function CircuitSection() {
-  const steps = [
-    {
-      number: '01',
-      color: '#dc2626',
-      title: 'Carga',
-      description: 'Cargá promociones desde la marca, por sucursal o en lote. Control total sobre qué se comunica y cuándo.',
-      mockup: (
-        <div style={{
-          background: '#fff', borderRadius: 8, border: '1px solid #ebebeb',
-          overflow: 'hidden', marginTop: 'auto',
-        }}>
-          {/* Header */}
-          <div style={{ padding: '10px 14px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: 9, fontWeight: 600, color: '#374151', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Promociones activas</span>
-            <span style={{ fontSize: 9, color: '#9ca3af' }}>3 de 8</span>
-          </div>
-          {/* Rows */}
-          {[
-            { name: 'Promo verano 2025', status: true, views: '2.4K' },
-            { name: 'Descuento ICBC', status: true, views: '1.8K' },
-            { name: 'Combo especial', status: false, views: '—' },
-          ].map((item, i) => (
-            <div key={i} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '9px 14px',
-              borderBottom: i < 2 ? '1px solid #f8f8f8' : 'none',
-            }}>
-              <div style={{
-                width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-                background: item.status ? '#16a34a' : '#d1d5db',
-              }} />
-              <span style={{ flex: 1, fontSize: 10, color: '#374151', fontWeight: 500 }}>{item.name}</span>
-              <span style={{ fontSize: 9, color: '#9ca3af', fontVariantNumeric: 'tabular-nums' }}>{item.views}</span>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      number: '02',
-      color: '#d97706',
-      title: 'Distribución',
-      description: 'Link o QR inteligente para todos los canales. Vidriera, WhatsApp, Instagram, pantallas — un único punto de salida.',
-      mockup: (
-        <div style={{
-          background: '#fff', borderRadius: 8, border: '1px solid #ebebeb',
-          overflow: 'hidden', marginTop: 'auto',
-        }}>
-          <div style={{ padding: '10px 14px', borderBottom: '1px solid #f0f0f0' }}>
-            <span style={{ fontSize: 9, fontWeight: 600, color: '#374151', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Canales activos</span>
-          </div>
-          {[
-            { channel: 'WhatsApp', reach: '1.2K', active: true },
-            { channel: 'QR Mostrador', reach: '890', active: true },
-            { channel: 'Instagram', reach: '2.1K', active: true },
-            { channel: 'Widget Web', reach: '340', active: false },
-          ].map((item, i) => (
-            <div key={i} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '8px 14px',
-              borderBottom: i < 3 ? '1px solid #f8f8f8' : 'none',
-            }}>
-              <div style={{
-                width: 6, height: 6, borderRadius: '50%', flexShrink: 0,
-                background: item.active ? '#d97706' : '#d1d5db',
-              }} />
-              <span style={{ flex: 1, fontSize: 10, color: '#374151', fontWeight: 500 }}>{item.channel}</span>
-              <span style={{ fontSize: 9, color: '#9ca3af', fontVariantNumeric: 'tabular-nums' }}>{item.reach}</span>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      number: '03',
-      color: '#dc2626',
-      title: 'Interacción',
-      description: 'El cliente escanea, accede y consume el beneficio. Sin apps, sin registro. Experiencia fluida en segundos.',
-      mockup: (
-        <div style={{
-          background: '#fff', borderRadius: 8, border: '1px solid #ebebeb',
-          overflow: 'hidden', marginTop: 'auto',
-        }}>
-          <div style={{ padding: '10px 14px', borderBottom: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <span style={{ fontSize: 9, fontWeight: 600, color: '#374151', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Top partners</span>
-            <span style={{ fontSize: 9, color: '#9ca3af' }}>últimos 30 días</span>
-          </div>
-          {[
-            { name: 'Banco ICBC', pct: 32 },
-            { name: 'Mercado Pago', pct: 24 },
-            { name: 'MODO', pct: 18 },
-            { name: 'Naranja X', pct: 15 },
-          ].map((p, i) => (
-            <div key={p.name} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '8px 14px',
-              borderBottom: i < 3 ? '1px solid #f8f8f8' : 'none',
-            }}>
-              <span style={{ fontSize: 9, fontWeight: 700, color: i === 0 ? '#dc2626' : '#d1d5db', width: 12 }}>{i + 1}</span>
-              <span style={{ flex: 1, fontSize: 10, color: '#374151', fontWeight: 500 }}>{p.name}</span>
-              <div style={{ width: 40, height: 3, background: '#f3f4f6', borderRadius: 2, overflow: 'hidden' }}>
-                <div style={{ width: `${p.pct * 3}%`, height: '100%', background: i === 0 ? '#dc2626' : '#d1d5db', borderRadius: 2 }} />
-              </div>
-              <span style={{ fontSize: 9, color: '#9ca3af', width: 24, textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{p.pct}%</span>
-            </div>
-          ))}
-        </div>
-      ),
-    },
-    {
-      number: '04',
-      color: '#d97706',
-      title: 'Optimización',
-      description: 'Cada interacción genera datos accionables. Dashboard en tiempo real para decisiones estratégicas.',
-      mockup: (
-        <div style={{
-          background: '#fff', borderRadius: 8, border: '1px solid #ebebeb',
-          overflow: 'hidden', marginTop: 'auto',
-        }}>
-          <div style={{ padding: '10px 14px', borderBottom: '1px solid #f0f0f0' }}>
-            <span style={{ fontSize: 9, fontWeight: 600, color: '#374151', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Estado operativo</span>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: '#f0f0f0' }}>
-            {[
-              { v: '12', l: 'Beneficios activos', accent: false },
-              { v: '75', l: 'Sucursales', accent: true },
-              { v: '1.4K', l: 'Me gusta', accent: false },
-              { v: '2.5K', l: 'Cal. positivas', accent: false },
-            ].map((item, i) => (
-              <div key={i} style={{ background: '#fff', padding: '12px 14px' }}>
-                <p style={{ fontSize: 16, fontWeight: 800, color: item.accent ? '#dc2626' : '#0d0d0f', lineHeight: 1 }}>{item.v}</p>
-                <p style={{ fontSize: 8, color: '#9ca3af', marginTop: 4, fontWeight: 500 }}>{item.l}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      ),
-    },
-  ]
-
   return (
     <div style={{
       background: '#fff',
       height: 1123,
-      padding: '56px 60px 52px',
+      padding: '52px 56px 48px',
       display: 'flex',
       flexDirection: 'column',
       overflow: 'hidden',
       boxSizing: 'border-box',
+      position: 'relative',
     }}>
-      {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: 36, flexShrink: 0 }}>
-        <span style={{
-          fontSize: 10, fontWeight: 700, color: '#dc2626',
-          letterSpacing: '0.25em', textTransform: 'uppercase',
-        }}>
+
+      <style>{`
+        @keyframes circ-row-glow{0%,100%{background:#fff}50%{background:#fff8f8;border-color:#fecaca}}
+        @keyframes circ-dot-act{0%,100%{background:#d1d5db}50%{background:#22c55e;box-shadow:0 0 5px rgba(34,197,94,.4)}}
+        @keyframes circ-check-act{0%,100%{opacity:.2}50%{opacity:1}}
+        @keyframes circ-prog{0%{width:18%}100%{width:88%}}
+        @keyframes circ-line-pulse{0%,100%{opacity:.2}50%{opacity:.9}}
+        @keyframes circ-center-pulse{0%,100%{box-shadow:0 4px 14px rgba(220,38,38,.45)}50%{box-shadow:0 6px 26px rgba(220,38,38,.65),0 0 0 6px rgba(220,38,38,.09)}}
+        @keyframes circ-node-pop{0%,100%{box-shadow:0 2px 6px rgba(0,0,0,.06)}50%{box-shadow:0 4px 14px rgba(220,38,38,.15)}}
+        @keyframes circ-pulse-ring{0%{transform:translate(-50%,-50%) scale(.65);opacity:.55}100%{transform:translate(-50%,-50%) scale(1.95);opacity:0}}
+        @keyframes circ-notif{0%,100%{opacity:0;transform:translateX(10px)}18%,82%{opacity:1;transform:translateX(0)}}
+        @keyframes circ-tile-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+      `}</style>
+
+      {/* Dot grid texture */}
+      <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', pointerEvents: 'none' }}>
+        <defs>
+          <pattern id="circ-dot-bg" x="0" y="0" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="1" fill="rgba(0,0,0,0.032)" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#circ-dot-bg)" />
+      </svg>
+
+      {/* Left accent bar */}
+      <div style={{ position: 'absolute', left: 0, top: 0, bottom: 0, width: 3, background: '#dc2626' }} />
+
+      {/* ── Header ── */}
+      <div style={{ marginBottom: 16, flexShrink: 0, position: 'relative', zIndex: 1 }}>
+        <span style={{ fontSize: 10, fontWeight: 700, color: '#dc2626', letterSpacing: '0.25em', textTransform: 'uppercase' }}>
           Cómo funciona
         </span>
-        <h2 style={{
-          fontSize: 44, fontWeight: 900, color: '#0d0d0f',
-          marginTop: 16, lineHeight: 1.08, letterSpacing: '-1px',
-        }}>
+        <h2 style={{ fontSize: 44, fontWeight: 900, color: '#0d0d0f', marginTop: 10, marginBottom: 10, lineHeight: 1.05, letterSpacing: '-1.5px' }}>
           El circuito completo
         </h2>
-        <p style={{ color: '#6b7280', fontSize: 14, marginTop: 14, maxWidth: 400, margin: '14px auto 0', lineHeight: 1.7 }}>
-          Desde la carga hasta la optimización — un flujo continuo y medible.
+        <p style={{ color: '#6b7280', fontSize: 13, lineHeight: 1.6, marginBottom: 14, maxWidth: 460 }}>
+          Desde la carga hasta la optimización — un flujo continuo, medible y autogestionable.
         </p>
-      </div>
 
-      {/* 2×2 grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, flex: 1 }}>
-        {steps.map((step) => (
-          <div key={step.number} style={{
-            background: '#fafafa',
-            borderRadius: 12,
-            border: '1px solid #ebebeb',
-            padding: 24,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 12,
-          }}>
-            {/* Step badge */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {/* Flow strip */}
+        <div style={{ display: 'inline-flex', alignItems: 'center', background: '#f9fafb', border: '1px solid #ebebeb', borderRadius: 10, padding: '7px 14px', gap: 0 }}>
+          {[
+            { n: '01', l: 'Carga',        c: '#dc2626' },
+            { n: '02', l: 'Distribución', c: '#d97706' },
+            { n: '03', l: 'Interacción',  c: '#dc2626' },
+            { n: '04', l: 'Optimización', c: '#d97706' },
+          ].map((step, i) => (
+            <div key={step.n} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+              {i > 0 && (
+                <svg viewBox="0 0 16 16" fill="none" style={{ width: 10, height: 10, margin: '0 6px', flexShrink: 0 }}>
+                  <polyline points="5 3 11 8 5 13" stroke="#c4c4c4" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
               <span style={{
                 display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                width: 28, height: 28, borderRadius: 8,
-                background: step.color, color: '#fff',
-                fontSize: 11, fontWeight: 800,
-              }}>
-                {step.number}
-              </span>
+                width: 18, height: 18, borderRadius: 5,
+                background: step.c, color: '#fff', fontSize: 8, fontWeight: 900,
+              }}>{step.n}</span>
+              <span style={{ fontSize: 11, fontWeight: 700, color: '#0d0d0f', letterSpacing: '-0.1px' }}>{step.l}</span>
             </div>
-            <h3 style={{ fontWeight: 800, color: '#0d0d0f', fontSize: 16, marginTop: 2 }}>{step.title}</h3>
-            <p style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.65 }}>{step.description}</p>
-            {step.mockup}
+          ))}
+        </div>
+      </div>
+
+      {/* ── 2×2 Grid ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, flex: 1, position: 'relative', zIndex: 1, overflow: 'hidden' }}>
+
+        {/* ── 01 CARGA ── */}
+        <div style={{ background: '#fff', borderRadius: 16, border: '1px solid rgba(0,0,0,.07)', padding: '20px 20px 18px', boxShadow: '0 4px 24px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 9, background: '#dc2626', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900, flexShrink: 0 }}>01</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(220,38,38,.75)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 13, height: 13, flexShrink: 0 }}>
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+              </svg>
+              <span style={{ fontSize: 14, fontWeight: 800, color: '#0d0d0f', letterSpacing: '-0.3px' }}>Carga</span>
+            </div>
           </div>
-        ))}
+          <p style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.65, marginBottom: 14 }}>
+            Cargá promociones desde la marca, por sucursal o en lote, con total flexibilidad operativa.
+          </p>
+
+          {/* Carga animation area */}
+          <div style={{ flex: 1, background: 'linear-gradient(135deg,#fafafa 0%,#f4f4f5 100%)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: '13px 13px 0' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 9 }}>
+              <span style={{ fontSize: 8, fontWeight: 700, color: '#374151', letterSpacing: '0.12em', textTransform: 'uppercase' }}>Promociones activas</span>
+              <span style={{ fontSize: 7.5, color: '#9ca3af' }}>3 de 8</span>
+            </div>
+            {[
+              { name: 'Promo verano 2025', st: 'ACTIVO', sc: '#22c55e', dc: '#22c55e', views: '2.4K', anim: true, delay: '0s'  },
+              { name: 'Descuento ICBC',    st: 'ACTIVO', sc: '#22c55e', dc: '#22c55e', views: '1.8K', anim: true, delay: '1.2s' },
+              { name: 'Combo especial',    st: 'DRAFT',  sc: '#f59e0b', dc: '#d1d5db', views: '—',    anim: false, delay: '' },
+              { name: 'Flash sale',        st: '',       sc: '#d1d5db', dc: '#e5e7eb', views: '—',    anim: false, delay: '', ghost: true },
+            ].map((row, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: 7, padding: '7px 8px',
+                borderRadius: 7, background: '#fff', border: '1px solid #f0f0f1', marginBottom: 5,
+                opacity: row.ghost ? 0.28 : 1,
+                animation: row.anim ? `circ-row-glow 3.6s ${row.delay} ease-in-out infinite` : undefined,
+              }}>
+                <div style={{
+                  width: 6, height: 6, borderRadius: '50%', background: row.dc, flexShrink: 0,
+                  animation: row.anim ? `circ-dot-act 3.6s ${row.delay} ease-in-out infinite` : undefined,
+                }} />
+                <span style={{ flex: 1, fontSize: 9, color: '#374151', fontWeight: 500, lineHeight: 1.2 }}>{row.name}</span>
+                {row.st && <span style={{ fontSize: 7.5, fontWeight: 700, color: row.sc, letterSpacing: '0.04em' }}>{row.st}</span>}
+                <span style={{ fontSize: 7.5, color: '#9ca3af', marginLeft: 4 }}>{row.views}</span>
+                {row.anim && (
+                  <svg viewBox="0 0 12 12" fill="none" strokeLinecap="round" style={{ width: 10, height: 10, flexShrink: 0, animation: `circ-check-act 3.6s ${row.delay} ease-in-out infinite`, color: '#22c55e' }}>
+                    <polyline points="2,6 5,9 10,3" stroke="currentColor" strokeWidth="2.5"/>
+                  </svg>
+                )}
+              </div>
+            ))}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', borderTop: '1px solid #ebebeb', marginTop: 2, flexShrink: 0 }}>
+              <div style={{ flex: 1, height: 3, background: '#e8e8e8', borderRadius: 2, overflow: 'hidden' }}>
+                <div style={{ width: '72%', height: '100%', background: 'linear-gradient(90deg,#dc2626,#ff7070)', borderRadius: 2, animation: 'circ-prog 3s ease-in-out infinite alternate' }} />
+              </div>
+              <span style={{ fontSize: 8, fontWeight: 600, color: '#9ca3af', whiteSpace: 'nowrap' }}>Sincronizando…</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ── 02 DISTRIBUCIÓN ── */}
+        <div style={{ background: '#fff', borderRadius: 16, border: '1px solid rgba(0,0,0,.07)', padding: '20px 20px 18px', boxShadow: '0 4px 24px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 9, background: '#d97706', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900, flexShrink: 0 }}>02</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(220,38,38,.75)" strokeWidth="2" strokeLinecap="round" style={{ width: 13, height: 13, flexShrink: 0 }}>
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+              </svg>
+              <span style={{ fontSize: 14, fontWeight: 800, color: '#0d0d0f', letterSpacing: '-0.3px' }}>Distribución</span>
+            </div>
+          </div>
+          <p style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.65, marginBottom: 14 }}>
+            Distribuí tus beneficios a través de Link o QR inteligentes en todos los canales y puntos de contacto.
+          </p>
+
+          {/* Hub-spoke animation */}
+          <div style={{ flex: 1, background: 'linear-gradient(135deg,#fafafa 0%,#f4f4f5 100%)', borderRadius: 10, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} viewBox="0 0 280 210" fill="none" preserveAspectRatio="xMidYMid meet">
+              {[
+                { x2: 140, y2: 14  },
+                { x2: 237, y2: 58  },
+                { x2: 237, y2: 152 },
+                { x2: 140, y2: 196 },
+                { x2: 43,  y2: 152 },
+                { x2: 43,  y2: 58  },
+              ].map((ln, i) => (
+                <line key={i} x1="140" y1="105" x2={ln.x2} y2={ln.y2}
+                  stroke="#e5e7eb" strokeWidth="1.5" strokeDasharray="4 3"
+                  style={{ animation: `circ-line-pulse 4.8s ${i * 0.4}s ease-in-out infinite` }}
+                />
+              ))}
+            </svg>
+
+            {/* Center PROMO node */}
+            <div style={{
+              position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
+              background: '#dc2626', color: '#fff', fontSize: 8, fontWeight: 900,
+              letterSpacing: '0.8px', padding: '5px 9px', borderRadius: 8, whiteSpace: 'nowrap',
+              zIndex: 3, boxShadow: '0 4px 14px rgba(220,38,38,.4)',
+              animation: 'circ-center-pulse 2s ease-in-out infinite',
+            }}>PROMO</div>
+
+            {/* 6 channel nodes */}
+            {[
+              { style: { top: '1%',  left: '50%',  transform: 'translate(-50%,0)'  }, icon: 'ig'    }, // top
+              { style: { top: '16%', right: '2%',  transform: 'translate(0,-50%)'  }, icon: 'tiktok' }, // top-right
+              { style: { bottom: '16%', right: '2%', transform: 'translate(0,50%)' }, icon: 'qr'    }, // bottom-right
+              { style: { bottom: '1%', left: '50%', transform: 'translate(-50%,0)' }, icon: 'phone' }, // bottom
+              { style: { bottom: '16%', left: '2%', transform: 'translate(0,50%)'  }, icon: 'web'   }, // bottom-left
+              { style: { top: '16%', left: '2%',   transform: 'translate(0,-50%)'  }, icon: 'home'  }, // top-left
+            ].map((node, i) => (
+              <div key={i} style={{
+                position: 'absolute', ...node.style,
+                width: 30, height: 30, background: '#fff', borderRadius: 8,
+                border: '1.5px solid #e5e7eb',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                zIndex: 2, boxShadow: '0 2px 8px rgba(0,0,0,.06)',
+                animation: `circ-node-pop 4.8s ${i * 0.4}s ease-in-out infinite`,
+              }}>
+                {node.icon === 'ig' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" style={{ width: 14, height: 14 }}>
+                    <rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+                  </svg>
+                )}
+                {node.icon === 'tiktok' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" style={{ width: 14, height: 14 }}>
+                    <path d="M9 12a4 4 0 104 4V4a5 5 0 005 5"/>
+                  </svg>
+                )}
+                {node.icon === 'qr' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" style={{ width: 14, height: 14 }}>
+                    <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>
+                    <rect x="14" y="14" width="3" height="3"/><rect x="18" y="14" width="3" height="3"/>
+                    <rect x="14" y="18" width="3" height="3"/><rect x="18" y="18" width="3" height="3"/>
+                  </svg>
+                )}
+                {node.icon === 'phone' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" style={{ width: 14, height: 14 }}>
+                    <rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+                  </svg>
+                )}
+                {node.icon === 'web' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" style={{ width: 14, height: 14 }}>
+                    <circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>
+                    <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10A15.3 15.3 0 0112 2z"/>
+                  </svg>
+                )}
+                {node.icon === 'home' && (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" style={{ width: 14, height: 14 }}>
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+                  </svg>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* ── 03 INTERACCIÓN ── */}
+        <div style={{ background: '#fff', borderRadius: 16, border: '1px solid rgba(0,0,0,.07)', padding: '20px 20px 18px', boxShadow: '0 4px 24px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 9, background: '#dc2626', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900, flexShrink: 0 }}>03</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(220,38,38,.75)" strokeWidth="2" strokeLinecap="round" style={{ width: 13, height: 13, flexShrink: 0 }}>
+                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+              </svg>
+              <span style={{ fontSize: 14, fontWeight: 800, color: '#0d0d0f', letterSpacing: '-0.3px' }}>Interacción</span>
+            </div>
+          </div>
+          <p style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.65, marginBottom: 14 }}>
+            Los clientes descubren y acceden a las promos desde su teléfono, en tiempo real, sin apps ni registro.
+          </p>
+
+          {/* Partners + phone animation */}
+          <div style={{ flex: 1, background: 'linear-gradient(135deg,#fafafa 0%,#f4f4f5 100%)', borderRadius: 10, overflow: 'hidden', display: 'flex', alignItems: 'center', gap: 10, padding: '14px 14px' }}>
+
+            {/* Left — TOP PARTNERS ranking */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: 92, flexShrink: 0 }}>
+              <div style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.6px', color: '#aaa', textTransform: 'uppercase', marginBottom: 1 }}>
+                Top Partners
+              </div>
+              {[
+                { chip: 'ICBC', bg: '#e00000', pct: 32, w: '100%' },
+                { chip: 'MP',   bg: '#009ee3', pct: 24, w: '75%'  },
+                { chip: 'MODO', bg: '#111111', pct: 18, w: '56%'  },
+                { chip: 'NX',   bg: '#ff6600', pct: 15, w: '47%'  },
+                { chip: 'PP',   bg: '#5b4fcf', pct: 11, w: '34%'  },
+              ].map((p, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <span style={{ fontSize: 6.5, fontWeight: 900, padding: '1px 3px', borderRadius: 3, background: p.bg, color: '#fff', flexShrink: 0, width: 24, textAlign: 'center', letterSpacing: '0.2px' }}>{p.chip}</span>
+                  <div style={{ flex: 1, height: 4, background: '#e5e7eb', borderRadius: 2, overflow: 'hidden' }}>
+                    <div style={{ width: p.w, height: '100%', background: '#dc2626', borderRadius: 2 }} />
+                  </div>
+                  <span style={{ fontSize: 7, fontWeight: 800, color: '#0d0d0f', flexShrink: 0 }}>{p.pct}%</span>
+                </div>
+              ))}
+              {/* User avatars */}
+              <div style={{ display: 'flex', alignItems: 'center', marginTop: 4 }}>
+                {['#fca5a5','#86efac','#93c5fd'].map((bg, i) => (
+                  <div key={i} style={{ width: 12, height: 12, borderRadius: '50%', background: bg, border: '1.5px solid #fff', marginLeft: i > 0 ? -3 : 0 }} />
+                ))}
+                <span style={{ fontSize: 8, color: '#9ca3af', marginLeft: 5, lineHeight: '12px' }}>+2.4K</span>
+              </div>
+            </div>
+
+            {/* Center — phone with pulse rings */}
+            <div style={{ position: 'relative', flexShrink: 0, width: 58, height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              {[46, 66, 86].map((size, i) => (
+                <div key={i} style={{
+                  position: 'absolute', top: '50%', left: '50%',
+                  width: size, height: size, borderRadius: '50%',
+                  border: '1.5px solid rgba(220,38,38,.18)',
+                  transform: 'translate(-50%,-50%)',
+                  animation: `circ-pulse-ring 2.4s ${i * 0.8}s ease-out infinite`,
+                }} />
+              ))}
+              <div style={{ width: 34, height: 58, background: '#1a1a1a', borderRadius: 8, zIndex: 2, position: 'relative', boxShadow: '0 4px 16px rgba(0,0,0,.25)' }}>
+                <div style={{ width: 28, height: 50, background: '#fff', borderRadius: 5, margin: '4px 3px', overflow: 'hidden', display: 'flex', flexDirection: 'column', padding: 4, gap: 2 }}>
+                  <div style={{ height: 5, borderRadius: 3, background: '#fee2e2' }} />
+                  <div style={{ height: 5, borderRadius: 3, background: '#dbeafe' }} />
+                  <div style={{ height: 5, borderRadius: 3, background: '#d1fae5' }} />
+                  <div style={{ height: 3, borderRadius: 2, background: '#f3f4f6', marginTop: 3 }} />
+                  <div style={{ height: 3, borderRadius: 2, background: '#f3f4f6', width: '70%' }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Right — notification toasts */}
+            <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 7, justifyContent: 'center' }}>
+              {[
+                { chip: 'ICBC', bg: '#e00000', delay: '0s'  },
+                { chip: 'MODO', bg: '#111111', delay: '2.4s' },
+                { chip: 'MP',   bg: '#009ee3', delay: '4.8s' },
+              ].map((n, i) => (
+                <div key={i} style={{
+                  display: 'flex', alignItems: 'center', gap: 6,
+                  background: '#fff', borderRadius: 8, padding: '6px 8px',
+                  boxShadow: '0 2px 10px rgba(0,0,0,.1)',
+                  animation: `circ-notif 7.2s ${n.delay} ease-in-out infinite`,
+                }}>
+                  <span style={{ fontSize: 6.5, fontWeight: 900, padding: '1px 4px', borderRadius: 3, background: n.bg, color: '#fff', flexShrink: 0 }}>{n.chip}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <div style={{ height: 3, width: 38, background: '#e5e7eb', borderRadius: 2 }} />
+                    <div style={{ height: 3, width: 26, background: '#f3f4f6', borderRadius: 2 }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── 04 OPTIMIZACIÓN ── */}
+        <div style={{ background: '#fff', borderRadius: 16, border: '1px solid rgba(0,0,0,.07)', padding: '20px 20px 18px', boxShadow: '0 4px 24px rgba(0,0,0,.06),0 1px 4px rgba(0,0,0,.04)', display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 10 }}>
+            <div style={{ width: 28, height: 28, borderRadius: 9, background: '#d97706', color: '#fff', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontWeight: 900, flexShrink: 0 }}>04</div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(220,38,38,.75)" strokeWidth="2" strokeLinecap="round" style={{ width: 13, height: 13, flexShrink: 0 }}>
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+              </svg>
+              <span style={{ fontSize: 14, fontWeight: 800, color: '#0d0d0f', letterSpacing: '-0.3px' }}>Optimización</span>
+            </div>
+          </div>
+          <p style={{ fontSize: 12, color: '#6b7280', lineHeight: 1.65, marginBottom: 14 }}>
+            Cada interacción genera datos accionables para mejorar la estrategia de manera continua.
+          </p>
+
+          {/* KPI dashboard animation */}
+          <div style={{ flex: 1, background: 'linear-gradient(135deg,#fafafa 0%,#f4f4f5 100%)', borderRadius: 10, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ fontSize: 7, fontWeight: 800, letterSpacing: '0.7px', color: '#aaa', textTransform: 'uppercase', padding: '10px 13px 6px' }}>
+              Estado de operación
+            </div>
+            {/* 2×3 KPI grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1, background: '#e8e8e8', flex: 1 }}>
+              {[
+                { v: '12',   l: 'Beneficios activos',  accent: false, delay: '.04s' },
+                { v: '5',    l: 'Por vencer',           accent: true,  delay: '.08s' },
+                { v: '75',   l: 'Sucursales activas',   accent: true,  delay: '.12s' },
+                { v: '30',   l: 'QR habilitados',       accent: false, delay: '.16s' },
+                { v: '1.4K', l: 'Me gusta',             accent: false, delay: '.20s' },
+                { v: '2.5K', l: 'Cal. positivas',       accent: false, delay: '.24s' },
+              ].map((tile, i) => (
+                <div key={i} style={{
+                  background: '#fff', padding: '10px 12px',
+                  display: 'flex', flexDirection: 'column', gap: 2,
+                  animation: `circ-tile-in .4s ${tile.delay} ease both`,
+                }}>
+                  <span style={{ fontSize: 22, fontWeight: 900, lineHeight: 1, color: tile.accent ? '#dc2626' : '#0d0d0f' }}>{tile.v}</span>
+                  <span style={{ fontSize: 8, color: '#9ca3af', lineHeight: 1.25 }}>{tile.l}</span>
+                </div>
+              ))}
+            </div>
+            {/* Dark bottom bar */}
+            <div style={{ display: 'flex', background: '#0d0d0f', padding: '7px 12px', flexShrink: 0 }}>
+              {[
+                { label: '1.4K 👍', border: true  },
+                { label: '2.5K ⭐', border: true  },
+                { label: '120 👎',  border: false },
+              ].map((item, i) => (
+                <div key={i} style={{
+                  flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 8.5, color: 'rgba(255,255,255,.75)', fontWeight: 700,
+                  borderRight: item.border ? '1px solid rgba(255,255,255,.1)' : 'none',
+                }}>
+                  {item.label}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   )
