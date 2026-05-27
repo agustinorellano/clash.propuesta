@@ -34,6 +34,11 @@ export interface ProposalConfig {
     label: string
     enabled: boolean
     order: number
+    custom?: {
+      title: string
+      subtitle: string
+      body: string
+    }
   }[]
   plans: PlanData[]
 }

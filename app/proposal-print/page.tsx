@@ -7,6 +7,7 @@ import AnalyticsSection from '@/components/preview/sections/AnalyticsSection'
 import PlansSection     from '@/components/preview/sections/PlansSection'
 import CaseSection      from '@/components/preview/sections/CaseSection'
 import ClientViewSection from '@/components/preview/sections/ClientViewSection'
+import CustomSection    from '@/components/preview/sections/CustomSection'
 import { decodeConfig } from '@/lib/config-encoder'
 import { getRenderConfig } from '@/lib/render-cache'
 
@@ -103,7 +104,9 @@ export default function ProposalPrintPage({
               case 'plans':     return <PlansSection plans={config.plans ?? []} proposalType={config.proposalType} promotion={config.promotion} />
               case 'clientview': return <ClientViewSection />
               case 'case':       return <CaseSection />
-              default:           return null
+              default:
+                if (section.id.startsWith('custom-')) return <CustomSection sectionId={section.id} config={config} />
+                return null
             }
           })()
 

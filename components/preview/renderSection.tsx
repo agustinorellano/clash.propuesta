@@ -8,6 +8,7 @@ import AnalyticsSection  from './sections/AnalyticsSection'
 import PlansSection      from './sections/PlansSection'
 import CaseSection       from './sections/CaseSection'
 import ClientViewSection from './sections/ClientViewSection'
+import CustomSection     from './sections/CustomSection'
 
 export function renderSection(id: string, config: ProposalConfig) {
   switch (id) {
@@ -20,6 +21,8 @@ export function renderSection(id: string, config: ProposalConfig) {
     case 'plans':       return <PlansSection plans={config.plans} proposalType={config.proposalType} promotion={config.promotion} />
     case 'clientview':  return <ClientViewSection />
     case 'case':        return <CaseSection />
-    default:            return null
+    default:
+      if (id.startsWith('custom-')) return <CustomSection sectionId={id} config={config} />
+      return null
   }
 }
