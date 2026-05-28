@@ -16,10 +16,14 @@ export interface Promotion {
   planId: string     // sólo cuando mode === 'single'
 }
 
+/** Per-section free-text overrides — key = contentKey, value = edited text */
+export type SectionContent = Record<string, Record<string, string>>
+
 export interface ProposalConfig {
   billing: Billing
   proposalType: ProposalType
   promotion: Promotion
+  sectionContent: SectionContent
   brand: {
     name: string
     logoUrl: string
@@ -47,6 +51,7 @@ export const defaultConfig: ProposalConfig = {
   billing: 'monthly',
   proposalType: 'commercial',
   promotion: { mode: 'none', discount: 0, planId: '' },
+  sectionContent: {},
   brand: { name: '', logoUrl: '', logoBase64: '', observations: '', branches: 1, operationType: '', needs: '' },
   sections: [
     { id: 'cover',      label: 'Portada',             enabled: true,  order: 0 },

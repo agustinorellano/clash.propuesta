@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useCallback, useRef, useEffect } from 'react'
+import { useState, useCallback, useRef, useEffect, useMemo } from 'react'
 import { defaultConfig, ProposalConfig, type ProposalType, type Promotion } from '@/lib/types'
 import { getComputedPlans, getScaleTier, SCALE_LABELS, type Billing } from '@/lib/plansConfig'
+import { EditContext, type EditContextValue } from '@/lib/edit-context'
 import Sidebar        from '@/components/ui/Sidebar'
 import BrandEditor    from '@/components/editor/BrandEditor'
 import BlockSelector  from '@/components/editor/BlockSelector'
@@ -15,6 +16,7 @@ import {
   FileDown, CalendarDays, CalendarRange,
   PanelLeftClose, PanelLeftOpen,
   LayoutGrid, AlignJustify,
+  Pencil, Eye, Undo2, Redo2,
 } from 'lucide-react'
 
 type Tab      = 'brand' | 'sections' | 'plans'
@@ -27,6 +29,88 @@ export default function DashboardPage() {
   const [sidebarOpen,     setSidebarOpen]     = useState(true)
   const [viewMode,        setViewMode]        = useState<ViewMode>('scroll')
   const [targetSection,   setTargetSection]   = useState<string | null>(null)
+
+  // ── Edit mode + undo/redo ──────────────────────────────────────────────────
+  const [editMode, setEditMode] = useState(false)
+  const [canUndo,  setCanUndo]  = useState(false)
+  const [canRedo,  setCanRedo]  = useState(false)
+
+  // History stored in refs to avoid stale-closure issues in callbacks
+  const historyRef = useRef<ProposalConfig[]>([defaultConfig])
+  const histIdxRef = useRef(0)
+
+  const pushHistory = useCallback((next: ProposalConfig) => {
+    // Drop any future states (redo stack)
+    historyRef.current = historyRef.current.slice(0, histIdxRef.current + 1)
+    historyRef.current.push(next)
+    histIdxRef.current = historyRef.current.length - 1
+    setCanUndo(histIdxRef.current > 0)
+    setCanRedo(false)
+  }, [])
+
+  const undo = useCallback(() => {
+    if (histIdxRef.current <= 0) return
+    histIdxRef.current -= 1
+    const prev = historyRef.current[histIdxRef.current]
+    setConfig(prev)
+    setCanUndo(histIdxRef.current > 0)
+    setCanRedo(true)
+  }, [])
+
+  const redo = useCallback(() => {
+    if (histIdxRef.current >= historyRef.current.length - 1) return
+    histIdxRef.current += 1
+    const next = historyRef.current[histIdxRef.current]
+    setConfig(next)
+    setCanUndo(true)
+    setCanRedo(histIdxRef.current < historyRef.current.length - 1)
+  }, [])
+
+  // Keyboard shortcuts: Ctrl/Cmd+Z → undo, Ctrl/Cmd+Y / Ctrl+Shift+Z → redo
+  useEffect(() => {
+    if (!editMode) return
+    const onKey = (e: KeyboardEvent) => {
+      const ctrl = e.ctrlKey || e.metaKey
+      if (ctrl && e.key === 'z' && !e.shiftKey) { e.preventDefault(); undo() }
+      if (ctrl && (e.key === 'y' || (e.key === 'z' && e.shiftKey))) { e.preventDefault(); redo() }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [editMode, undo, redo])
+
+  // setContent from EditableText — updates config.sectionContent + pushes to history
+  const handleSetContent = useCallback((sectionId: string, key: string, value: string) => {
+    setConfig((prev) => {
+      const next: ProposalConfig = {
+        ...prev,
+        sectionContent: {
+          ...prev.sectionContent,
+          [sectionId]: {
+            ...(prev.sectionContent?.[sectionId] ?? {}),
+            [key]: value,
+          },
+        },
+      }
+      pushHistory(next)
+      return next
+    })
+  }, [pushHistory])
+
+  // EditContext value for the interactive preview (editMode is live)
+  const editCtxValue = useMemo<EditContextValue>(() => ({
+    editMode,
+    getContent: (sectionId, key, fallback) =>
+      config.sectionContent?.[sectionId]?.[key] ?? fallback,
+    setContent: handleSetContent,
+  }), [editMode, config.sectionContent, handleSetContent])
+
+  // EditContext value for the PDF export area (always view mode, but with edited content)
+  const pdfCtxValue = useMemo<EditContextValue>(() => ({
+    editMode: false,
+    getContent: (sectionId, key, fallback) =>
+      config.sectionContent?.[sectionId]?.[key] ?? fallback,
+    setContent: () => {},
+  }), [config.sectionContent])
 
   // ── Sync plan prices when branches or billing change ──────────────────────
   const syncPlanPrices = useCallback(
@@ -163,6 +247,18 @@ export default function DashboardPage() {
 
   return (
     <>
+      {/* ── Edit mode hover CSS — injected only when in edit mode ── */}
+      {editMode && (
+        <style>{`
+          [data-editable]:hover {
+            box-shadow: inset 0 0 0 1px rgba(220,38,38,0.4) !important;
+          }
+          [data-editable]:focus {
+            box-shadow: inset 0 0 0 1.5px rgba(220,38,38,0.55), 0 0 0 3px rgba(220,38,38,0.08) !important;
+          }
+        `}</style>
+      )}
+
       {/* ── Intro animation ── */}
       <IntroAnimation />
 
@@ -391,8 +487,53 @@ export default function DashboardPage() {
                 </div>
               </div>
 
-              {/* Right: view mode toggle + export */}
+              {/* Right: edit toggle + undo/redo + view mode + export */}
               <div className="flex items-center gap-2">
+
+                {/* Edit mode toggle */}
+                <button
+                  onClick={() => setEditMode(!editMode)}
+                  title={editMode ? 'Salir del modo edición' : 'Editar contenido de las páginas'}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border transition-all ${
+                    editMode
+                      ? 'bg-red-50 border-red-300 text-red-700'
+                      : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                  }`}
+                >
+                  {editMode
+                    ? <><Eye className="w-3.5 h-3.5" />Vista</>
+                    : <><Pencil className="w-3.5 h-3.5" />Editar</>
+                  }
+                </button>
+
+                {/* Undo/redo — only visible in edit mode */}
+                {editMode && (
+                  <div className="flex items-center rounded-lg border border-gray-200 overflow-hidden bg-white">
+                    <button
+                      onClick={undo}
+                      disabled={!canUndo}
+                      title="Deshacer (Ctrl+Z)"
+                      className={`p-2 transition-colors ${
+                        canUndo ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' : 'text-gray-300 cursor-not-allowed'
+                      }`}
+                    >
+                      <Undo2 className="w-3.5 h-3.5" />
+                    </button>
+                    <div style={{ width: 1, height: 16, background: '#e5e7eb' }} />
+                    <button
+                      onClick={redo}
+                      disabled={!canRedo}
+                      title="Rehacer (Ctrl+Y)"
+                      className={`p-2 transition-colors ${
+                        canRedo ? 'text-gray-600 hover:text-gray-900 hover:bg-gray-50' : 'text-gray-300 cursor-not-allowed'
+                      }`}
+                    >
+                      <Redo2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
+
+                <div style={{ width: 1, height: 16, background: '#e5e7eb' }} />
 
                 {/* View toggle — scroll / grid */}
                 <div className="flex items-center rounded-lg border border-gray-200 overflow-hidden bg-white">
@@ -439,6 +580,21 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
+
+            {/* Edit mode hint bar */}
+            {editMode && (
+              <div style={{
+                background: 'rgba(220,38,38,0.06)',
+                borderTop: '1px solid rgba(220,38,38,0.12)',
+                padding: '5px 16px',
+                display: 'flex', alignItems: 'center', gap: 8,
+              }}>
+                <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#dc2626', flexShrink: 0 }} />
+                <span style={{ fontSize: 11, color: '#7f1d1d', fontWeight: 500 }}>
+                  Modo edición activo — hacé clic sobre cualquier texto para editarlo directamente. Ctrl+Z para deshacer.
+                </span>
+              </div>
+            )}
           </div>
 
           {/* ── Scroll view ── */}
@@ -476,35 +632,40 @@ export default function DashboardPage() {
               })()}
 
               <div style={{ maxWidth: 794, margin: '0 auto' }}>
-                <ProposalPreview config={config} />
+                <EditContext.Provider value={editCtxValue}>
+                  <ProposalPreview config={config} />
+                </EditContext.Provider>
               </div>
             </div>
           )}
 
           {/* ── Grid view ── */}
           {viewMode === 'grid' && (
-            <GridView config={config} onSelectSection={handleSelectSection} />
+            <EditContext.Provider value={editCtxValue}>
+              <GridView config={config} onSelectSection={handleSelectSection} />
+            </EditContext.Provider>
           )}
 
-          {/* ── Off-screen preview for PDF export ──────────────────────────────
-               Always rendered at exact 794px so html2canvas captures correct
-               layout regardless of view mode. Positioned off-screen so the
-               user never sees it. Scoped with id="pdf-export-root".           */}
-          <div
-            id="pdf-export-root"
-            aria-hidden="true"
-            style={{
-              position: 'fixed',
-              top: 0,
-              left: '-900px',
-              width: 794,
-              pointerEvents: 'none',
-              zIndex: -1,
-              overflow: 'clip',
-            }}
-          >
-            <ProposalPreview config={config} />
-          </div>
+          {/* ── Off-screen preview for PDF export ──
+               Always editMode:false so contenteditable is never in the PDF render.
+               Still receives sectionContent so edited text appears in export.    */}
+          <EditContext.Provider value={pdfCtxValue}>
+            <div
+              id="pdf-export-root"
+              aria-hidden="true"
+              style={{
+                position: 'fixed',
+                top: 0,
+                left: '-900px',
+                width: 794,
+                pointerEvents: 'none',
+                zIndex: -1,
+                overflow: 'clip',
+              }}
+            >
+              <ProposalPreview config={config} />
+            </div>
+          </EditContext.Provider>
         </div>
 
         {/* ── Export Modal ── */}

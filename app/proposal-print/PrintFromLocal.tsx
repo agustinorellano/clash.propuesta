@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import { renderSection }       from '@/components/preview/renderSection'
 import type { ProposalConfig } from '@/lib/types'
+import { EditContext }         from '@/lib/edit-context'
 
 interface Props { localKey: string }
 
@@ -44,12 +45,20 @@ export default function PrintFromLocal({ localKey }: Props) {
     )
   }
 
+  // EditContext for print: view mode only, but serves edited sectionContent
+  const printCtx = {
+    editMode: false,
+    getContent: (sectionId: string, key: string, fallback: string) =>
+      config.sectionContent?.[sectionId]?.[key] ?? fallback,
+    setContent: () => {},
+  }
+
   const enabledSections = [...config.sections]
     .filter(s => s.enabled)
     .sort((a, b) => a.order - b.order)
 
   return (
-    <>
+    <EditContext.Provider value={printCtx}>
       {/* ── Print CSS ── */}
       <style>{`
         *, *::before, *::after {
@@ -110,6 +119,6 @@ export default function PrintFromLocal({ localKey }: Props) {
           )
         })}
       </div>
-    </>
+    </EditContext.Provider>
   )
 }

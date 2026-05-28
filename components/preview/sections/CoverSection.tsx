@@ -1,4 +1,7 @@
+import { EditableText } from '@/components/preview/EditableText'
 import { ProposalConfig } from '@/lib/types'
+
+const SID = 'cover'
 
 interface CoverSectionProps {
   brand: ProposalConfig['brand']
@@ -53,12 +56,8 @@ export default function CoverSection({ brand }: CoverSectionProps) {
       }}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src="/clash-logo.svg" alt="Clash" style={{ height: 22, width: 'auto', opacity: 0.85 }} />
-        <span style={{
-          fontSize: 10, color: '#3a3f4a', fontWeight: 600,
-          letterSpacing: '0.2em', textTransform: 'uppercase',
-        }}>
-          Propuesta Comercial
-        </span>
+        <EditableText sectionId={SID} contentKey="topLabel" defaultValue="Propuesta Comercial" tag="span"
+          style={{ fontSize: 10, color: '#3a3f4a', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase' }} />
       </div>
 
       {/* ── Main content ── */}
@@ -94,14 +93,10 @@ export default function CoverSection({ brand }: CoverSectionProps) {
         <div style={{ width: 40, height: 2, background: '#dc2626', borderRadius: 1, marginBottom: 28 }} />
 
         {/* "Propuesta para" */}
-        <p style={{
-          fontSize: 13, fontWeight: 600, color: '#6b7280',
-          letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 18,
-        }}>
-          Propuesta para
-        </p>
+        <EditableText sectionId={SID} contentKey="proposalFor" defaultValue="Propuesta para" tag="p"
+          style={{ fontSize: 13, fontWeight: 600, color: '#6b7280', letterSpacing: '0.22em', textTransform: 'uppercase', marginBottom: 18 }} />
 
-        {/* Brand name */}
+        {/* Brand name — driven by brand config, not editable here */}
         {brand.name ? (
           <h1 style={{
             fontSize: 64, fontWeight: 900, color: '#f1f1f1',
@@ -150,7 +145,8 @@ export default function CoverSection({ brand }: CoverSectionProps) {
           <p style={{ fontSize: 8, fontWeight: 700, color: '#3a3f4a', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 5 }}>
             Presentado por
           </p>
-          <p style={{ fontSize: 11, color: '#5a6374' }}>Clash Beneficios</p>
+          <EditableText sectionId={SID} contentKey="presentedBy" defaultValue="Clash Beneficios" tag="p"
+            style={{ fontSize: 11, color: '#5a6374' }} />
         </div>
       </div>
 
