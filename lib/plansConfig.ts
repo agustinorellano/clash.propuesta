@@ -83,10 +83,11 @@ export const PLANS_STATIC: PlanStaticConfig[] = [
     features: [
       '✦ Todo lo incluido en Gratuito',
       '★ Cargamos y mantenemos tus promociones por vos — nuestro equipo gestiona tu contenido activamente',
+      'Hasta 25 promociones activas incluidas',
       'Onboarding personalizado',
       'Analytics avanzado — Mi audiencia + todas las funcionalidades del dashboard',
       'Soporte prioritario (WhatsApp y email)',
-      'Kit comercial — QR personalizado para la marca',
+      'Kit comercial — hasta 10 diseños de QR personalizados',
     ],
     pricing: {
       s1: { price: '$380.000', note: '/ mes + IVA',  cta: 'Consultar propuesta' },
@@ -102,10 +103,11 @@ export const PLANS_STATIC: PlanStaticConfig[] = [
     description: 'Para grandes marcas con operaciones complejas y múltiples canales.',
     features: [
       '✦ Todo lo incluido en Promos gestionadas',
+      'Sin límite de promociones activas gestionadas',
       'Integración con sistemas propios — widget para web, pantallas y tótems digitales',
       'Account Manager dedicado — seguimiento y estrategia semanal',
       'Reportes personalizados trimestrales — análisis y recomendaciones operativas',
-      'Kit comercial personalizado — QR, materiales y diseño de marca',
+      'Kit comercial personalizado — hasta 20 QR personalizados, materiales y diseño de marca',
       'Integración con tus sistemas — API propia, ERP, POS y más',
     ],
     pricing: {
